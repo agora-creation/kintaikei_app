@@ -1,0 +1,41 @@
+name: kintaikei_app
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.6 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  flutter_launcher_icons: ^0.13.1
+  intl: ^0.18.1
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
+  syncfusion_localizations: ^23.2.7
+  syncfusion_flutter_calendar: ^23.2.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  fonts:
+    - family: SourceHanSansJP-Bold
+      fonts:
+        - asset: assets/fonts/SourceHanSansJP-Bold.otf
+    - family: SourceHanSansJP-Regular
+      fonts:
+        - asset: assets/fonts/SourceHanSansJP-Regular.otf
