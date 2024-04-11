@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/screens/home.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ja'),
       title: '勤怠計',
       theme: customTheme(),
-      home: Container(),
+      home: const HomeScreen(),
     );
   }
 }

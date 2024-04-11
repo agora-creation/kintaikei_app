@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const kBackgroundColor = Color(0xFFECEFF1);
-const kFontColor = Color(0xFF212121);
-const kAddColor = Color(0xFF2196F3);
-const kWhiteColor = Color(0xFFFFFFFF);
+const kBackColor = Color(0xFFECEFF1);
+const kFontColor = Color(0xFF333333);
+const kButtonBackColor = Color(0xFF2196F3);
+const kButtonFontColor = Color(0xFFFFFFFF);
+const kNaviBackColor = Color(0xFFFFFFFF);
 const kBorderColor = Color(0xFF757575);
+const kIconColor = Color(0xFF757575);
+const kAlertBackColor = Color(0xFFFFFFFF);
 
 ThemeData customTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: kBackgroundColor,
+    scaffoldBackgroundColor: kBackColor,
     fontFamily: 'SourceHanSansJP-Regular',
     appBarTheme: const AppBarTheme(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: kBackColor,
       elevation: 0,
       centerTitle: false,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -29,17 +32,26 @@ ThemeData customTheme() {
       bodyMedium: TextStyle(color: kFontColor),
       bodySmall: TextStyle(color: kFontColor),
     ),
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: kAddColor,
-      elevation: 5,
-      extendedTextStyle: TextStyle(
-        color: kWhiteColor,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'SourceHanSansJP-Bold',
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: kButtonFontColor,
+      backgroundColor: kButtonBackColor,
+      focusColor: kButtonFontColor,
+      hoverColor: kButtonFontColor,
+      elevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(100),
       ),
     ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: kNaviBackColor,
+      elevation: 0,
+      selectedItemColor: kFontColor,
+      unselectedItemColor: kFontColor,
+    ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    unselectedWidgetColor: kWhiteColor,
   );
 }
 
