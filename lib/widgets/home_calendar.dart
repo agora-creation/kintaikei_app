@@ -32,7 +32,15 @@ class HomeCalendar extends StatelessWidget {
             textStyle: TextStyle(fontSize: 16),
           ),
         ),
-        cellBorderColor: kBorderColor,
+        cellBorderColor: kGreyColor,
+        todayHighlightColor: kMainColor,
+        selectionDecoration: BoxDecoration(
+          color: kMainColor.withOpacity(0.3),
+          border: Border.all(
+            color: kMainColor,
+            width: 2,
+          ),
+        ),
       ),
     );
   }

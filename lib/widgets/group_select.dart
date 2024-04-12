@@ -17,7 +17,8 @@ class GroupSelect extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: kBorderColor)),
+          color: kWhiteColor,
+          border: Border(bottom: BorderSide(color: kGrey300Color)),
         ),
         padding: const EdgeInsets.all(8),
         child: Row(
@@ -30,7 +31,7 @@ class GroupSelect extends StatelessWidget {
             ),
             const Icon(
               Icons.arrow_drop_down,
-              color: kIconColor,
+              color: kGreyColor,
             ),
           ],
         ),

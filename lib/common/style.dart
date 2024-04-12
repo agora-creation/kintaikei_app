@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-const kBackColor = Color(0xFFECEFF1);
-const kFontColor = Color(0xFF333333);
-const kButtonBackColor = Color(0xFF2196F3);
-const kButtonFontColor = Color(0xFFFFFFFF);
-const kNaviBackColor = Color(0xFFFFFFFF);
-const kBorderColor = Color(0xFF757575);
-const kIconColor = Color(0xFF757575);
-const kAlertBackColor = Color(0xFFFFFFFF);
+const kBackgroundColor = Color(0xFFE8F5E9);
+const kMainColor = Color(0xFF4CAF50);
+const kBlackColor = Color(0xFF333333);
+const kGreyColor = Color(0xFF9E9E9E);
+const kGrey300Color = Color(0xFFE0E0E0);
+const kWhiteColor = Color(0xFFFFFFFF);
+const kBlueColor = Color(0xFF2196F3);
+const kRedColor = Color(0xFFF44336);
 
 ThemeData customTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: kBackColor,
+    scaffoldBackgroundColor: kBackgroundColor,
     fontFamily: 'SourceHanSansJP-Regular',
     appBarTheme: const AppBarTheme(
-      backgroundColor: kBackColor,
+      backgroundColor: kBackgroundColor,
       elevation: 0,
       centerTitle: false,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       titleTextStyle: TextStyle(
-        color: kFontColor,
+        color: kBlackColor,
         fontSize: 18,
         fontWeight: FontWeight.bold,
         fontFamily: 'SourceHanSansJP-Bold',
       ),
-      iconTheme: IconThemeData(color: kFontColor),
+      iconTheme: IconThemeData(color: kBlackColor),
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: kFontColor),
-      bodyMedium: TextStyle(color: kFontColor),
-      bodySmall: TextStyle(color: kFontColor),
+      bodyLarge: TextStyle(color: kBlackColor),
+      bodyMedium: TextStyle(color: kBlackColor),
+      bodySmall: TextStyle(color: kBlackColor),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      foregroundColor: kButtonFontColor,
-      backgroundColor: kButtonBackColor,
-      focusColor: kButtonFontColor,
-      hoverColor: kButtonFontColor,
+      foregroundColor: kWhiteColor,
+      backgroundColor: kBlueColor,
+      focusColor: kWhiteColor,
+      hoverColor: kWhiteColor,
       elevation: 0,
       focusElevation: 0,
       hoverElevation: 0,
@@ -46,10 +46,10 @@ ThemeData customTheme() {
       ),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: kNaviBackColor,
+      backgroundColor: kWhiteColor,
       elevation: 0,
-      selectedItemColor: kFontColor,
-      unselectedItemColor: kFontColor,
+      selectedItemColor: kBlackColor,
+      unselectedItemColor: kBlackColor,
     ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );

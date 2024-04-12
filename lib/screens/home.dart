@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/custom_dropdown.dart';
+import 'package:kintaikei_app/widgets/date_time_widget.dart';
+import 'package:kintaikei_app/widgets/dialog_action_button.dart';
 import 'package:kintaikei_app/widgets/group_select.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -42,11 +47,25 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {},
+        onTap: (value) {
+          switch (value) {
+            case 0:
+              break;
+            case 1:
+              showDialog(
+                context: context,
+                builder: (context) => const StampDialog(),
+              );
+              break;
+            case 2:
+              showBottomUpScreen(context, const UserScreen());
+              break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.check),
-            label: '申請',
+            icon: Icon(Icons.list),
+            label: '履歴',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -85,47 +104,29 @@ class StampDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomAlertDialog(
       children: [
-        Text(
+        const Text(
           '出勤時間を打刻しましょう',
-          style: TextStyle(fontSize: 14),
+          style: TextStyle(fontSize: 12),
         ),
-        SizedBox(height: 8),
-        Text(
-          '16:00',
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 4,
-          ),
-        ),
-        Text(
-          '2024/04/11 (木)',
-          style: TextStyle(fontSize: 14),
-        ),
-        SizedBox(height: 16),
+        const SizedBox(height: 8),
+        const CustomDropdown(),
+        const SizedBox(height: 8),
+        const DateTimeWidget(),
+        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextButton(
+            DialogActionButton(
+              label: '出勤する',
+              labelColor: kWhiteColor,
+              backgroundColor: kBlueColor,
               onPressed: () {},
-              style: TextButton.styleFrom(
-                backgroundColor: kButtonBackColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 16,
-                ),
-              ),
-              child: Text(
-                '出勤する',
-                style: TextStyle(
-                  color: kButtonFontColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            ),
+            DialogActionButton(
+              label: '退勤する',
+              labelColor: kWhiteColor,
+              backgroundColor: kRedColor,
+              onPressed: () {},
             ),
           ],
         ),
