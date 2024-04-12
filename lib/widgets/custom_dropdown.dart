@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 
 class CustomDropdown extends StatelessWidget {
-  const CustomDropdown({super.key});
+  final dynamic value;
+  final Function(Object?)? onChanged;
+
+  const CustomDropdown({
+    required this.value,
+    required this.onChanged,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +19,11 @@ class CustomDropdown extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: DropdownButton<String>(
+      child: DropdownButton(
         underline: Container(),
         isExpanded: true,
-        value: '(有)アゴラ・クリエーション',
-        onChanged: (value) {},
+        value: value,
+        onChanged: onChanged,
         items: const [
           DropdownMenuItem(
             value: '(有)アゴラ・クリエーション',

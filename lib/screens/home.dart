@@ -111,7 +111,10 @@ class StampDialog extends StatelessWidget {
           style: TextStyle(fontSize: 12),
         ),
         const SizedBox(height: 8),
-        const CustomDropdown(),
+        CustomDropdown(
+          value: '(有)アゴラ・クリエーション',
+          onChanged: (value) {},
+        ),
         const SizedBox(height: 8),
         const DateTimeWidget(),
         const SizedBox(height: 16),
