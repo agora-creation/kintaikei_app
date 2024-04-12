@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/screens/history.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
 import 'package:kintaikei_app/widgets/custom_dropdown.dart';
@@ -50,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (value) {
           switch (value) {
             case 0:
+              showBottomUpScreen(context, const HistoryScreen());
               break;
             case 1:
               showDialog(
