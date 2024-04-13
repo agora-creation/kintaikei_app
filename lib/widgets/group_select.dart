@@ -17,17 +17,16 @@ class GroupSelect extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: const BoxDecoration(
-          color: kWhiteColor,
           border: Border(bottom: BorderSide(color: kGrey300Color)),
         ),
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               label,
-              style: const TextStyle(fontSize: 14),
+              style: const TextStyle(fontSize: 16),
             ),
             const Icon(
               Icons.arrow_drop_down,

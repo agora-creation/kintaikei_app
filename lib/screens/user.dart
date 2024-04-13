@@ -26,6 +26,7 @@ class _UserScreenState extends State<UserScreen> {
             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
           ),
         ],
+        shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
     );
   }

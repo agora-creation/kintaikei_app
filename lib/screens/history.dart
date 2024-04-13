@@ -26,6 +26,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
           ),
         ],
+        shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
     );
   }

@@ -29,7 +29,7 @@ class CustomDropdown extends StatelessWidget {
             value: '(有)アゴラ・クリエーション',
             child: Text(
               '(有)アゴラ・クリエーション',
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 14),
               softWrap: false,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,

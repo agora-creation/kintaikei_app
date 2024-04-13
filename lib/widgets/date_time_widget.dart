@@ -9,17 +9,17 @@ class DateTimeWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
+          '2024/04/11 (木)',
+          style: TextStyle(fontSize: 16),
+        ),
+        Text(
           '16:00',
           style: TextStyle(
-            fontSize: 32,
+            fontSize: 40,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSansJP-Bold',
             letterSpacing: 4,
           ),
-        ),
-        Text(
-          '2024/04/11 (木)',
-          style: TextStyle(fontSize: 14),
         ),
       ],
     );

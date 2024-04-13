@@ -47,37 +47,44 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (value) {
-          switch (value) {
-            case 0:
-              showBottomUpScreen(context, const HistoryScreen());
-              break;
-            case 1:
-              showDialog(
-                context: context,
-                builder: (context) => const StampDialog(),
-              );
-              break;
-            case 2:
-              showBottomUpScreen(context, const UserScreen());
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '履歴',
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: kGrey300Color),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: '打刻',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: '島村裕太',
-          ),
-        ],
+        ),
+        child: BottomNavigationBar(
+          onTap: (value) {
+            switch (value) {
+              case 0:
+                showBottomUpScreen(context, const HistoryScreen());
+                break;
+              case 1:
+                showDialog(
+                  context: context,
+                  builder: (context) => const StampDialog(),
+                );
+                break;
+              case 2:
+                showBottomUpScreen(context, const UserScreen());
+                break;
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: '履歴',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: '打刻',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: '島村裕太',
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
@@ -108,18 +115,17 @@ class StampDialog extends StatelessWidget {
       children: [
         const Text(
           '出勤時間を打刻しましょう',
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(fontSize: 16),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         CustomDropdown(
           value: '(有)アゴラ・クリエーション',
           onChanged: (value) {},
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 24),
         const DateTimeWidget(),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        const SizedBox(height: 24),
+        Column(
           children: [
             DialogActionButton(
               label: '出勤する',
