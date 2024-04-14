@@ -4,10 +4,10 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/screens/history.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
-import 'package:kintaikei_app/widgets/custom_dropdown.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
 import 'package:kintaikei_app/widgets/dialog_action_button.dart';
-import 'package:kintaikei_app/widgets/group_select.dart';
+import 'package:kintaikei_app/widgets/group_dropdown.dart';
+import 'package:kintaikei_app/widgets/group_select_header.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GroupSelect(
+            GroupSelectHeader(
               label: '(有)アゴラ・クリエーション',
               onTap: () {},
             ),

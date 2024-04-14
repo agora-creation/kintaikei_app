@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 
-class GroupSelect extends StatelessWidget {
+class GroupSelectHeader extends StatelessWidget {
   final String label;
   final Function() onTap;
 
-  const GroupSelect({
+  const GroupSelectHeader({
     required this.label,
     required this.onTap,
     super.key,
