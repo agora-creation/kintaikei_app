@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/screens/history.dart';
+import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
@@ -60,10 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 showBottomUpScreen(context, const HistoryScreen());
                 break;
               case 1:
-                showDialog(
-                  context: context,
-                  builder: (context) => const StampDialog(),
-                );
+                showBottomUpScreen(context, const StampScreen());
                 break;
               case 2:
                 showBottomUpScreen(context, const UserScreen());
@@ -88,12 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => const StampDialog(),
-          );
-        },
+        onPressed: () => showBottomUpScreen(context, const StampScreen()),
         child: const Icon(Icons.add),
       ),
     );
@@ -118,7 +111,7 @@ class StampDialog extends StatelessWidget {
           style: TextStyle(fontSize: 16),
         ),
         const SizedBox(height: 16),
-        CustomDropdown(
+        GroupDropdown(
           value: '(有)アゴラ・クリエーション',
           onChanged: (value) {},
         ),

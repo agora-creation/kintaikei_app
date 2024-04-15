@@ -12,14 +12,22 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              '勤怠計',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'SourceHanSansJP-Bold',
-                letterSpacing: 4,
-              ),
+            Column(
+              children: [
+                Text(
+                  '勤怠計',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'SourceHanSansJP-Bold',
+                    letterSpacing: 10,
+                  ),
+                ),
+                Text(
+                  '勤怠サービス',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
             ),
             SpinKitPouringHourGlassRefined(color: kBlackColor),
           ],

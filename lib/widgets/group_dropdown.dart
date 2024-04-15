@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 
-class CustomDropdown extends StatelessWidget {
+class GroupDropdown extends StatelessWidget {
   final dynamic value;
   final Function(Object?)? onChanged;
 
-  const CustomDropdown({
+  const GroupDropdown({
     required this.value,
     required this.onChanged,
     super.key,
@@ -29,7 +29,7 @@ class CustomDropdown extends StatelessWidget {
             value: '(有)アゴラ・クリエーション',
             child: Text(
               '(有)アゴラ・クリエーション',
-              style: TextStyle(fontSize: 14),
+              style: TextStyle(fontSize: 16),
               softWrap: false,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,

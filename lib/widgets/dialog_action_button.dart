@@ -35,7 +35,7 @@ class DialogActionButton extends StatelessWidget {
             label,
             style: TextStyle(
               color: labelColor,
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               fontFamily: 'SourceHanSansJP-Bold',
             ),

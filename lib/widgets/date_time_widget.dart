@@ -10,12 +10,12 @@ class DateTimeWidget extends StatelessWidget {
       children: [
         Text(
           '2024/04/11 (木)',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 18),
         ),
         Text(
           '16:00',
           style: TextStyle(
-            fontSize: 40,
+            fontSize: 42,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSansJP-Bold',
             letterSpacing: 4,

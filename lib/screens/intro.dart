@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:kintaikei_app/common/functions.dart';
+import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/services/ldb.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -39,6 +41,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Future _setCompleteIntro() async {
     await ldbService.setBool('hasCompletedIntro', true);
+    if (!mounted) return;
+    pushReplacementScreen(context, const HomeScreen());
   }
 
   @override
