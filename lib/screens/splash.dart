@@ -15,10 +15,10 @@ class SplashScreen extends StatelessWidget {
             Text(
               '勤怠計',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'SourceHanSansJP-Bold',
-                letterSpacing: 2,
+                letterSpacing: 4,
               ),
             ),
             SpinKitPouringHourGlassRefined(color: kBlackColor),
