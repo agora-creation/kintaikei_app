@@ -50,5 +50,13 @@ class LoginProvider with ChangeNotifier {
 
   Future reloadData() async {}
 
-  Future _onStateChanged(User? authUser) async {}
+  Future _onStateChanged(User? authUser) async {
+    if (authUser == null) {
+      _status = AuthStatus.unauthenticated;
+    } else {
+      _authUser = authUser;
+      _status = AuthStatus.authenticated;
+    }
+    notifyListeners();
+  }
 }
