@@ -22,6 +22,7 @@ dependencies:
   syncfusion_localizations: ^23.2.7
   syncfusion_flutter_calendar: ^23.2.7
   modal_bottom_sheet: ^2.1.2
+  home_widget: ^0.5.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre
