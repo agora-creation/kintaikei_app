@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "50104600007",
+    "project_id": "kintaikei-project",
+    "storage_bucket": "kintaikei-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50104600007:android:e13dbee897711b2f0745e2",
+        "android_client_info": {
+          "package_name": "com.agoracreation.kintaikei_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6g3sR3HOBqXV5ei68z0S4OSWEzAGoFl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
