@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class DialogActionButton extends StatelessWidget {
+class StampButton extends StatelessWidget {
   final String label;
   final Color labelColor;
   final Color backgroundColor;
   final Function()? onPressed;
 
-  const DialogActionButton({
+  const StampButton({
     required this.label,
     required this.labelColor,
     required this.backgroundColor,

@@ -25,6 +25,7 @@ dependencies:
   flutter_spinkit: ^5.2.1
   introduction_screen: ^3.1.14
   home_widget: ^0.5.0
+  alert_banner: ^1.0.1
 
   firebase_core: ^2.25.4
   firebase_auth: ^4.17.4

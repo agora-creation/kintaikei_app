@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:kintaikei_app/common/functions.dart';
+import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/services/ldb.dart';
+import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/custom_dialog_button.dart';
+import 'package:kintaikei_app/widgets/custom_intro_screen.dart';
+import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
+import 'package:kintaikei_app/widgets/intro_button.dart';
+import 'package:kintaikei_app/widgets/link_text.dart';
+import 'package:provider/provider.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -13,57 +22,314 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   LDBService ldbService = LDBService();
-
-  List<PageViewModel> _getPages() {
-    return [
-      PageViewModel(
-        title: "Title",
-        body: "body",
-        decoration: const PageDecoration(
-          titleTextStyle:
-              TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-          bodyTextStyle: TextStyle(fontSize: 20.0),
-          pageColor: Color.fromARGB(108, 146, 193, 209),
-        ),
-      ),
-      PageViewModel(
-        title: "Title",
-        body: "body",
-        decoration: const PageDecoration(
-          titleTextStyle:
-              TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
-          bodyTextStyle: TextStyle(fontSize: 20.0),
-          pageColor: Color.fromARGB(108, 146, 193, 209),
-        ),
-      ),
-    ];
-  }
-
-  Future _setCompleteIntro() async {
-    await ldbService.setBool('hasCompletedIntro', true);
-    if (!mounted) return;
-    pushReplacementScreen(context, const HomeScreen());
-  }
+  final introKey = GlobalKey<IntroductionScreenState>();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return IntroductionScreen(
-      pages: _getPages(),
-      onDone: () async {
-        await _setCompleteIntro();
-      },
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('スタート', style: TextStyle(fontWeight: FontWeight.bold)),
-      dotsDecorator: DotsDecorator(
-        size: const Size.square(10.0),
-        activeSize: const Size(20.0, 10.0),
-        activeColor: Theme.of(context).primaryColor,
-        color: Colors.black26,
-        spacing: const EdgeInsets.symmetric(horizontal: 3.0),
-        activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
+    final loginProvider = Provider.of<LoginProvider>(context);
+    return SafeArea(
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: CustomIntroScreen(
+          introKey: introKey,
+          pages: [
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    'はじめまして！',
+                    style: kIntroStyle,
+                  ),
+                  const Text(
+                    'わたしは『勤怠計』といいます。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
+                  IntroButton(
+                    label: 'よろしく！',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () {
+                      introKey.currentState?.next();
+                    },
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    'あなたの働いた時間を記録することができます。『勤怠用のストップウォッチ』のようなものです。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
+                  IntroButton(
+                    label: 'わかりました！',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () {
+                      introKey.currentState?.next();
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  LinkText(
+                    label: '前に戻る',
+                    color: kBlueColor,
+                    onTap: () {
+                      introKey.currentState?.previous();
+                    },
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    '記録したデータは、クラウド上に保存されます。スマートフォンが壊れても、記録したデータが無くなることはありません。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
+                  IntroButton(
+                    label: 'わかりました！',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () {
+                      introKey.currentState?.next();
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  LinkText(
+                    label: '前に戻る',
+                    color: kBlueColor,
+                    onTap: () {
+                      introKey.currentState?.previous();
+                    },
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    '次はあなたのことを教えてください。',
+                    style: kIntroStyle,
+                  ),
+                  const Text(
+                    'まずは、あなたのお名前を教えてください。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
+                  CustomTextFormField(
+                    controller: nameController,
+                    textInputType: TextInputType.name,
+                    maxLines: 1,
+                    label: '名前',
+                    color: kMainColor,
+                    prefix: Icons.person,
+                  ),
+                  const SizedBox(height: 8),
+                  IntroButton(
+                    label: '決定！',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () {
+                      introKey.currentState?.next();
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  LinkText(
+                    label: '前に戻る',
+                    color: kBlueColor,
+                    onTap: () {
+                      introKey.currentState?.previous();
+                    },
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    '次に、お電話番号を教えてください。',
+                    style: kIntroStyle,
+                  ),
+                  const Text(
+                    'ご本人確認のため、SMSに認証コードをお送りさせていただきます。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
+                  CustomTextFormField(
+                    controller: phoneNumberController,
+                    textInputType: TextInputType.phone,
+                    maxLines: 1,
+                    label: '電話番号',
+                    color: kMainColor,
+                    prefix: Icons.phone,
+                  ),
+                  const SizedBox(height: 8),
+                  IntroButton(
+                    label: '認証コードを送信',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (context) => AuthDialog(introKey: introKey),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  LinkText(
+                    label: '前に戻る',
+                    color: kBlueColor,
+                    onTap: () {
+                      introKey.currentState?.previous();
+                    },
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    'あなたのことを教えてくれてありがとう！',
+                    style: kIntroStyle,
+                  ),
+                  const Text(
+                    '早速、はじめてみましょう！',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
+                  IntroButton(
+                    label: 'はじめる',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () async {
+                      await ldbService.setBool('hasCompletedIntro', true);
+                      if (!mounted) return;
+                      pushReplacementScreen(context, const HomeScreen());
+                    },
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class AuthDialog extends StatefulWidget {
+  final GlobalKey<IntroductionScreenState> introKey;
+
+  const AuthDialog({
+    required this.introKey,
+    super.key,
+  });
+
+  @override
+  State<AuthDialog> createState() => _AuthDialogState();
+}
+
+class _AuthDialogState extends State<AuthDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return CustomAlertDialog(
+      children: [
+        const Text('SMSに届いた認証コードを入力してください。'),
+        const SizedBox(height: 8),
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     const SizedBox(width: 2),
+        //     ...List.generate(pinCount, _buildTextField),
+        //     const SizedBox(width: 2),
+        //   ],
+        // ),
+        const SizedBox(height: 8),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: LinkText(
+            label: '認証コードを再送する',
+            color: kBlueColor,
+            onTap: () {},
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomDialogButton(
+              label: 'キャンセル',
+              labelColor: kWhiteColor,
+              backgroundColor: kGreyColor,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            CustomDialogButton(
+              label: '認証する',
+              labelColor: kWhiteColor,
+              backgroundColor: kBlueColor,
+              onPressed: () {
+                Navigator.pop(context);
+                widget.introKey.currentState?.next();
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

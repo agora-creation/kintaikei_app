@@ -4,10 +4,6 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/screens/history.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/user.dart';
-import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
-import 'package:kintaikei_app/widgets/date_time_widget.dart';
-import 'package:kintaikei_app/widgets/dialog_action_button.dart';
-import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/group_select_header.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -96,45 +92,5 @@ class _HomeScreenState extends State<HomeScreen> {
 class _DataSource extends CalendarDataSource {
   _DataSource(List<Appointment> source) {
     appointments = source;
-  }
-}
-
-class StampDialog extends StatelessWidget {
-  const StampDialog({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomAlertDialog(
-      children: [
-        const Text(
-          '出勤時間を打刻しましょう',
-          style: TextStyle(fontSize: 16),
-        ),
-        const SizedBox(height: 16),
-        GroupDropdown(
-          value: '(有)アゴラ・クリエーション',
-          onChanged: (value) {},
-        ),
-        const SizedBox(height: 24),
-        const DateTimeWidget(),
-        const SizedBox(height: 24),
-        Column(
-          children: [
-            DialogActionButton(
-              label: '出勤する',
-              labelColor: kWhiteColor,
-              backgroundColor: kBlueColor,
-              onPressed: () {},
-            ),
-            DialogActionButton(
-              label: '退勤する',
-              labelColor: kWhiteColor,
-              backgroundColor: kRedColor,
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ],
-    );
   }
 }
