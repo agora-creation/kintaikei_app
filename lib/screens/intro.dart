@@ -137,7 +137,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: kIntroStyle,
                   ),
                   const Text(
-                    'まずは、あなたのお名前を教えてください。',
+                    '入力した情報は、次回ログインする際に使用します。',
                     style: kIntroStyle,
                   ),
                   const SizedBox(height: 32),
@@ -145,7 +145,34 @@ class _IntroScreenState extends State<IntroScreen> {
                     controller: nameController,
                     textInputType: TextInputType.name,
                     maxLines: 1,
-                    label: '名前',
+                    label: 'お名前',
+                    color: kMainColor,
+                    prefix: Icons.person,
+                  ),
+                  const SizedBox(height: 8),
+                  CustomTextFormField(
+                    controller: nameController,
+                    textInputType: TextInputType.name,
+                    maxLines: 1,
+                    label: 'メールアドレス',
+                    color: kMainColor,
+                    prefix: Icons.person,
+                  ),
+                  const SizedBox(height: 8),
+                  CustomTextFormField(
+                    controller: nameController,
+                    textInputType: TextInputType.name,
+                    maxLines: 1,
+                    label: 'パスワードの確認',
+                    color: kMainColor,
+                    prefix: Icons.person,
+                  ),
+                  const SizedBox(height: 8),
+                  CustomTextFormField(
+                    controller: nameController,
+                    textInputType: TextInputType.name,
+                    maxLines: 1,
+                    label: 'パスワード',
                     color: kMainColor,
                     prefix: Icons.person,
                   ),
@@ -175,10 +202,6 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
               titleWidget: Column(
                 children: [
-                  Text(
-                    '${nameController.text}様、ご入力ありがとうございます。',
-                    style: kIntroStyle,
-                  ),
                   const Text(
                     '次に、お電話番号を教えてください。',
                     style: kIntroStyle,
