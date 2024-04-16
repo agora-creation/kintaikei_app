@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:kintaikei_app/common/style.dart';
 
 class CustomIntroScreen extends StatelessWidget {
   final Key introKey;
@@ -21,17 +20,8 @@ class CustomIntroScreen extends StatelessWidget {
       showNextButton: false,
       showDoneButton: false,
       showBackButton: false,
+      showBottomPart: false,
       freeze: true,
-      dotsDecorator: DotsDecorator(
-        size: const Size.square(10),
-        activeSize: const Size(25, 10),
-        activeColor: kMainColor,
-        color: kGreyColor,
-        spacing: const EdgeInsets.symmetric(horizontal: 3),
-        activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-        ),
-      ),
     );
   }
 }

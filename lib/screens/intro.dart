@@ -133,11 +133,11 @@ class _IntroScreenState extends State<IntroScreen> {
               titleWidget: Column(
                 children: [
                   const Text(
-                    '次はあなたのことを教えてください。',
+                    'まずは、あなたの情報を登録します。',
                     style: kIntroStyle,
                   ),
                   const Text(
-                    '入力した情報は、次回ログインする際に使用します。',
+                    'あなたのお名前を教えてください。',
                     style: kIntroStyle,
                   ),
                   const SizedBox(height: 32),
@@ -145,38 +145,97 @@ class _IntroScreenState extends State<IntroScreen> {
                     controller: nameController,
                     textInputType: TextInputType.name,
                     maxLines: 1,
-                    label: 'お名前',
+                    label: '名前',
                     color: kMainColor,
                     prefix: Icons.person,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
+                  IntroButton(
+                    label: '決定！',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () => introKey.currentState?.next(),
+                  ),
+                  const SizedBox(height: 16),
+                  LinkText(
+                    label: '前に戻る',
+                    color: kBlueColor,
+                    onTap: () => introKey.currentState?.previous(),
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    '次に、あなたのメールアドレスを入力してください。',
+                    style: kIntroStyle,
+                  ),
+                  const Text(
+                    '次回、ログインする場合に必要な情報になります。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
                   CustomTextFormField(
                     controller: nameController,
                     textInputType: TextInputType.name,
                     maxLines: 1,
-                    label: 'メールアドレス',
+                    label: '名前',
                     color: kMainColor,
                     prefix: Icons.person,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
+                  IntroButton(
+                    label: '決定！',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () => introKey.currentState?.next(),
+                  ),
+                  const SizedBox(height: 16),
+                  LinkText(
+                    label: '前に戻る',
+                    color: kBlueColor,
+                    onTap: () => introKey.currentState?.previous(),
+                  ),
+                ],
+              ),
+              bodyWidget: Container(),
+            ),
+            PageViewModel(
+              image: Center(
+                child: Image.network(
+                  kWatchImageUrl,
+                  height: 150,
+                ),
+              ),
+              titleWidget: Column(
+                children: [
+                  const Text(
+                    '次に、パスワードを入力してください。',
+                    style: kIntroStyle,
+                  ),
+                  const Text(
+                    '次回、ログインする場合に必要な情報になります。',
+                    style: kIntroStyle,
+                  ),
+                  const SizedBox(height: 32),
                   CustomTextFormField(
                     controller: nameController,
                     textInputType: TextInputType.name,
                     maxLines: 1,
-                    label: 'パスワードの確認',
+                    label: '名前',
                     color: kMainColor,
                     prefix: Icons.person,
                   ),
-                  const SizedBox(height: 8),
-                  CustomTextFormField(
-                    controller: nameController,
-                    textInputType: TextInputType.name,
-                    maxLines: 1,
-                    label: 'パスワード',
-                    color: kMainColor,
-                    prefix: Icons.person,
-                  ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   IntroButton(
                     label: '決定！',
                     labelColor: kWhiteColor,
