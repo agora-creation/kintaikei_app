@@ -57,9 +57,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     label: 'よろしく！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
-                    onPressed: () {
-                      introKey.currentState?.next();
-                    },
+                    onPressed: () => introKey.currentState?.next(),
                   ),
                 ],
               ),
@@ -83,17 +81,13 @@ class _IntroScreenState extends State<IntroScreen> {
                     label: 'わかりました！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
-                    onPressed: () {
-                      introKey.currentState?.next();
-                    },
+                    onPressed: () => introKey.currentState?.next(),
                   ),
                   const SizedBox(height: 16),
                   LinkText(
                     label: '前に戻る',
                     color: kBlueColor,
-                    onTap: () {
-                      introKey.currentState?.previous();
-                    },
+                    onTap: () => introKey.currentState?.previous(),
                   ),
                 ],
               ),
@@ -117,17 +111,13 @@ class _IntroScreenState extends State<IntroScreen> {
                     label: 'わかりました！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
-                    onPressed: () {
-                      introKey.currentState?.next();
-                    },
+                    onPressed: () => introKey.currentState?.next(),
                   ),
                   const SizedBox(height: 16),
                   LinkText(
                     label: '前に戻る',
                     color: kBlueColor,
-                    onTap: () {
-                      introKey.currentState?.previous();
-                    },
+                    onTap: () => introKey.currentState?.previous(),
                   ),
                 ],
               ),
@@ -164,17 +154,13 @@ class _IntroScreenState extends State<IntroScreen> {
                     label: '決定！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
-                    onPressed: () {
-                      introKey.currentState?.next();
-                    },
+                    onPressed: () => introKey.currentState?.next(),
                   ),
                   const SizedBox(height: 16),
                   LinkText(
                     label: '前に戻る',
                     color: kBlueColor,
-                    onTap: () {
-                      introKey.currentState?.previous();
-                    },
+                    onTap: () => introKey.currentState?.previous(),
                   ),
                 ],
               ),
@@ -189,6 +175,10 @@ class _IntroScreenState extends State<IntroScreen> {
               ),
               titleWidget: Column(
                 children: [
+                  Text(
+                    '${nameController.text}様、ご入力ありがとうございます。',
+                    style: kIntroStyle,
+                  ),
                   const Text(
                     '次に、お電話番号を教えてください。',
                     style: kIntroStyle,
@@ -211,11 +201,25 @@ class _IntroScreenState extends State<IntroScreen> {
                     label: '認証コードを送信',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
-                    onPressed: () {
+                    onPressed: () async {
+                      String? error = await loginProvider.sendCode(
+                        phoneNumber: phoneNumberController.text,
+                      );
+                      if (error != null) {
+                        if (!mounted) return;
+                        showMessage(context, error, false);
+                        return;
+                      }
+                      if (!mounted) return;
+                      showMessage(context, '認証コードを送信しました', true);
                       showDialog(
                         barrierDismissible: false,
                         context: context,
-                        builder: (context) => AuthDialog(introKey: introKey),
+                        builder: (context) => AuthDialog(
+                          introKey: introKey,
+                          loginProvider: loginProvider,
+                          phoneNumber: phoneNumberController.text,
+                        ),
                       );
                     },
                   ),
@@ -223,9 +227,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   LinkText(
                     label: '前に戻る',
                     color: kBlueColor,
-                    onTap: () {
-                      introKey.currentState?.previous();
-                    },
+                    onTap: () => introKey.currentState?.previous(),
                   ),
                 ],
               ),
@@ -254,7 +256,6 @@ class _IntroScreenState extends State<IntroScreen> {
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
                     onPressed: () async {
-                      await ldbService.setBool('hasCompletedIntro', true);
                       if (!mounted) return;
                       pushReplacementScreen(context, const HomeScreen());
                     },
@@ -272,9 +273,13 @@ class _IntroScreenState extends State<IntroScreen> {
 
 class AuthDialog extends StatefulWidget {
   final GlobalKey<IntroductionScreenState> introKey;
+  final LoginProvider loginProvider;
+  final String phoneNumber;
 
   const AuthDialog({
     required this.introKey,
+    required this.loginProvider,
+    required this.phoneNumber,
     super.key,
   });
 
@@ -303,7 +308,19 @@ class _AuthDialogState extends State<AuthDialog> {
           child: LinkText(
             label: '認証コードを再送する',
             color: kBlueColor,
-            onTap: () {},
+            onTap: () async {
+              String? error = await widget.loginProvider.sendCode(
+                phoneNumber: widget.phoneNumber,
+                reSend: true,
+              );
+              if (error != null) {
+                if (!mounted) return;
+                showMessage(context, error, false);
+                return;
+              }
+              if (!mounted) return;
+              showMessage(context, '認証コードを送信しました', true);
+            },
           ),
         ),
         const SizedBox(height: 16),

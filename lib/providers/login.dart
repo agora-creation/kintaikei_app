@@ -27,84 +27,62 @@ class LoginProvider with ChangeNotifier {
     _auth?.authStateChanges().listen(_onStateChanged);
   }
 
-  Future<String?> verifyPhoneNumber({
+  Future<String?> sendCode({
     required String phoneNumber,
+    bool reSend = false,
   }) async {
     String? error;
     if (phoneNumber == '') return '電話番号を入力してください';
-    try {
-      await _auth?.verifyPhoneNumber(
-        phoneNumber: '+81$phoneNumber',
-        verificationCompleted: (PhoneAuthCredential credential) {},
-        verificationFailed: (FirebaseAuthException e) {
-          if (e.code == 'invalid-phone-number') {
-            error = '電話番号が正しくありません';
-          }
-        },
-        codeSent: (String verificationId, int? resendToken) async {
-          String smsCode = '';
-          //認証ダイアログ
-          final credential = PhoneAuthProvider.credential(
-            verificationId: verificationId,
-            smsCode: smsCode,
-          );
-          await _auth?.signInWithCredential(credential);
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          //デフォルトは30秒
-        },
-      );
+    int? forceResendingToken;
+    if (reSend) {
+      String resendTokenString =
+          await _ldbService.getString('resendTokenString') ?? '';
+      forceResendingToken = int.parse(resendTokenString);
+    }
+    await _auth?.verifyPhoneNumber(
+      phoneNumber: '+81$phoneNumber',
+      verificationCompleted: (credential) {},
+      verificationFailed: (e) {
+        if (e.code == 'invalid-phone-number') {
+          error = '電話番号が正しくありません';
+        } else {
+          error = e.toString();
+        }
+      },
+      codeSent: (id, resendToken) async {
+        await _ldbService.setString('verificationId', id);
+        await _ldbService.setString(
+          'resendTokenString',
+          resendToken?.toString() ?? '',
+        );
+      },
+      codeAutoRetrievalTimeout: (id) {},
+      forceResendingToken: forceResendingToken,
+    );
+    return error;
+  }
 
-      // // _status = AuthStatus.authenticating;
-      // // notifyListeners();
-      // // final result = await _auth?.signInAnonymously();
-      // // _authUser = result?.user;
-      // // UserModel? tmpUser = await _userService.selectData(
-      // //   email: email,
-      // //   password: password,
-      // // );
-      // // if (tmpUser != null) {
-      // //   OrganizationModel? tmpOrganization =
-      // //       await _organizationService.selectData(
-      // //     userId: tmpUser.id,
-      // //   );
-      // //   if (tmpOrganization != null) {
-      // //     _user = tmpUser;
-      // //     _organization = tmpOrganization;
-      // //     OrganizationGroupModel? tmpGroup = await _groupService.selectData(
-      // //       organizationId: tmpOrganization.id,
-      // //       userId: tmpUser.id,
-      // //     );
-      // //     if (tmpGroup != null) {
-      // //       _group = tmpGroup;
-      // //     }
-      // //     String uid = result?.user?.uid ?? '';
-      // //     String token = await _fmService.getToken() ?? '';
-      // //     _userService.update({
-      // //       'id': _user?.id,
-      // //       'uid': uid,
-      // //       'token': token,
-      // //     });
-      // //     await setPrefsString('email', email);
-      // //     await setPrefsString('password', password);
-      // //   } else {
-      // //     await _auth?.signOut();
-      // //     _status = AuthStatus.unauthenticated;
-      // //     notifyListeners();
-      // //     error = '団体が見つかりません';
-      // //   }
-      // } else {
-      //   await _auth?.signOut();
-      //   _status = AuthStatus.unauthenticated;
-      //   notifyListeners();
-      //   error = 'メールアドレスまたはパスワードが間違ってます';
-      // }
+  Future<String?> login({
+    required String smsCode,
+  }) async {
+    String? error;
+    if (smsCode == '') return '認証コードを入力してください';
+    try {
+      _status = AuthStatus.authenticating;
+      notifyListeners();
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: await _ldbService.getString('verificationId') ?? '',
+        smsCode: smsCode,
+      );
+      final result = await _auth?.signInWithCredential(credential);
+      _authUser = result?.user;
+      //ユーザーデータの保存
+      //tokenの保存
     } catch (e) {
       _status = AuthStatus.unauthenticated;
       notifyListeners();
       error = 'ログインに失敗しました';
     }
-
     return error;
   }
 
