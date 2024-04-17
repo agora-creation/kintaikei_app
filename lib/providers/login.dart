@@ -38,17 +38,25 @@ class LoginProvider with ChangeNotifier {
       notifyListeners();
       final result = await _auth?.signInAnonymously();
       _authUser = result?.user;
-      String id = _userService.id();
-      String uid = result?.user?.uid ?? '';
-      _userService.create({
-        'id': id,
-        'name': name,
-        'email': email,
-        'password': password,
-        'uid': uid,
-        'token': '',
-        'createdAt': DateTime.now(),
-      });
+      bool isExist = await _userService.emailCheck(email);
+      if (!isExist) {
+        String id = _userService.id();
+        String uid = result?.user?.uid ?? '';
+        _userService.create({
+          'id': id,
+          'name': name,
+          'email': email,
+          'password': password,
+          'uid': uid,
+          'token': '',
+          'createdAt': DateTime.now(),
+        });
+      } else {
+        await _auth?.signOut();
+        _status = AuthStatus.unauthenticated;
+        notifyListeners();
+        error = '既に同じメールアドレスが登録されています';
+      }
     } catch (e) {
       _status = AuthStatus.unauthenticated;
       notifyListeners();
@@ -57,12 +65,52 @@ class LoginProvider with ChangeNotifier {
     return error;
   }
 
-  Future logout() async {
+  Future<String?> login({
+    required String email,
+    required String password,
+  }) async {
+    String? error;
+    try {
+      _status = AuthStatus.authenticating;
+      notifyListeners();
+      final result = await _auth?.signInAnonymously();
+      _authUser = result?.user;
+      UserModel? tmpUser = await _userService.selectToEmailPassword(
+        email: email,
+        password: password,
+      );
+      if (tmpUser != null) {
+        _user = tmpUser;
+        String uid = result?.user?.uid ?? '';
+        _userService.update({
+          'id': _user?.id,
+          'uid': uid,
+          'token': '',
+        });
+      } else {
+        await _auth?.signOut();
+        _status = AuthStatus.unauthenticated;
+        notifyListeners();
+        error = 'メールアドレスまたはパスワードが間違ってます';
+      }
+    } catch (e) {
+      _status = AuthStatus.unauthenticated;
+      notifyListeners();
+      error = 'ログインに失敗しました';
+    }
+    return error;
+  }
+
+  Future _clearUserData() async {
     _userService.update({
       'id': _user?.id,
       'uid': '',
       'token': '',
     });
+  }
+
+  Future logout() async {
+    await _clearUserData();
     await _auth?.signOut();
     await _localDBService.clear();
     _user = null;

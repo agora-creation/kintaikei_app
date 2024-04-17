@@ -21,6 +21,20 @@ class UserService {
     firestore.collection(collection).doc(values['id']).delete();
   }
 
+  Future<bool> emailCheck(String email) async {
+    bool ret = false;
+    await firestore
+        .collection(collection)
+        .where('email', isEqualTo: email)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        ret = true;
+      }
+    });
+    return ret;
+  }
+
   Future<UserModel?> selectToUid({
     required String? uid,
   }) async {
@@ -28,6 +42,24 @@ class UserService {
     await firestore
         .collection(collection)
         .where('uid', isEqualTo: uid ?? 'error')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        ret = UserModel.fromSnapshot(value.docs.first);
+      }
+    });
+    return ret;
+  }
+
+  Future<UserModel?> selectToEmailPassword({
+    required String? email,
+    required String? password,
+  }) async {
+    UserModel? ret;
+    await firestore
+        .collection(collection)
+        .where('email', isEqualTo: email ?? 'error')
+        .where('password', isEqualTo: password ?? 'error')
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {

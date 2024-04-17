@@ -6,6 +6,7 @@ const kMainColor = Color(0xFF333333);
 const kBlackColor = Color(0xFF333333);
 const kGreyColor = Color(0xFF9E9E9E);
 const kGrey300Color = Color(0xFFE0E0E0);
+const kGrey600Color = Color(0xFF757575);
 const kWhiteColor = Color(0xFFFFFFFF);
 const kBlueColor = Color(0xFF2196F3);
 const kRedColor = Color(0xFFF44336);

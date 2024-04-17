@@ -2,6 +2,7 @@ import 'package:alert_banner/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/widgets/custom_alert_banner.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 void showMessage(BuildContext context, String msg, bool success) {
   showAlertBanner(
@@ -40,4 +41,9 @@ Future showBottomUpScreen(BuildContext context, Widget widget) async {
     context: context,
     builder: (context) => widget,
   );
+}
+
+Future<String> getVersionInfo() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  return '${packageInfo.version}(${packageInfo.buildNumber})';
 }

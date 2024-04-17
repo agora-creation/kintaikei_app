@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/history.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/widgets/group_select_header.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loginProvider = Provider.of<LoginProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,22 +63,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 showBottomUpScreen(context, const StampScreen());
                 break;
               case 2:
-                showBottomUpScreen(context, const UserScreen());
+                showBottomUpScreen(
+                  context,
+                  UserScreen(loginProvider: loginProvider),
+                );
                 break;
             }
           },
-          items: const [
-            BottomNavigationBarItem(
+          items: [
+            const BottomNavigationBarItem(
               icon: Icon(Icons.list),
               label: '履歴',
             ),
-            BottomNavigationBarItem(
+            const BottomNavigationBarItem(
               icon: Icon(Icons.add),
               label: '打刻',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: '島村裕太',
+              icon: const Icon(Icons.person),
+              label: loginProvider.user?.name ?? '',
             ),
           ],
         ),

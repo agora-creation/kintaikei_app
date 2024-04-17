@@ -4,6 +4,7 @@ import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/home.dart';
+import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/services/local_db.dart';
 import 'package:kintaikei_app/widgets/custom_intro_screen.dart';
 import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
@@ -62,6 +63,15 @@ class _IntroScreenState extends State<IntroScreen> {
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
                     onPressed: () => introKey.currentState?.next(),
+                  ),
+                  const SizedBox(height: 32),
+                  LinkText(
+                    label: '以前、使ったことがある方はコチラ！',
+                    color: kBlueColor,
+                    onTap: () => pushReplacementScreen(
+                      context,
+                      const LoginScreen(),
+                    ),
                   ),
                 ],
               ),
@@ -153,7 +163,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     color: kMainColor,
                     prefix: Icons.person,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   nameController.text != ''
                       ? IntroButton(
                           label: '決定！',
@@ -202,7 +212,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     color: kMainColor,
                     prefix: Icons.email,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   emailController.text != ''
                       ? IntroButton(
                           label: '決定！',
@@ -276,7 +286,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       });
                     },
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   passwordController.text != '' &&
                           passwordController.text == rePasswordController.text
                       ? IntroButton(
