@@ -24,7 +24,7 @@ class _IntroScreenState extends State<IntroScreen> {
   LDBService ldbService = LDBService();
   final introKey = GlobalKey<IntroductionScreenState>();
   TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
