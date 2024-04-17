@@ -101,6 +101,51 @@ class LoginProvider with ChangeNotifier {
     return error;
   }
 
+  Future<String?> updateName({
+    required String name,
+  }) async {
+    String? error;
+    try {
+      _userService.update({
+        'id': _user?.id,
+        'name': name,
+      });
+    } catch (e) {
+      error = e.toString();
+    }
+    return error;
+  }
+
+  Future<String?> updateEmail({
+    required String email,
+  }) async {
+    String? error;
+    try {
+      _userService.update({
+        'id': _user?.id,
+        'email': email,
+      });
+    } catch (e) {
+      error = e.toString();
+    }
+    return error;
+  }
+
+  Future<String?> updatePassword({
+    required String password,
+  }) async {
+    String? error;
+    try {
+      _userService.update({
+        'id': _user?.id,
+        'password': password,
+      });
+    } catch (e) {
+      error = e.toString();
+    }
+    return error;
+  }
+
   Future _clearUserData() async {
     _userService.update({
       'id': _user?.id,

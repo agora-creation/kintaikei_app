@@ -88,12 +88,7 @@ class _UserScreenState extends State<UserScreen> {
             onTap: () {},
           ),
           SettingList(
-            label: 'アプリに対するご要望を送る',
-            borderTop: false,
-            onTap: () {},
-          ),
-          SettingList(
-            label: 'レビューを送る',
+            label: 'レビューを書く',
             borderTop: false,
             onTap: () {},
           ),
