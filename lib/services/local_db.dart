@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LDBService {
+class LocalDBService {
   Future<int?> getInt(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(key);

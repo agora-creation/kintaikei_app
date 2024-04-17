@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-class DTService {
+class DateTimeService {
   String convertText(String format, DateTime? date) {
     String ret = '';
     if (date != null) {

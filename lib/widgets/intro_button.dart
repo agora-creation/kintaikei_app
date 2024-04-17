@@ -10,7 +10,7 @@ class IntroButton extends StatelessWidget {
     required this.label,
     required this.labelColor,
     required this.backgroundColor,
-    required this.onPressed,
+    this.onPressed,
     super.key,
   });
 
