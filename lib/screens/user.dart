@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/screens/company.dart';
 import 'package:kintaikei_app/screens/intro.dart';
+import 'package:kintaikei_app/screens/user_email_mod.dart';
+import 'package:kintaikei_app/screens/user_name_mod.dart';
+import 'package:kintaikei_app/screens/user_password_mod.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
-import 'package:kintaikei_app/widgets/custom_dialog_button.dart';
+import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/setting_header.dart';
 import 'package:kintaikei_app/widgets/setting_list.dart';
@@ -47,24 +51,36 @@ class _UserScreenState extends State<UserScreen> {
           SettingList(
             label: '名前',
             value: widget.loginProvider.user?.name ?? '',
-            onTap: () {},
+            onTap: () => pushScreen(
+              context,
+              UserNameModScreen(loginProvider: widget.loginProvider),
+            ),
           ),
           SettingList(
             label: 'メールアドレス',
             value: widget.loginProvider.user?.email ?? '',
             borderTop: false,
-            onTap: () {},
+            onTap: () => pushScreen(
+              context,
+              UserEmailModScreen(loginProvider: widget.loginProvider),
+            ),
           ),
           SettingList(
             label: 'パスワード',
             value: '********',
             borderTop: false,
-            onTap: () {},
+            onTap: () => pushScreen(
+              context,
+              UserPasswordModScreen(loginProvider: widget.loginProvider),
+            ),
           ),
           const SettingHeader('勤務先設定'),
           SettingList(
-            label: '勤務先設定',
-            onTap: () {},
+            label: '現在の勤務先を確認する',
+            onTap: () => pushScreen(
+              context,
+              CompanyScreen(loginProvider: widget.loginProvider),
+            ),
           ),
           const SettingHeader('アプリについて'),
           SettingList(
@@ -72,7 +88,7 @@ class _UserScreenState extends State<UserScreen> {
             onTap: () {},
           ),
           SettingList(
-            label: 'アプリに対するご要望',
+            label: 'アプリに対するご要望を送る',
             borderTop: false,
             onTap: () {},
           ),
@@ -144,13 +160,13 @@ class _LogoutDialogState extends State<LogoutDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomDialogButton(
+            DialogButton(
               label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            CustomDialogButton(
+            DialogButton(
               label: 'ログアウト',
               labelColor: kWhiteColor,
               backgroundColor: kRedColor,

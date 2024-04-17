@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CustomDialogButton extends StatelessWidget {
+class DialogButton extends StatelessWidget {
   final String label;
   final Color labelColor;
   final Color backgroundColor;
   final Function()? onPressed;
 
-  const CustomDialogButton({
+  const DialogButton({
     required this.label,
     required this.labelColor,
     required this.backgroundColor,

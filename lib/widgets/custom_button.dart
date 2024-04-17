@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class IntroButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String label;
   final Color labelColor;
   final Color backgroundColor;
   final Function()? onPressed;
 
-  const IntroButton({
+  const CustomButton({
     required this.label,
     required this.labelColor,
     required this.backgroundColor,

@@ -6,11 +6,11 @@ import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/services/local_db.dart';
+import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/custom_intro_screen.dart';
 import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/info_value.dart';
-import 'package:kintaikei_app/widgets/intro_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +58,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: kIntroStyle,
                   ),
                   const SizedBox(height: 32),
-                  IntroButton(
+                  CustomButton(
                     label: 'よろしく！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
@@ -91,7 +91,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: kIntroStyle,
                   ),
                   const SizedBox(height: 32),
-                  IntroButton(
+                  CustomButton(
                     label: 'わかりました！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
@@ -121,7 +121,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: kIntroStyle,
                   ),
                   const SizedBox(height: 32),
-                  IntroButton(
+                  CustomButton(
                     label: 'わかりました！',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
@@ -165,13 +165,13 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                   const SizedBox(height: 16),
                   nameController.text != ''
-                      ? IntroButton(
+                      ? CustomButton(
                           label: '決定！',
                           labelColor: kWhiteColor,
                           backgroundColor: kBlueColor,
                           onPressed: () => introKey.currentState?.next(),
                         )
-                      : const IntroButton(
+                      : const CustomButton(
                           label: '決定！',
                           labelColor: kWhiteColor,
                           backgroundColor: kGreyColor,
@@ -214,13 +214,13 @@ class _IntroScreenState extends State<IntroScreen> {
                   ),
                   const SizedBox(height: 16),
                   emailController.text != ''
-                      ? IntroButton(
+                      ? CustomButton(
                           label: '決定！',
                           labelColor: kWhiteColor,
                           backgroundColor: kBlueColor,
                           onPressed: () => introKey.currentState?.next(),
                         )
-                      : const IntroButton(
+                      : const CustomButton(
                           label: '決定！',
                           labelColor: kWhiteColor,
                           backgroundColor: kGreyColor,
@@ -289,13 +289,13 @@ class _IntroScreenState extends State<IntroScreen> {
                   const SizedBox(height: 16),
                   passwordController.text != '' &&
                           passwordController.text == rePasswordController.text
-                      ? IntroButton(
+                      ? CustomButton(
                           label: '決定！',
                           labelColor: kWhiteColor,
                           backgroundColor: kBlueColor,
                           onPressed: () => introKey.currentState?.next(),
                         )
-                      : const IntroButton(
+                      : const CustomButton(
                           label: '決定！',
                           labelColor: kWhiteColor,
                           backgroundColor: kGreyColor,
@@ -338,7 +338,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     style: kIntroStyle,
                   ),
                   const SizedBox(height: 16),
-                  IntroButton(
+                  CustomButton(
                     label: 'はじめる',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,

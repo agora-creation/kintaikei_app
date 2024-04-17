@@ -4,8 +4,8 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/screens/intro.dart';
+import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
-import 'package:kintaikei_app/widgets/intro_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 16),
                   emailController.text != '' && passwordController.text != ''
-                      ? IntroButton(
+                      ? CustomButton(
                           label: 'ログイン',
                           labelColor: kWhiteColor,
                           backgroundColor: kBlueColor,
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             pushReplacementScreen(context, const HomeScreen());
                           },
                         )
-                      : const IntroButton(
+                      : const CustomButton(
                           label: 'ログイン',
                           labelColor: kWhiteColor,
                           backgroundColor: kGreyColor,
