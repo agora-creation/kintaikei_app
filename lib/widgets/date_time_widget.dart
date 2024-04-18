@@ -1,20 +1,47 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class DateTimeWidget extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
+
+class DateTimeWidget extends StatefulWidget {
   const DateTimeWidget({super.key});
 
   @override
+  State<DateTimeWidget> createState() => _DateTimeWidgetState();
+}
+
+class _DateTimeWidgetState extends State<DateTimeWidget> {
+  String date = '----/--/-- (-)';
+  String time = '--:--:--';
+
+  void _onTimer(Timer timer) {
+    DateTime now = DateTime.now();
+    if (mounted) {
+      setState(() {
+        date = convertDateText('yyyy/MM/dd (E)', now);
+        time = convertDateText('HH:mm:ss', now);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 1), _onTimer);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          '2024/04/11 (木)',
-          style: TextStyle(fontSize: 20),
+          date,
+          style: const TextStyle(fontSize: 20),
         ),
         Text(
-          '16:00',
-          style: TextStyle(
+          time,
+          style: const TextStyle(
             fontSize: 46,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSansJP-Bold',

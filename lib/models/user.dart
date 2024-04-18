@@ -7,6 +7,7 @@ class UserModel {
   String _password = '';
   String _uid = '';
   String _token = '';
+  String _lastWorkId = '';
   DateTime _createdAt = DateTime.now();
 
   String get id => _id;
@@ -15,6 +16,7 @@ class UserModel {
   String get password => _password;
   String get uid => _uid;
   String get token => _token;
+  String get lastWorkId => _lastWorkId;
   DateTime get createdAt => _createdAt;
 
   UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -26,6 +28,7 @@ class UserModel {
     _password = data['password'] ?? '';
     _uid = data['uid'] ?? '';
     _token = data['token'] ?? '';
+    _lastWorkId = data['lastWorkId'] ?? '';
     _createdAt = data['createdAt'].toDate() ?? DateTime.now();
   }
 }

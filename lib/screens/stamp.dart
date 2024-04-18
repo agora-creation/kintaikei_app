@@ -1,20 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/models/company_group.dart';
+import 'package:kintaikei_app/models/work.dart';
+import 'package:kintaikei_app/providers/home.dart';
+import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/providers/work.dart';
+import 'package:kintaikei_app/services/work.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
-import 'package:kintaikei_app/widgets/group_dropdown.dart';
-import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/stamp_button.dart';
+import 'package:kintaikei_app/widgets/stamp_header.dart';
+import 'package:provider/provider.dart';
 
 class StampScreen extends StatefulWidget {
-  const StampScreen({super.key});
+  final LoginProvider loginProvider;
+  final HomeProvider homeProvider;
+
+  const StampScreen({
+    required this.loginProvider,
+    required this.homeProvider,
+    super.key,
+  });
 
   @override
   State<StampScreen> createState() => _StampScreenState();
 }
 
 class _StampScreenState extends State<StampScreen> {
+  WorkService workService = WorkService();
+  WorkModel? currentWork;
+  CompanyGroupModel? selectedGroup;
+
+  void _init() async {
+    WorkModel? work = await workService.selectToId(
+      id: widget.loginProvider.user?.lastWorkId,
+    );
+    currentWork = work;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final workProvider = Provider.of<WorkProvider>(context);
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(
@@ -36,25 +69,16 @@ class _StampScreenState extends State<StampScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Column(
-                children: [
-                  const Text(
-                    'おはようございます！〇〇様',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const Text(
-                    '出勤時間を打刻しましょう',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 16),
-                  InfoLabel(
-                    label: '出勤先の会社を選ぶ',
-                    child: GroupDropdown(
-                      value: '(有)アゴラ・クリエーション',
-                      onChanged: (value) {},
-                    ),
-                  ),
-                ],
+              StampHeader(
+                user: widget.loginProvider.user,
+                groups: widget.loginProvider.groups,
+                currentWork: currentWork,
+                selectedGroup: selectedGroup,
+                onChanged: (value) {
+                  setState(() {
+                    selectedGroup = value;
+                  });
+                },
               ),
               const DateTimeWidget(),
               Column(
@@ -63,15 +87,19 @@ class _StampScreenState extends State<StampScreen> {
                     label: '出勤する',
                     labelColor: kWhiteColor,
                     backgroundColor: kBlueColor,
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pop();
-                    },
-                  ),
-                  StampButton(
-                    label: '退勤する',
-                    labelColor: kWhiteColor,
-                    backgroundColor: kRedColor,
-                    onPressed: () {
+                    onPressed: () async {
+                      String? error = await workProvider.start(
+                        group: selectedGroup,
+                        user: widget.loginProvider.user,
+                      );
+                      if (error != null) {
+                        if (!mounted) return;
+                        showMessage(context, error, false);
+                        return;
+                      }
+                      widget.loginProvider.reloadData();
+                      if (!mounted) return;
+                      showMessage(context, '出勤しました', true);
                       Navigator.of(context, rootNavigator: true).pop();
                     },
                   ),

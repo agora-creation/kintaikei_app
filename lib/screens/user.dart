@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/screens/company.dart';
+import 'package:kintaikei_app/screens/group.dart';
 import 'package:kintaikei_app/screens/intro.dart';
 import 'package:kintaikei_app/screens/user_email_mod.dart';
 import 'package:kintaikei_app/screens/user_name_mod.dart';
@@ -15,9 +16,11 @@ import 'package:kintaikei_app/widgets/setting_list.dart';
 
 class UserScreen extends StatefulWidget {
   final LoginProvider loginProvider;
+  final HomeProvider homeProvider;
 
   const UserScreen({
     required this.loginProvider,
+    required this.homeProvider,
     super.key,
   });
 
@@ -79,17 +82,15 @@ class _UserScreenState extends State<UserScreen> {
             label: '現在の勤務先を確認する',
             onTap: () => pushScreen(
               context,
-              CompanyScreen(loginProvider: widget.loginProvider),
+              GroupScreen(
+                loginProvider: widget.loginProvider,
+                homeProvider: widget.homeProvider,
+              ),
             ),
           ),
           const SettingHeader('アプリについて'),
           SettingList(
             label: '使い方を確認する',
-            onTap: () {},
-          ),
-          SettingList(
-            label: 'レビューを書く',
-            borderTop: false,
             onTap: () {},
           ),
           SettingList(

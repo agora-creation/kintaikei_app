@@ -25,10 +25,10 @@ class SettingList extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             top: borderTop
-                ? const BorderSide(color: kGrey600Color)
+                ? const BorderSide(color: kGreyColor)
                 : BorderSide.none,
             bottom: borderBottom
-                ? const BorderSide(color: kGrey600Color)
+                ? const BorderSide(color: kGreyColor)
                 : BorderSide.none,
           ),
         ),

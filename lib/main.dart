@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/providers/company.dart';
+import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/screens/intro.dart';
 import 'package:kintaikei_app/screens/splash.dart';
@@ -38,6 +41,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: LoginProvider.initialize()),
+        ChangeNotifierProvider.value(value: HomeProvider()),
+        ChangeNotifierProvider.value(value: CompanyProvider()),
+        ChangeNotifierProvider.value(value: WorkProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

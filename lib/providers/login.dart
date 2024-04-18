@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/user.dart';
+import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/local_db.dart';
 import 'package:kintaikei_app/services/user.dart';
 
@@ -22,6 +24,9 @@ class LoginProvider with ChangeNotifier {
   final UserService _userService = UserService();
   UserModel? _user;
   UserModel? get user => _user;
+  final CompanyGroupService _groupService = CompanyGroupService();
+  List<CompanyGroupModel> _groups = [];
+  List<CompanyGroupModel> get groups => _groups;
 
   LoginProvider.initialize() : _auth = FirebaseAuth.instance {
     _auth?.authStateChanges().listen(_onStateChanged);
@@ -49,6 +54,7 @@ class LoginProvider with ChangeNotifier {
           'password': password,
           'uid': uid,
           'token': '',
+          'lastWorkId': '',
           'createdAt': DateTime.now(),
         });
       } else {
@@ -81,6 +87,12 @@ class LoginProvider with ChangeNotifier {
       );
       if (tmpUser != null) {
         _user = tmpUser;
+        List<CompanyGroupModel> tmpGroup = await _groupService.selectList(
+          userId: tmpUser.id,
+        );
+        if (tmpGroup.isNotEmpty) {
+          _groups = tmpGroup;
+        }
         String uid = result?.user?.uid ?? '';
         _userService.update({
           'id': _user?.id,
@@ -121,10 +133,15 @@ class LoginProvider with ChangeNotifier {
   }) async {
     String? error;
     try {
-      _userService.update({
-        'id': _user?.id,
-        'email': email,
-      });
+      bool isExist = await _userService.emailCheck(email);
+      if (!isExist) {
+        _userService.update({
+          'id': _user?.id,
+          'email': email,
+        });
+      } else {
+        error = '既に同じメールアドレスが登録されています';
+      }
     } catch (e) {
       error = e.toString();
     }
@@ -133,13 +150,22 @@ class LoginProvider with ChangeNotifier {
 
   Future<String?> updatePassword({
     required String password,
+    required String newPassword,
   }) async {
     String? error;
     try {
-      _userService.update({
-        'id': _user?.id,
-        'password': password,
-      });
+      UserModel? tmpUser = await _userService.selectToEmailPassword(
+        email: _user?.email,
+        password: password,
+      );
+      if (tmpUser != null) {
+        _userService.update({
+          'id': _user?.id,
+          'password': password,
+        });
+      } else {
+        error = '現在のパスワードが間違っています';
+      }
     } catch (e) {
       error = e.toString();
     }
@@ -159,6 +185,7 @@ class LoginProvider with ChangeNotifier {
     await _auth?.signOut();
     await _localDBService.clear();
     _user = null;
+    _groups.clear();
     _status = AuthStatus.unauthenticated;
     notifyListeners();
     return Future.delayed(Duration.zero);
@@ -170,6 +197,12 @@ class LoginProvider with ChangeNotifier {
     );
     if (tmpUser != null) {
       _user = tmpUser;
+      List<CompanyGroupModel> tmpGroup = await _groupService.selectList(
+        userId: tmpUser.id,
+      );
+      if (tmpGroup.isNotEmpty) {
+        _groups = tmpGroup;
+      }
     }
     notifyListeners();
   }
@@ -185,6 +218,12 @@ class LoginProvider with ChangeNotifier {
       );
       if (tmpUser != null) {
         _user = tmpUser;
+        List<CompanyGroupModel> tmpGroup = await _groupService.selectList(
+          userId: tmpUser.id,
+        );
+        if (tmpGroup.isNotEmpty) {
+          _groups = tmpGroup;
+        }
       } else {
         _authUser = null;
         _status = AuthStatus.unauthenticated;

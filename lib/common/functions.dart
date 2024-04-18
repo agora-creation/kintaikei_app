@@ -1,5 +1,6 @@
 import 'package:alert_banner/exports.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kintaikei_app/widgets/custom_alert_banner.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -41,6 +42,14 @@ Future showBottomUpScreen(BuildContext context, Widget widget) async {
     context: context,
     builder: (context) => widget,
   );
+}
+
+String convertDateText(String format, DateTime? date) {
+  String ret = '';
+  if (date != null) {
+    ret = DateFormat(format, 'ja').format(date);
+  }
+  return ret;
 }
 
 Future<String> getVersionInfo() async {

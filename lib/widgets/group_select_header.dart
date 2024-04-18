@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/models/company_group.dart';
 
 class GroupSelectHeader extends StatelessWidget {
-  final String label;
+  final CompanyGroupModel? currentGroup;
   final Function() onTap;
 
   const GroupSelectHeader({
-    required this.label,
+    required this.currentGroup,
     required this.onTap,
     super.key,
   });
@@ -24,10 +25,18 @@ class GroupSelectHeader extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              label,
-              style: const TextStyle(fontSize: 16),
-            ),
+            currentGroup != null
+                ? Text(
+                    '${currentGroup?.companyName} ${currentGroup?.name}',
+                    style: const TextStyle(fontSize: 16),
+                  )
+                : const Text(
+                    '勤務先の指定なし',
+                    style: TextStyle(
+                      color: kGrey600Color,
+                      fontSize: 16,
+                    ),
+                  ),
             const Icon(
               Icons.arrow_drop_down,
               color: kGreyColor,

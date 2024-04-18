@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/models/company_group.dart';
+import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/history.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
+import 'package:kintaikei_app/screens/time.dart';
 import 'package:kintaikei_app/screens/user.dart';
+import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/group_radio_list_tile.dart';
 import 'package:kintaikei_app/widgets/group_select_header.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:provider/provider.dart';
@@ -30,19 +35,34 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
+    final homeProvider = Provider.of<HomeProvider>(context);
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GroupSelectHeader(
-              label: '(有)アゴラ・クリエーション',
-              onTap: () {},
+              currentGroup: homeProvider.currentGroup,
+              onTap: () => showDialog(
+                context: context,
+                builder: (context) => GroupSelectDialog(
+                  loginProvider: loginProvider,
+                  homeProvider: homeProvider,
+                ),
+              ),
             ),
             HomeCalendar(
               dataSource: _DataSource(appointments),
               controller: calendarController,
-              onTap: (CalendarTapDetails details) {},
+              onLongPress: (CalendarLongPressDetails details) {
+                showBottomUpScreen(
+                  context,
+                  TimeScreen(
+                    loginProvider: loginProvider,
+                    date: details.date ?? DateTime.now(),
+                  ),
+                );
+              },
             ),
           ],
         ),
@@ -60,12 +80,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 showBottomUpScreen(context, const HistoryScreen());
                 break;
               case 1:
-                showBottomUpScreen(context, const StampScreen());
+                showBottomUpScreen(
+                  context,
+                  StampScreen(
+                    loginProvider: loginProvider,
+                    homeProvider: homeProvider,
+                  ),
+                );
                 break;
               case 2:
                 showBottomUpScreen(
                   context,
-                  UserScreen(loginProvider: loginProvider),
+                  UserScreen(
+                    loginProvider: loginProvider,
+                    homeProvider: homeProvider,
+                  ),
                 );
                 break;
             }
@@ -88,7 +117,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showBottomUpScreen(context, const StampScreen()),
+        onPressed: () => showBottomUpScreen(
+          context,
+          StampScreen(
+            loginProvider: loginProvider,
+            homeProvider: homeProvider,
+          ),
+        ),
         child: const Icon(Icons.add),
       ),
     );
@@ -98,5 +133,48 @@ class _HomeScreenState extends State<HomeScreen> {
 class _DataSource extends CalendarDataSource {
   _DataSource(List<Appointment> source) {
     appointments = source;
+  }
+}
+
+class GroupSelectDialog extends StatefulWidget {
+  final LoginProvider loginProvider;
+  final HomeProvider homeProvider;
+
+  const GroupSelectDialog({
+    required this.loginProvider,
+    required this.homeProvider,
+    super.key,
+  });
+
+  @override
+  State<GroupSelectDialog> createState() => _GroupSelectDialogState();
+}
+
+class _GroupSelectDialogState extends State<GroupSelectDialog> {
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> children = [
+      GroupRadioListTile(
+        group: null,
+        value: widget.homeProvider.currentGroup,
+        onChanged: (value) {
+          widget.homeProvider.changeGroup(value);
+          Navigator.pop(context);
+        },
+      ),
+    ];
+    if (widget.loginProvider.groups.isNotEmpty) {
+      for (CompanyGroupModel group in widget.loginProvider.groups) {
+        children.add(GroupRadioListTile(
+          group: group,
+          value: widget.homeProvider.currentGroup,
+          onChanged: (value) {
+            widget.homeProvider.changeGroup(value);
+            Navigator.pop(context);
+          },
+        ));
+      }
+    }
+    return CustomAlertDialog(children: children);
   }
 }
