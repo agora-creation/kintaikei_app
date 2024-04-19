@@ -36,4 +36,14 @@ class WorkService {
     });
     return ret;
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
+    required String? userId,
+  }) {
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .where('userId', isEqualTo: userId ?? 'error')
+        .orderBy('startedAt', descending: true)
+        .snapshots();
+  }
 }
