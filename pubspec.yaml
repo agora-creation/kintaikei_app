@@ -27,6 +27,8 @@ dependencies:
   home_widget: ^0.5.0
   alert_banner: ^1.0.1
   package_info_plus: ^7.0.0
+  common_utils: ^2.1.0
+  board_datetime_picker: ^1.4.0
 
   firebase_core: ^2.25.4
   firebase_auth: ^4.17.4

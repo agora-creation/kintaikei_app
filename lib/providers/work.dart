@@ -23,7 +23,9 @@ class WorkProvider with ChangeNotifier {
       _workService.create({
         'id': id,
         'companyId': group?.companyId ?? '',
+        'companyName': group?.companyName ?? '',
         'groupId': group?.id ?? '',
+        'groupName': group?.name ?? '',
         'userId': user.id,
         'startedAt': DateTime.now(),
         'endedAt': DateTime.now(),
@@ -124,6 +126,21 @@ class WorkProvider with ChangeNotifier {
       });
     } catch (e) {
       error = '休憩時間の打刻に失敗しました';
+    }
+    return error;
+  }
+
+  Future<String?> delete({
+    required WorkModel? work,
+  }) async {
+    String? error;
+    if (work == null) return '打刻情報の削除に失敗しました';
+    try {
+      _workService.delete({
+        'id': work.id,
+      });
+    } catch (e) {
+      error = '打刻情報の削除に失敗しました';
     }
     return error;
   }

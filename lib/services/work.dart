@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:kintaikei_app/models/work.dart';
 
 class WorkService {
@@ -45,5 +46,21 @@ class WorkService {
         .where('userId', isEqualTo: userId ?? 'error')
         .orderBy('startedAt', descending: true)
         .snapshots();
+  }
+
+  List<WorkModel> convertList(
+    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
+  ) {
+    List<WorkModel> ret = [];
+    if (snapshot.hasData) {
+      for (DocumentSnapshot<Map<String, dynamic>> doc in snapshot.data!.docs) {
+        WorkModel work = WorkModel.fromSnapshot(doc);
+        if (work.startedAt.millisecondsSinceEpoch !=
+            work.endedAt.millisecondsSinceEpoch) {
+          ret.add(WorkModel.fromSnapshot(doc));
+        }
+      }
+    }
+    return ret;
   }
 }

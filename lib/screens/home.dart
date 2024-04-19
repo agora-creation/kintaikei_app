@@ -36,13 +36,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
     final homeProvider = Provider.of<HomeProvider>(context);
-    Color buttonColor = kBlueColor;
+    Color buttonBackColor = kBlueColor;
+    Color buttonLabelColor = kWhiteColor;
     if (loginProvider.user?.getWorkStatus() == 0) {
-      buttonColor = kBlueColor;
+      buttonBackColor = kBlueColor;
+      buttonLabelColor = kWhiteColor;
     } else if (loginProvider.user?.getWorkStatus() == 1) {
-      buttonColor = kRedColor;
+      buttonBackColor = kRedColor;
+      buttonLabelColor = kWhiteColor;
     } else if (loginProvider.user?.getWorkStatus() == 2) {
-      buttonColor = kYellowColor;
+      buttonBackColor = kYellowColor;
+      buttonLabelColor = kBlackColor;
     }
     return Scaffold(
       body: SafeArea(
@@ -125,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: buttonColor,
+        backgroundColor: buttonBackColor,
         onPressed: () => showBottomUpScreen(
           context,
           StampScreen(
@@ -133,7 +137,10 @@ class _HomeScreenState extends State<HomeScreen> {
             homeProvider: homeProvider,
           ),
         ),
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: buttonLabelColor,
+        ),
       ),
     );
   }
@@ -184,6 +191,17 @@ class _GroupSelectDialogState extends State<GroupSelectDialog> {
         ));
       }
     }
-    return CustomAlertDialog(children: children);
+    return CustomAlertDialog(
+      children: [
+        const Text('選択した勤務先の予定が、カレンダーに表示されます。'),
+        const SizedBox(height: 8),
+        Container(
+          decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: kGreyColor)),
+          ),
+          child: Column(children: children),
+        ),
+      ],
+    );
   }
 }

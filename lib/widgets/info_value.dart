@@ -3,22 +3,39 @@ import 'package:kintaikei_app/common/style.dart';
 
 class InfoValue extends StatelessWidget {
   final String value;
+  final Function()? onTap;
 
   const InfoValue(
     this.value, {
+    this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: kGrey300Color,
-        borderRadius: BorderRadius.circular(4),
+    return GestureDetector(
+      onTap: () {},
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: kGrey300Color,
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(value),
+            onTap != null
+                ? const Icon(
+                    Icons.edit,
+                    color: kGrey600Color,
+                    size: 18,
+                  )
+                : Container(),
+          ],
+        ),
       ),
-      child: Text(value),
     );
   }
 }

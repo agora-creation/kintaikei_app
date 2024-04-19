@@ -70,7 +70,7 @@ class _UserEmailModScreenState extends State<UserEmailModScreen> {
                         showMessage(context, error, false);
                         return;
                       }
-                      widget.loginProvider.reloadData();
+                      await widget.loginProvider.reloadData();
                       if (!mounted) return;
                       showMessage(context, 'メールアドレスを変更しました', true);
                       Navigator.pop(context);

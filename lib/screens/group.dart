@@ -115,7 +115,7 @@ class _ExitGroupDialogState extends State<ExitGroupDialog> {
                   showMessage(context, error, false);
                   return;
                 }
-                widget.loginProvider.reloadData();
+                await widget.loginProvider.reloadData();
                 if (!mounted) return;
                 showMessage(context, '該当の勤務先を退職しました', true);
                 Navigator.pop(context);
