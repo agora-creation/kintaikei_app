@@ -38,6 +38,9 @@ class LoginProvider with ChangeNotifier {
     required String password,
   }) async {
     String? error;
+    if (name == '') return '名前を入力してください';
+    if (email == '') return 'メールアドレスを入力してください';
+    if (password == '') return 'パスワードを入力してください';
     try {
       _status = AuthStatus.authenticating;
       notifyListeners();
@@ -55,6 +58,7 @@ class LoginProvider with ChangeNotifier {
           'uid': uid,
           'token': '',
           'lastWorkId': '',
+          'lastWorkBreakId': '',
           'createdAt': DateTime.now(),
         });
       } else {
@@ -76,6 +80,8 @@ class LoginProvider with ChangeNotifier {
     required String password,
   }) async {
     String? error;
+    if (email == '') return 'メールアドレスを入力してください';
+    if (password == '') return 'パスワードを入力してください';
     try {
       _status = AuthStatus.authenticating;
       notifyListeners();
@@ -117,6 +123,7 @@ class LoginProvider with ChangeNotifier {
     required String name,
   }) async {
     String? error;
+    if (name == '') return '名前を入力してください';
     try {
       _userService.update({
         'id': _user?.id,
@@ -132,6 +139,7 @@ class LoginProvider with ChangeNotifier {
     required String email,
   }) async {
     String? error;
+    if (email == '') return 'メールアドレスを入力してください';
     try {
       bool isExist = await _userService.emailCheck(email);
       if (!isExist) {
@@ -153,6 +161,7 @@ class LoginProvider with ChangeNotifier {
     required String newPassword,
   }) async {
     String? error;
+    if (newPassword == '') return '新しいパスワードを入力してください';
     try {
       UserModel? tmpUser = await _userService.selectToEmailPassword(
         email: _user?.email,

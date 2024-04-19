@@ -4,7 +4,7 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/screens/history.dart';
+import 'package:kintaikei_app/screens/shift.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/time.dart';
 import 'package:kintaikei_app/screens/user.dart';
@@ -36,6 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
     final homeProvider = Provider.of<HomeProvider>(context);
+    Color buttonColor = kBlueColor;
+    if (loginProvider.user?.getWorkStatus() == 0) {
+      buttonColor = kBlueColor;
+    } else if (loginProvider.user?.getWorkStatus() == 1) {
+      buttonColor = kRedColor;
+    } else if (loginProvider.user?.getWorkStatus() == 2) {
+      buttonColor = kYellowColor;
+    }
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -77,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: (value) {
             switch (value) {
               case 0:
-                showBottomUpScreen(context, const HistoryScreen());
+                showBottomUpScreen(context, const ShiftScreen());
                 break;
               case 1:
                 showBottomUpScreen(
@@ -102,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             const BottomNavigationBarItem(
               icon: Icon(Icons.list),
-              label: '履歴',
+              label: 'シフト表',
             ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.add),
@@ -117,6 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: buttonColor,
         onPressed: () => showBottomUpScreen(
           context,
           StampScreen(

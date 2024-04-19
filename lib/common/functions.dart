@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:alert_banner/exports.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -50,6 +52,20 @@ String convertDateText(String format, DateTime? date) {
     ret = DateFormat(format, 'ja').format(date);
   }
   return ret;
+}
+
+String generatePassword(int length) {
+  const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charsLength = chars.length;
+  final units = List.generate(
+    length,
+    (index) {
+      final n = Random().nextInt(charsLength);
+      return chars.codeUnitAt(n);
+    },
+  );
+  return String.fromCharCodes(units);
 }
 
 Future<String> getVersionInfo() async {

@@ -27,7 +27,7 @@ class TimeCalendar extends StatelessWidget {
       cellBorderColor: kGreyColor,
       todayHighlightColor: kMainColor,
       selectionDecoration: BoxDecoration(
-        color: kMainColor.withOpacity(0.3),
+        color: kGrey600Color.withOpacity(0.3),
         border: Border.all(
           color: kMainColor,
           width: 2,

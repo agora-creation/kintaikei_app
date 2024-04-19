@@ -6,9 +6,10 @@ import 'package:kintaikei_app/providers/company.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
-import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
 import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/group_list.dart';
+import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:kintaikei_app/widgets/info_value.dart';
 import 'package:provider/provider.dart';
 
 class GroupScreen extends StatefulWidget {
@@ -49,78 +50,74 @@ class _GroupScreenState extends State<GroupScreen> {
           CompanyGroupModel group = widget.loginProvider.groups[index];
           return GroupList(
             group: group,
-            onTap: () {},
+            onTap: () => showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => ExitGroupDialog(
+                loginProvider: widget.loginProvider,
+                group: group,
+              ),
+            ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (context) => AddCompanyDialog(
-            loginProvider: widget.loginProvider,
-          ),
-        ),
-        child: const Icon(Icons.add),
       ),
     );
   }
 }
 
-class AddCompanyDialog extends StatefulWidget {
+class ExitGroupDialog extends StatefulWidget {
   final LoginProvider loginProvider;
+  final CompanyGroupModel group;
 
-  const AddCompanyDialog({
+  const ExitGroupDialog({
     required this.loginProvider,
+    required this.group,
     super.key,
   });
 
   @override
-  State<AddCompanyDialog> createState() => _AddCompanyDialogState();
+  State<ExitGroupDialog> createState() => _ExitGroupDialogState();
 }
 
-class _AddCompanyDialogState extends State<AddCompanyDialog> {
-  TextEditingController nameController = TextEditingController();
-
+class _ExitGroupDialogState extends State<ExitGroupDialog> {
   @override
   Widget build(BuildContext context) {
     final companyProvider = Provider.of<CompanyProvider>(context);
     return CustomAlertDialog(
       children: [
-        CustomTextFormField(
-          controller: nameController,
-          textInputType: TextInputType.name,
-          maxLines: 1,
-          label: '会社名',
-          color: kMainColor,
-          prefix: Icons.business,
+        const Text('以下の勤務先を退職しますか？'),
+        const SizedBox(height: 8),
+        InfoLabel(
+          label: '勤務先',
+          child: InfoValue('${widget.group.companyName} ${widget.group.name}'),
         ),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             DialogButton(
-              label: 'やめる',
+              label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
             DialogButton(
-              label: '追加する',
+              label: '退職する',
               labelColor: kWhiteColor,
-              backgroundColor: kBlueColor,
+              backgroundColor: kRedColor,
               onPressed: () async {
-                String? error = await companyProvider.create(
+                String? error = await companyProvider.updateExitUser(
+                  group: widget.group,
                   user: widget.loginProvider.user,
-                  name: nameController.text,
                 );
                 if (error != null) {
                   if (!mounted) return;
                   showMessage(context, error, false);
                   return;
                 }
+                widget.loginProvider.reloadData();
                 if (!mounted) return;
-                showMessage(context, '会社を追加しました', true);
+                showMessage(context, '該当の勤務先を退職しました', true);
                 Navigator.pop(context);
               },
             ),

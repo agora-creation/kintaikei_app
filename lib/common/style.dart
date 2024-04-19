@@ -10,6 +10,7 @@ const kGrey600Color = Color(0xFF757575);
 const kWhiteColor = Color(0xFFFFFFFF);
 const kBlueColor = Color(0xFF2196F3);
 const kRedColor = Color(0xFFF44336);
+const kYellowColor = Color(0xFFFFEB3B);
 
 ThemeData customTheme() {
   return ThemeData(

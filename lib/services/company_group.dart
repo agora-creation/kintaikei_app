@@ -21,6 +21,22 @@ class CompanyGroupService {
     firestore.collection(collection).doc(values['id']).delete();
   }
 
+  Future<CompanyGroupModel?> selectToId({
+    required String? id,
+  }) async {
+    CompanyGroupModel? ret;
+    await firestore
+        .collection(collection)
+        .where('id', isEqualTo: id ?? 'error')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        ret = CompanyGroupModel.fromSnapshot(value.docs.first);
+      }
+    });
+    return ret;
+  }
+
   Future<List<CompanyGroupModel>> selectList({
     required String userId,
   }) async {

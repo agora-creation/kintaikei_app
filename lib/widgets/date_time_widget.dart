@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
+import 'package:kintaikei_app/common/style.dart';
 
 class DateTimeWidget extends StatefulWidget {
   const DateTimeWidget({super.key});
@@ -37,15 +38,19 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       children: [
         Text(
           date,
-          style: const TextStyle(fontSize: 20),
+          style: const TextStyle(
+            color: kGrey600Color,
+            fontSize: 18,
+          ),
         ),
         Text(
           time,
           style: const TextStyle(
-            fontSize: 46,
+            color: kGrey600Color,
+            fontSize: 40,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSansJP-Bold',
-            letterSpacing: 4,
+            letterSpacing: 2,
           ),
         ),
       ],

@@ -24,6 +24,7 @@ class HomeCalendar extends StatelessWidget {
           view: CalendarView.month,
           controller: controller,
           showDatePickerButton: true,
+          showNavigationArrow: true,
           headerDateFormat: 'yyyy年MM月',
           onLongPress: onLongPress,
           monthViewSettings: const MonthViewSettings(
@@ -36,7 +37,7 @@ class HomeCalendar extends StatelessWidget {
           cellBorderColor: kGreyColor,
           todayHighlightColor: kMainColor,
           selectionDecoration: BoxDecoration(
-            color: kMainColor.withOpacity(0.3),
+            color: kGrey600Color.withOpacity(0.3),
             border: Border.all(
               color: kMainColor,
               width: 2,

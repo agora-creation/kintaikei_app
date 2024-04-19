@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 
-class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
+class ShiftScreen extends StatefulWidget {
+  const ShiftScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  State<ShiftScreen> createState() => _ShiftScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class _ShiftScreenState extends State<ShiftScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +16,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         automaticallyImplyLeading: false,
-        title: const Text('打刻履歴'),
+        title: const Text('シフト表'),
         actions: [
           IconButton(
             icon: const Icon(
