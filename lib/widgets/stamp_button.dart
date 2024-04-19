@@ -25,7 +25,7 @@ class StampButton extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(
           vertical: 16,
-          horizontal: 24,
+          horizontal: 32,
         ),
       ),
       child: Text(

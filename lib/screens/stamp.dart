@@ -223,6 +223,9 @@ class _StampScreenState extends State<StampScreen> {
               ),
               builder: (context, snapshot) {
                 List<WorkModel> works = workService.convertList(snapshot);
+                if (works.isEmpty) {
+                  return const Center(child: Text('打刻履歴はありません'));
+                }
                 return ListView.builder(
                   itemCount: works.length,
                   itemBuilder: (context, index) {

@@ -44,23 +44,25 @@ class _GroupScreenState extends State<GroupScreen> {
         title: const Text('現在の勤務先一覧'),
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
-      body: ListView.builder(
-        itemCount: widget.loginProvider.groups.length,
-        itemBuilder: (context, index) {
-          CompanyGroupModel group = widget.loginProvider.groups[index];
-          return GroupList(
-            group: group,
-            onTap: () => showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (context) => ExitGroupDialog(
-                loginProvider: widget.loginProvider,
-                group: group,
-              ),
-            ),
-          );
-        },
-      ),
+      body: widget.loginProvider.groups.isNotEmpty
+          ? ListView.builder(
+              itemCount: widget.loginProvider.groups.length,
+              itemBuilder: (context, index) {
+                CompanyGroupModel group = widget.loginProvider.groups[index];
+                return GroupList(
+                  group: group,
+                  onTap: () => showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (context) => ExitGroupDialog(
+                      loginProvider: widget.loginProvider,
+                      group: group,
+                    ),
+                  ),
+                );
+              },
+            )
+          : const Center(child: Text('勤務先はありません')),
     );
   }
 }

@@ -9,6 +9,7 @@ class DateTimePickerService {
     required Function(DateTime) onChanged,
   }) async {
     await showBoardDateTimePicker(
+      isDismissible: false,
       context: context,
       pickerType: DateTimePickerType.datetime,
       initialDate: init,

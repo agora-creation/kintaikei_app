@@ -79,7 +79,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
           const SettingHeader('勤務先設定'),
           SettingList(
-            label: '現在の勤務先を確認する',
+            label: '現在の勤務先',
             onTap: () => pushScreen(
               context,
               GroupScreen(

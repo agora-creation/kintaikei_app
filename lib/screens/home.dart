@@ -4,13 +4,13 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/screens/shift.dart';
+import 'package:kintaikei_app/screens/apply.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/time.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/group_radio_list_tile.dart';
-import 'package:kintaikei_app/widgets/group_select_header.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -53,14 +53,31 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GroupSelectHeader(
-              currentGroup: homeProvider.currentGroup,
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => GroupSelectDialog(
-                  loginProvider: loginProvider,
-                  homeProvider: homeProvider,
-                ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GroupDropdown(
+                      value: homeProvider.currentGroup,
+                      groups: loginProvider.groups,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  SizedBox(width: 4),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: kGrey300Color),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: EdgeInsets.all(8),
+                    child: Icon(
+                      Icons.view_list,
+                      color: kBlueColor,
+                      size: 32,
+                    ),
+                  ),
+                ],
               ),
             ),
             HomeCalendar(
@@ -89,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: (value) {
             switch (value) {
               case 0:
-                showBottomUpScreen(context, const ShiftScreen());
+                showBottomUpScreen(context, const ApplyScreen());
                 break;
               case 1:
                 showBottomUpScreen(
@@ -114,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             const BottomNavigationBarItem(
               icon: Icon(Icons.list),
-              label: 'シフト表',
+              label: '申請',
             ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.add),

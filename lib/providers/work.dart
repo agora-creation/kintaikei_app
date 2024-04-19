@@ -27,6 +27,7 @@ class WorkProvider with ChangeNotifier {
         'groupId': group?.id ?? '',
         'groupName': group?.name ?? '',
         'userId': user.id,
+        'userName': user.name,
         'startedAt': DateTime.now(),
         'endedAt': DateTime.now(),
         'workBreaks': workBreaks,
@@ -126,6 +127,28 @@ class WorkProvider with ChangeNotifier {
       });
     } catch (e) {
       error = '休憩時間の打刻に失敗しました';
+    }
+    return error;
+  }
+
+  Future<String?> update({
+    required WorkModel? work,
+  }) async {
+    String? error;
+    if (work == null) return '打刻情報の編集に失敗しました';
+    try {
+      List<Map> workBreaks = [];
+      for (WorkBreakModel workBreak in work.workBreaks) {
+        workBreaks.add(workBreak.toMap());
+      }
+      _workService.update({
+        'id': work.id,
+        'startedAt': work.startedAt,
+        'endedAt': work.endedAt,
+        'workBreaks': workBreaks,
+      });
+    } catch (e) {
+      error = '打刻情報の編集に失敗しました';
     }
     return error;
   }

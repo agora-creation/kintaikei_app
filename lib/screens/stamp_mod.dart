@@ -4,6 +4,7 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/work.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/work.dart';
+import 'package:kintaikei_app/screens/stamp_mod_break.dart';
 import 'package:kintaikei_app/services/date_time_picker.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
@@ -60,20 +61,18 @@ class _StampModScreenState extends State<StampModScreen> {
             label: '出勤時間',
             child: InfoValue(
               convertDateText('yyyy/MM/dd HH:mm', widget.work.startedAt),
-              onTap: () async {
-                await DateTimePickerService().picker(
-                  context: context,
-                  init: widget.work.startedAt,
-                  title: '出勤時間を選択',
-                  onChanged: (value) {
-                    if (value.millisecondsSinceEpoch <
-                        widget.work.endedAt.millisecondsSinceEpoch) {
-                      widget.work.startedAt = value;
-                      setState(() {});
-                    }
-                  },
-                );
-              },
+              onTap: () async => await DateTimePickerService().picker(
+                context: context,
+                init: widget.work.startedAt,
+                title: '出勤時間を選択',
+                onChanged: (value) {
+                  if (value.millisecondsSinceEpoch <
+                      widget.work.endedAt.millisecondsSinceEpoch) {
+                    widget.work.startedAt = value;
+                    setState(() {});
+                  }
+                },
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -81,20 +80,18 @@ class _StampModScreenState extends State<StampModScreen> {
             label: '退勤時間',
             child: InfoValue(
               convertDateText('yyyy/MM/dd HH:mm', widget.work.endedAt),
-              onTap: () async {
-                await DateTimePickerService().picker(
-                  context: context,
-                  init: widget.work.endedAt,
-                  title: '退勤時間を選択',
-                  onChanged: (value) {
-                    if (widget.work.startedAt.millisecondsSinceEpoch <
-                        value.millisecondsSinceEpoch) {
-                      widget.work.startedAt = value;
-                      setState(() {});
-                    }
-                  },
-                );
-              },
+              onTap: () async => await DateTimePickerService().picker(
+                context: context,
+                init: widget.work.endedAt,
+                title: '退勤時間を選択',
+                onChanged: (value) {
+                  if (widget.work.startedAt.millisecondsSinceEpoch <
+                      value.millisecondsSinceEpoch) {
+                    widget.work.endedAt = value;
+                    setState(() {});
+                  }
+                },
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -102,7 +99,14 @@ class _StampModScreenState extends State<StampModScreen> {
             label: '合計休憩時間',
             child: InfoValue(
               widget.work.breakTime(),
-              onTap: () {},
+              onTap: () => pushScreen(
+                context,
+                StampModBreakScreen(
+                  loginProvider: widget.loginProvider,
+                  workProvider: widget.workProvider,
+                  work: widget.work,
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -116,6 +120,16 @@ class _StampModScreenState extends State<StampModScreen> {
             labelColor: kWhiteColor,
             backgroundColor: kBlueColor,
             onPressed: () async {
+              String? error = await widget.workProvider.update(
+                work: widget.work,
+              );
+              if (error != null) {
+                if (!mounted) return;
+                showMessage(context, error, false);
+                return;
+              }
+              if (!mounted) return;
+              showMessage(context, '打刻情報を変更しました', true);
               Navigator.pop(context);
             },
           ),

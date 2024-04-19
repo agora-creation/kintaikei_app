@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 
-class ShiftScreen extends StatefulWidget {
-  const ShiftScreen({super.key});
+class ApplyScreen extends StatefulWidget {
+  const ApplyScreen({super.key});
 
   @override
-  State<ShiftScreen> createState() => _ShiftScreenState();
+  State<ApplyScreen> createState() => _ApplyScreenState();
 }
 
-class _ShiftScreenState extends State<ShiftScreen> {
+class _ApplyScreenState extends State<ApplyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +16,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         automaticallyImplyLeading: false,
-        title: const Text('シフト表'),
+        title: const Text('申請一覧'),
         actions: [
           IconButton(
             icon: const Icon(
@@ -28,6 +28,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
         ],
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
+      body: const Center(child: Text('申請はありません')),
     );
   }
 }
