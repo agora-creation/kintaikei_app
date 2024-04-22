@@ -57,7 +57,7 @@ class WorkService {
         WorkModel work = WorkModel.fromSnapshot(doc);
         if (work.startedAt.millisecondsSinceEpoch !=
             work.endedAt.millisecondsSinceEpoch) {
-          ret.add(WorkModel.fromSnapshot(doc));
+          ret.add(work);
         }
       }
     }

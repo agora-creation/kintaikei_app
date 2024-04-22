@@ -30,10 +30,6 @@ class HomeCalendar extends StatelessWidget {
           onLongPress: onLongPress,
           monthViewSettings: const MonthViewSettings(
             showAgenda: true,
-            appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-            monthCellStyle: MonthCellStyle(
-              textStyle: TextStyle(fontSize: 16),
-            ),
           ),
           cellBorderColor: kGreyColor,
           todayHighlightColor: kMainColor,

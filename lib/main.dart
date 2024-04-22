@@ -9,6 +9,7 @@ import 'package:kintaikei_app/providers/company.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan.dart';
+import 'package:kintaikei_app/providers/plan_shift.dart';
 import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/screens/intro.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: WorkProvider()),
         ChangeNotifierProvider.value(value: PlanProvider()),
+        ChangeNotifierProvider.value(value: PlanShiftProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

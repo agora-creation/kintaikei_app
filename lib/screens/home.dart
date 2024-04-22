@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
@@ -8,6 +9,7 @@ import 'package:kintaikei_app/screens/plan_add.dart';
 import 'package:kintaikei_app/screens/shift.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/user.dart';
+import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:kintaikei_app/widgets/shift_button.dart';
@@ -22,13 +24,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  PlanService planService = PlanService();
   CalendarController calendarController = CalendarController();
-  List<Appointment> appointments = [];
 
   @override
   void initState() {
-    super.initState();
     calendarController.selectedDate = DateTime.now();
+    super.initState();
   }
 
   @override
@@ -67,24 +69,38 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? ShiftButton(
                           onTap: () => showBottomUpScreen(
                             context,
-                            const ShiftScreen(),
+                            ShiftScreen(
+                              loginProvider: loginProvider,
+                              group: homeProvider.currentGroup!,
+                            ),
                           ),
                         )
                       : Container(),
                 ],
               ),
             ),
-            HomeCalendar(
-              dataSource: _DataSource(appointments),
-              controller: calendarController,
-              onLongPress: (CalendarLongPressDetails details) {
-                showBottomUpScreen(
-                  context,
-                  PlanAddScreen(
-                    loginProvider: loginProvider,
-                    homeProvider: homeProvider,
-                    date: details.date ?? DateTime.now(),
-                  ),
+            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: planService.streamList(
+                group: homeProvider.currentGroup,
+                userId: loginProvider.user?.id,
+              ),
+              builder: (context, snapshot) {
+                List<Appointment> appointments =
+                    planService.convertList(snapshot);
+                return HomeCalendar(
+                  dataSource: _DataSource(appointments),
+                  controller: calendarController,
+                  onLongPress: (CalendarLongPressDetails details) {
+                    if (homeProvider.currentGroup != null) return;
+                    showBottomUpScreen(
+                      context,
+                      PlanAddScreen(
+                        loginProvider: loginProvider,
+                        homeProvider: homeProvider,
+                        date: details.date ?? DateTime.now(),
+                      ),
+                    );
+                  },
                 );
               },
             ),

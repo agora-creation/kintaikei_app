@@ -68,4 +68,21 @@ class UserService {
     });
     return ret;
   }
+
+  Future<List<UserModel>> selectListToUserIds({
+    required List<String> userIds,
+  }) async {
+    List<UserModel> ret = [];
+    await firestore
+        .collection(collection)
+        .where('id', whereIn: userIds)
+        .orderBy('createdAt', descending: false)
+        .get()
+        .then((value) {
+      for (DocumentSnapshot<Map<String, dynamic>> map in value.docs) {
+        ret.add(UserModel.fromSnapshot(map));
+      }
+    });
+    return ret;
+  }
 }

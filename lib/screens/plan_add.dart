@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
-import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/providers/plan.dart';
+import 'package:kintaikei_app/services/date_time_picker.dart';
+import 'package:kintaikei_app/widgets/alert_dropdown.dart';
+import 'package:kintaikei_app/widgets/color_dropdown.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
+import 'package:kintaikei_app/widgets/custom_expansion_tile.dart';
 import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
-import 'package:kintaikei_app/widgets/group_dropdown.dart';
+import 'package:kintaikei_app/widgets/date_time_range_field.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:provider/provider.dart';
 
 class PlanAddScreen extends StatefulWidget {
   final LoginProvider loginProvider;
@@ -25,10 +31,58 @@ class PlanAddScreen extends StatefulWidget {
 }
 
 class _PlanAddScreenState extends State<PlanAddScreen> {
-  CompanyGroupModel? selectedGroup;
+  TextEditingController subjectController = TextEditingController();
+  DateTime startedAt = DateTime.now();
+  DateTime endedAt = DateTime.now().add(const Duration(hours: 1));
+  bool allDay = false;
+  Color color = kColors.first;
+  int alertMinute = kAlertMinutes[1];
+
+  void _init() async {
+    startedAt = DateTime(
+      widget.date.year,
+      widget.date.month,
+      widget.date.day,
+      8,
+      0,
+      0,
+    );
+    endedAt = startedAt.add(const Duration(hours: 1));
+    setState(() {});
+  }
+
+  void _allDayChange(bool? value) {
+    allDay = value ?? false;
+    if (allDay) {
+      startedAt = DateTime(
+        startedAt.year,
+        startedAt.month,
+        startedAt.day,
+        0,
+        0,
+        0,
+      );
+      endedAt = DateTime(
+        endedAt.year,
+        endedAt.month,
+        endedAt.day,
+        23,
+        59,
+        59,
+      );
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final planProvider = Provider.of<PlanProvider>(context);
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(
@@ -46,48 +100,109 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
         ],
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          InfoLabel(
-            label: '勤務先',
-            child: GroupDropdown(
-              value: selectedGroup,
-              groups: widget.loginProvider.groups,
-              onChanged: (value) {
-                setState(() {
-                  selectedGroup = value;
-                });
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            CustomTextFormField(
+              controller: subjectController,
+              textInputType: TextInputType.name,
+              maxLines: 1,
+              label: '件名',
+              color: kBlackColor,
+              prefix: Icons.short_text,
+            ),
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '予定時間帯',
+              child: DateTimeRangeField(
+                startedAt: startedAt,
+                startedOnTap: () async => await DateTimePickerService().picker(
+                  context: context,
+                  init: startedAt,
+                  title: '予定開始時間を選択',
+                  onChanged: (value) {
+                    if (value.millisecondsSinceEpoch <
+                        endedAt.millisecondsSinceEpoch) {
+                      startedAt = value;
+                      setState(() {});
+                    }
+                  },
+                ),
+                endedAt: endedAt,
+                endedOnTap: () async => await DateTimePickerService().picker(
+                  context: context,
+                  init: endedAt,
+                  title: '予定終了時間を選択',
+                  onChanged: (value) {
+                    if (startedAt.millisecondsSinceEpoch <
+                        value.millisecondsSinceEpoch) {
+                      endedAt = value;
+                      setState(() {});
+                    }
+                  },
+                ),
+                allDay: allDay,
+                allDayOnChanged: _allDayChange,
+              ),
+            ),
+            const SizedBox(height: 8),
+            CustomExpansionTile(
+              label: '詳細設定',
+              children: [
+                InfoLabel(
+                  label: '色',
+                  child: ColorDropdown(
+                    value: color,
+                    onChanged: (value) {
+                      setState(() {
+                        color = value!;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 8),
+                InfoLabel(
+                  label: '事前アラート通知',
+                  child: AlertDropdown(
+                    value: alertMinute,
+                    onChanged: (value) {
+                      setState(() {
+                        alertMinute = value!;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            CustomButton(
+              label: '追加する',
+              labelColor: kWhiteColor,
+              backgroundColor: kBlueColor,
+              onPressed: () async {
+                String? error = await planProvider.create(
+                  user: widget.loginProvider.user,
+                  subject: subjectController.text,
+                  startedAt: startedAt,
+                  endedAt: endedAt,
+                  allDay: allDay,
+                  color: color,
+                  alertMinute: alertMinute,
+                );
+                if (error != null) {
+                  if (!mounted) return;
+                  showMessage(context, error, false);
+                  return;
+                }
+                if (!mounted) return;
+                showMessage(context, '予定を追加しました', true);
+                Navigator.pop(context);
               },
             ),
-          ),
-          const SizedBox(height: 8),
-          CustomTextFormField(
-            controller: TextEditingController(),
-            textInputType: TextInputType.name,
-            maxLines: 1,
-            label: '件名',
-            color: kBlackColor,
-            prefix: Icons.short_text,
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '予定時間帯',
-            child: Container(),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '事前アラート通知',
-            child: Container(),
-          ),
-          const SizedBox(height: 16),
-          CustomButton(
-            label: '追加する',
-            labelColor: kWhiteColor,
-            backgroundColor: kBlueColor,
-            onPressed: () async {},
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
