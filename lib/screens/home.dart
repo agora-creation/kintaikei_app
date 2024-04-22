@@ -4,6 +4,7 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/apply.dart';
+import 'package:kintaikei_app/screens/plan_add.dart';
 import 'package:kintaikei_app/screens/shift.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
 import 'package:kintaikei_app/screens/user.dart';
@@ -76,7 +77,16 @@ class _HomeScreenState extends State<HomeScreen> {
             HomeCalendar(
               dataSource: _DataSource(appointments),
               controller: calendarController,
-              onLongPress: (CalendarLongPressDetails details) {},
+              onLongPress: (CalendarLongPressDetails details) {
+                showBottomUpScreen(
+                  context,
+                  PlanAddScreen(
+                    loginProvider: loginProvider,
+                    homeProvider: homeProvider,
+                    date: details.date ?? DateTime.now(),
+                  ),
+                );
+              },
             ),
           ],
         ),
