@@ -25,11 +25,13 @@ class WorkList extends StatelessWidget {
           style: const TextStyle(color: kGrey600Color),
         ),
         subtitle: Text(
-          '勤務先: ${work.companyName} ${work.groupName}',
+          work.companyName != '' && work.groupName != ''
+              ? '${work.companyName} ${work.groupName}'
+              : kDefaultGroupText,
           style: const TextStyle(color: kGrey600Color),
         ),
         trailing: Text(
-          work.totalTime(),
+          convertTimeText(work.totalTime()),
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

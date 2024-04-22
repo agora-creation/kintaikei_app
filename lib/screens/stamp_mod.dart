@@ -53,14 +53,22 @@ class _StampModScreenState extends State<StampModScreen> {
           InfoLabel(
             label: '勤務先',
             child: InfoValue(
-              '${widget.work.companyName} ${widget.work.groupName}',
+              widget.work.companyName != '' && widget.work.groupName != ''
+                  ? '${widget.work.companyName} ${widget.work.groupName}'
+                  : kDefaultGroupText,
             ),
+          ),
+          const SizedBox(height: 8),
+          InfoLabel(
+            label: '勤務時間',
+            child: InfoValue(convertTimeText(widget.work.totalTime())),
           ),
           const SizedBox(height: 8),
           InfoLabel(
             label: '出勤時間',
             child: InfoValue(
               convertDateText('yyyy/MM/dd HH:mm', widget.work.startedAt),
+              icon: Icons.edit,
               onTap: () async => await DateTimePickerService().picker(
                 context: context,
                 init: widget.work.startedAt,
@@ -80,6 +88,7 @@ class _StampModScreenState extends State<StampModScreen> {
             label: '退勤時間',
             child: InfoValue(
               convertDateText('yyyy/MM/dd HH:mm', widget.work.endedAt),
+              icon: Icons.edit,
               onTap: () async => await DateTimePickerService().picker(
                 context: context,
                 init: widget.work.endedAt,
@@ -98,21 +107,23 @@ class _StampModScreenState extends State<StampModScreen> {
           InfoLabel(
             label: '合計休憩時間',
             child: InfoValue(
-              widget.work.breakTime(),
-              onTap: () => pushScreen(
-                context,
-                StampModBreakScreen(
-                  loginProvider: widget.loginProvider,
-                  workProvider: widget.workProvider,
-                  work: widget.work,
-                ),
-              ),
+              convertTimeText(widget.work.breakTime()),
+              icon: Icons.chevron_right,
+              onTap: () async {
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StampModBreakScreen(
+                      work: widget.work,
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                );
+                if (result == null) return;
+                widget.work.workBreaks = result;
+                setState(() {});
+              },
             ),
-          ),
-          const SizedBox(height: 8),
-          InfoLabel(
-            label: '勤務時間',
-            child: InfoValue(widget.work.totalTime()),
           ),
           const SizedBox(height: 16),
           CustomButton(

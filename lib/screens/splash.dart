@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '勤怠サービス',
+                  '勤怠打刻サービス',
                   style: TextStyle(fontSize: 18),
                 ),
               ],

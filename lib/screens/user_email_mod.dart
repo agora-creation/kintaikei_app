@@ -52,7 +52,7 @@ class _UserEmailModScreenState extends State<UserEmailModScreen> {
               textInputType: TextInputType.emailAddress,
               maxLines: 1,
               label: 'メールアドレス',
-              color: kMainColor,
+              color: kBlackColor,
               prefix: Icons.email,
             ),
             const SizedBox(height: 16),

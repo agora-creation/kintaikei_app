@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/work.dart';
-import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/providers/work.dart';
+import 'package:kintaikei_app/services/date_time_picker.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/info_value.dart';
 
 class StampModBreakScreen extends StatefulWidget {
-  final LoginProvider loginProvider;
-  final WorkProvider workProvider;
   final WorkModel work;
 
   const StampModBreakScreen({
-    required this.loginProvider,
-    required this.workProvider,
     required this.work,
     super.key,
   });
@@ -34,7 +30,10 @@ class _StampModBreakScreenState extends State<StampModBreakScreen> {
             Icons.chevron_left,
             color: kBlackColor,
           ),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(
+            context,
+            widget.work.workBreaks,
+          ),
         ),
         centerTitle: true,
         title: const Text('休憩時間の編集'),
@@ -45,9 +44,69 @@ class _StampModBreakScreenState extends State<StampModBreakScreen> {
         children: [
           InfoLabel(
             label: '合計休憩時間',
-            child: InfoValue(widget.work.breakTime()),
+            child: InfoValue(convertTimeText(widget.work.breakTime())),
           ),
           const SizedBox(height: 8),
+          const Divider(color: kGreyColor, height: 1),
+          Column(
+            children: widget.work.workBreaks.map((workBreak) {
+              return Container(
+                decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: kGreyColor)),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Column(
+                  children: [
+                    InfoLabel(
+                      label: '休憩開始時間',
+                      child: InfoValue(
+                        convertDateText(
+                          'yyyy/MM/dd HH:mm',
+                          workBreak.startedAt,
+                        ),
+                        icon: Icons.edit,
+                        onTap: () async => await DateTimePickerService().picker(
+                          context: context,
+                          init: workBreak.startedAt,
+                          title: '休憩開始時間を選択',
+                          onChanged: (value) {
+                            if (value.millisecondsSinceEpoch <
+                                workBreak.endedAt.millisecondsSinceEpoch) {
+                              workBreak.startedAt = value;
+                              setState(() {});
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    InfoLabel(
+                      label: '休憩終了時間',
+                      child: InfoValue(
+                        convertDateText(
+                          'yyyy/MM/dd HH:mm',
+                          workBreak.endedAt,
+                        ),
+                        icon: Icons.edit,
+                        onTap: () async => await DateTimePickerService().picker(
+                          context: context,
+                          init: workBreak.endedAt,
+                          title: '休憩終了時間を選択',
+                          onChanged: (value) {
+                            if (workBreak.startedAt.millisecondsSinceEpoch <
+                                value.millisecondsSinceEpoch) {
+                              workBreak.endedAt = value;
+                              setState(() {});
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
         ],
       ),
     );

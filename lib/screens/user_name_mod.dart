@@ -52,7 +52,7 @@ class _UserNameModScreenState extends State<UserNameModScreen> {
               textInputType: TextInputType.name,
               maxLines: 1,
               label: '名前',
-              color: kMainColor,
+              color: kBlackColor,
               prefix: Icons.person,
             ),
             const SizedBox(height: 16),

@@ -20,7 +20,7 @@ class GroupDropdown extends StatelessWidget {
       const DropdownMenuItem<CompanyGroupModel?>(
         value: null,
         child: Text(
-          '勤務先の指定なし',
+          kDefaultGroupText,
           style: TextStyle(
             color: kGrey600Color,
             fontSize: 16,

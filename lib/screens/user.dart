@@ -90,12 +90,7 @@ class _UserScreenState extends State<UserScreen> {
           ),
           const SettingHeader('アプリについて'),
           SettingList(
-            label: '使い方を確認する',
-            onTap: () {},
-          ),
-          SettingList(
-            label: '友達に教える',
-            borderTop: false,
+            label: 'アプリ情報',
             onTap: () {},
           ),
           SettingList(

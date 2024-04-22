@@ -54,6 +54,11 @@ String convertDateText(String format, DateTime? date) {
   return ret;
 }
 
+String convertTimeText(String time) {
+  List<String> times = time.split(':');
+  return '${int.parse(times.first)}時間${int.parse(times.last)}分';
+}
+
 String generatePassword(int length) {
   const chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

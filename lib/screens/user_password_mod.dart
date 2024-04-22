@@ -52,7 +52,7 @@ class _UserPasswordModScreenState extends State<UserPasswordModScreen> {
               textInputType: TextInputType.visiblePassword,
               maxLines: 1,
               label: '現在のパスワード',
-              color: kMainColor,
+              color: kBlackColor,
               prefix: Icons.password,
               suffix: obscureText ? Icons.visibility_off : Icons.visibility,
               onTap: () {
@@ -68,7 +68,7 @@ class _UserPasswordModScreenState extends State<UserPasswordModScreen> {
               textInputType: TextInputType.visiblePassword,
               maxLines: 1,
               label: '新しいパスワード',
-              color: kMainColor,
+              color: kBlackColor,
               prefix: Icons.password,
               suffix: newObscureText ? Icons.visibility_off : Icons.visibility,
               onTap: () {
@@ -84,7 +84,7 @@ class _UserPasswordModScreenState extends State<UserPasswordModScreen> {
               textInputType: TextInputType.visiblePassword,
               maxLines: 1,
               label: '新しいパスワードの確認',
-              color: kMainColor,
+              color: kBlackColor,
               prefix: Icons.password,
               suffix:
                   newReObscureText ? Icons.visibility_off : Icons.visibility,

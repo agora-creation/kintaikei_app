@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   Text(
-                    '勤怠サービス',
+                    '勤怠打刻サービス',
                     style: TextStyle(fontSize: 18),
                   ),
                 ],
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       textInputType: TextInputType.emailAddress,
                       maxLines: 1,
                       label: 'メールアドレス',
-                      color: kMainColor,
+                      color: kBlackColor,
                       prefix: Icons.email,
                     ),
                     const SizedBox(height: 8),
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       textInputType: TextInputType.visiblePassword,
                       maxLines: 1,
                       label: 'パスワード',
-                      color: kMainColor,
+                      color: kBlackColor,
                       prefix: Icons.password,
                       suffix:
                           obscureText ? Icons.visibility_off : Icons.visibility,

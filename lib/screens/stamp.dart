@@ -87,11 +87,6 @@ class _StampScreenState extends State<StampScreen> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                Text(
-                  widget.loginProvider.user?.getGreetText() ?? '',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 16),
                 const DateTimeWidget(),
                 const SizedBox(height: 8),
                 currentWork == null
@@ -110,7 +105,7 @@ class _StampScreenState extends State<StampScreen> {
                     : InfoLabel(
                         label: '勤務先',
                         child: selectedGroup == null
-                            ? const InfoValue('勤務先の指定なし')
+                            ? const InfoValue(kDefaultGroupText)
                             : InfoValue(
                                 '${selectedGroup?.companyName} ${selectedGroup?.name}',
                               ),

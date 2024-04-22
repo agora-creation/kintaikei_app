@@ -51,16 +51,4 @@ class UserModel {
     }
     return ret;
   }
-
-  String getGreetText() {
-    String ret = '';
-    if (getWorkStatus() == 0) {
-      ret = 'おはようございます！ $_name様\n出勤時間を打刻しましょう。';
-    } else if (getWorkStatus() == 1) {
-      ret = 'おつかれさまです！ $_name様\n休憩もしくは退勤時間を打刻しましょう。';
-    } else if (getWorkStatus() == 2) {
-      ret = 'おつかれさまです！ $_name様\n休憩終了時間を打刻しましょう。';
-    }
-    return ret;
-  }
 }

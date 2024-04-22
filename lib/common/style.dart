@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 const kBackgroundColor = Color(0xFFFFFFFF);
-const kMainColor = Color(0xFF333333);
+const kMainColor = Color(0xFF3949AB);
 const kBlackColor = Color(0xFF333333);
 const kGreyColor = Color(0xFF9E9E9E);
 const kGrey300Color = Color(0xFFE0E0E0);
@@ -63,6 +63,8 @@ List<int> kAlertMinutes = [0, 10, 30, 60];
 
 DateTime kFirstDate = DateTime.now().subtract(const Duration(days: 1095));
 DateTime kLastDate = DateTime.now().add(const Duration(days: 1095));
+
+const kDefaultGroupText = '勤務先の指定なし';
 
 const kWatchImageUrl =
     'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgfALktBXFm5A7QFVyExrpaJQauav4dleIUjY7xv14bEVDBAYaCeuoBEjJFmWPHzNytrXBuXAfQ5xB-GJ2dh7MZ_Zf8EKVsYRsTSxLV4bC2xoLkLc-9PvpeNflxhhsUoD2kfdd0LIqGjGM/s800/stopwatch.png';

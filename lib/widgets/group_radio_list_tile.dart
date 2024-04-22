@@ -24,7 +24,7 @@ class GroupRadioListTile extends StatelessWidget {
         title: group != null
             ? Text('${group?.companyName} ${group?.name}')
             : const Text(
-                '勤務先の指定なし',
+                kDefaultGroupText,
                 style: TextStyle(color: kGreyColor),
               ),
         value: group,
