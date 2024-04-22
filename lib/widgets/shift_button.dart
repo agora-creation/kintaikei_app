@@ -20,11 +20,25 @@ class ShiftButton extends StatelessWidget {
             border: Border.all(color: kGrey300Color),
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.all(8),
-          child: const Icon(
-            Icons.view_list,
-            color: kMainColor,
-            size: 32,
+          padding: const EdgeInsets.symmetric(
+            vertical: 4,
+            horizontal: 8,
+          ),
+          child: const Column(
+            children: [
+              Text(
+                'シフト',
+                style: TextStyle(
+                  color: kMainColor,
+                  fontSize: 10,
+                ),
+              ),
+              Icon(
+                Icons.view_list,
+                color: kMainColor,
+                size: 26,
+              ),
+            ],
           ),
         ),
       ),
