@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             ShiftScreen(
                               loginProvider: loginProvider,
-                              group: homeProvider.currentGroup!,
+                              group: homeProvider.currentGroup,
                             ),
                           ),
                         )

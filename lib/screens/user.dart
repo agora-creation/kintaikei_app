@@ -92,7 +92,6 @@ class _UserScreenState extends State<UserScreen> {
           const SettingHeader('アプリについて'),
           SettingList(
             label: 'プライバシーポリシー',
-            borderTop: false,
             onTap: () async {
               Uri url = Uri.parse(
                 'https://agora-c.com/kintaikei/privacy-policy.html',

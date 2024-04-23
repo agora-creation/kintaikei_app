@@ -13,7 +13,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class ShiftScreen extends StatefulWidget {
   final LoginProvider loginProvider;
-  final CompanyGroupModel group;
+  final CompanyGroupModel? group;
 
   const ShiftScreen({
     required this.loginProvider,
@@ -34,7 +34,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
 
   void _init() async {
     List<UserModel> users = await userService.selectListToUserIds(
-      userIds: widget.group.userIds,
+      userIds: widget.group?.userIds ?? [],
     );
     if (users.isNotEmpty) {
       for (UserModel user in users) {
