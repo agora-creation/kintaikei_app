@@ -353,6 +353,7 @@ class _IntroScreenState extends State<IntroScreen> {
                         showMessage(context, error, false);
                         return;
                       }
+                      await loginProvider.reloadData();
                       if (!mounted) return;
                       pushReplacementScreen(context, const HomeScreen());
                     },

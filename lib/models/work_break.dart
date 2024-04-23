@@ -13,6 +13,12 @@ class WorkBreakModel {
     endedAt = data['endedAt'].toDate() ?? DateTime.now();
   }
 
+  WorkBreakModel.addMap(Map data) {
+    _id = data['id'];
+    startedAt = data['startedAt'];
+    endedAt = data['endedAt'];
+  }
+
   Map toMap() => {
         'id': _id,
         'startedAt': startedAt,

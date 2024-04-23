@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/work.dart';
+import 'package:kintaikei_app/models/work_break.dart';
 import 'package:kintaikei_app/services/date_time_picker.dart';
+import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/info_value.dart';
+import 'package:kintaikei_app/widgets/link_text.dart';
 
 class StampModBreakScreen extends StatefulWidget {
   final WorkModel work;
@@ -102,11 +105,39 @@ class _StampModBreakScreenState extends State<StampModBreakScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: LinkText(
+                        label: 'この休憩を削除する',
+                        color: kRedColor,
+                        onTap: () {
+                          widget.work.workBreaks.remove(workBreak);
+                          setState(() {});
+                        },
+                      ),
+                    ),
                   ],
                 ),
               );
             }).toList(),
           ),
+          const SizedBox(height: 16),
+          CustomButton(
+            label: '休憩時間を追加する',
+            labelColor: kWhiteColor,
+            backgroundColor: kBlueColor,
+            onPressed: () {
+              String workBreakId = generatePassword(16);
+              widget.work.workBreaks.add(WorkBreakModel.addMap({
+                'id': workBreakId,
+                'startedAt': widget.work.startedAt,
+                'endedAt': widget.work.startedAt.add(const Duration(hours: 1)),
+              }));
+              setState(() {});
+            },
+          ),
+          const SizedBox(height: 40),
         ],
       ),
     );

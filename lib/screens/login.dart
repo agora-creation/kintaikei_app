@@ -93,9 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 showMessage(context, error, false);
                                 return;
                               }
+                              await loginProvider.reloadData();
                               if (!mounted) return;
                               pushReplacementScreen(
-                                  context, const HomeScreen());
+                                context,
+                                const HomeScreen(),
+                              );
                             },
                           )
                         : const CustomButton(
