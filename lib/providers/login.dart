@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
+import 'package:kintaikei_app/services/fm.dart';
 import 'package:kintaikei_app/services/local_db.dart';
 import 'package:kintaikei_app/services/user.dart';
 
@@ -20,6 +21,7 @@ class LoginProvider with ChangeNotifier {
   User? _authUser;
   User? get authUser => _authUser;
 
+  final FmService _fmService = FmService();
   final LocalDBService _localDBService = LocalDBService();
   final UserService _userService = UserService();
   UserModel? _user;
@@ -50,13 +52,14 @@ class LoginProvider with ChangeNotifier {
       if (!isExist) {
         String id = _userService.id();
         String uid = result?.user?.uid ?? '';
+        String token = await _fmService.getToken() ?? '';
         _userService.create({
           'id': id,
           'name': name,
           'email': email,
           'password': password,
           'uid': uid,
-          'token': '',
+          'token': token,
           'lastWorkId': '',
           'lastWorkBreakId': '',
           'createdAt': DateTime.now(),
@@ -100,10 +103,11 @@ class LoginProvider with ChangeNotifier {
           _groups = tmpGroup;
         }
         String uid = result?.user?.uid ?? '';
+        String token = await _fmService.getToken() ?? '';
         _userService.update({
           'id': _user?.id,
           'uid': uid,
-          'token': '',
+          'token': token,
         });
       } else {
         await _auth?.signOut();

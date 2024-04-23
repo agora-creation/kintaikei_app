@@ -13,6 +13,7 @@ import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/setting_header.dart';
 import 'package:kintaikei_app/widgets/setting_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserScreen extends StatefulWidget {
   final LoginProvider loginProvider;
@@ -90,13 +91,16 @@ class _UserScreenState extends State<UserScreen> {
           ),
           const SettingHeader('アプリについて'),
           SettingList(
-            label: 'アプリ情報',
-            onTap: () {},
-          ),
-          SettingList(
             label: 'プライバシーポリシー',
             borderTop: false,
-            onTap: () {},
+            onTap: () async {
+              Uri url = Uri.parse(
+                'https://agora-c.com/kintaikei/privacy-policy.html',
+              );
+              if (!await launchUrl(url)) {
+                throw Exception('Could not launch $url');
+              }
+            },
           ),
           FutureBuilder<String>(
             future: getVersionInfo(),

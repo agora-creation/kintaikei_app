@@ -14,6 +14,7 @@ import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/home.dart';
 import 'package:kintaikei_app/screens/intro.dart';
 import 'package:kintaikei_app/screens/splash.dart';
+import 'package:kintaikei_app/services/fm.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
@@ -29,6 +30,7 @@ Future main() async {
           ),
         )
       : await Firebase.initializeApp();
+  await FmService().initNotifications();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
