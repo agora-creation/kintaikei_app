@@ -16,36 +16,31 @@ class ShiftCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: SfCalendar(
-          dataSource: dataSource,
-          view: CalendarView.timelineMonth,
-          controller: controller,
-          showDatePickerButton: true,
-          showNavigationArrow: true,
-          showTodayButton: true,
-          headerDateFormat: 'yyyy年MM月',
-          onLongPress: onLongPress,
-          resourceViewSettings: const ResourceViewSettings(
-            visibleResourceCount: 5,
-            showAvatar: false,
-            displayNameTextStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'SourceHanSansJP-Bold',
-            ),
-          ),
-          cellBorderColor: kGreyColor,
-          todayHighlightColor: kMainColor,
-          selectionDecoration: BoxDecoration(
-            color: kMainColor.withOpacity(0.2),
-            border: Border.all(
-              color: kMainColor,
-              width: 2,
-            ),
-          ),
+    return SfCalendar(
+      dataSource: dataSource,
+      view: CalendarView.timelineMonth,
+      controller: controller,
+      showDatePickerButton: true,
+      showNavigationArrow: true,
+      showTodayButton: true,
+      headerDateFormat: 'yyyy年MM月',
+      onLongPress: onLongPress,
+      resourceViewSettings: const ResourceViewSettings(
+        visibleResourceCount: 5,
+        showAvatar: false,
+        displayNameTextStyle: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'SourceHanSansJP-Bold',
+        ),
+      ),
+      cellBorderColor: kGreyColor,
+      todayHighlightColor: kMainColor,
+      selectionDecoration: BoxDecoration(
+        color: kMainColor.withOpacity(0.2),
+        border: Border.all(
+          color: kMainColor,
+          width: 2,
         ),
       ),
     );
