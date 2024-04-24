@@ -28,7 +28,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
         ],
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
-      body: const Center(child: Text('申請はありません')),
+      body: const Center(child: Text('申請はまだご利用いただけません')),
     );
   }
 }
