@@ -88,8 +88,6 @@ DateTime kLastDate = DateTime.now().add(const Duration(days: 1095));
 
 const kDefaultGroupText = '勤務先の指定なし';
 
-const kWatchImageUrl =
-    'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgfALktBXFm5A7QFVyExrpaJQauav4dleIUjY7xv14bEVDBAYaCeuoBEjJFmWPHzNytrXBuXAfQ5xB-GJ2dh7MZ_Zf8EKVsYRsTSxLV4bC2xoLkLc-9PvpeNflxhhsUoD2kfdd0LIqGjGM/s800/stopwatch.png';
 const kIntroStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,

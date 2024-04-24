@@ -42,9 +42,9 @@ class _IntroScreenState extends State<IntroScreen> {
           pages: [
             PageViewModel(
               image: Center(
-                child: Image.network(
-                  kWatchImageUrl,
-                  height: 150,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  height: 120,
                 ),
               ),
               titleWidget: Column(
@@ -79,9 +79,9 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             PageViewModel(
               image: Center(
-                child: Image.network(
-                  kWatchImageUrl,
-                  height: 150,
+                child: Image.asset(
+                  'assets/images/intro1.png',
+                  height: 120,
                 ),
               ),
               titleWidget: Column(
@@ -109,9 +109,9 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             PageViewModel(
               image: Center(
-                child: Image.network(
-                  kWatchImageUrl,
-                  height: 150,
+                child: Image.asset(
+                  'assets/images/intro2.png',
+                  height: 120,
                 ),
               ),
               titleWidget: Column(
@@ -139,9 +139,9 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             PageViewModel(
               image: Center(
-                child: Image.network(
-                  kWatchImageUrl,
-                  height: 150,
+                child: Image.asset(
+                  'assets/images/intro3.png',
+                  height: 120,
                 ),
               ),
               titleWidget: Column(
@@ -188,9 +188,9 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             PageViewModel(
               image: Center(
-                child: Image.network(
-                  kWatchImageUrl,
-                  height: 150,
+                child: Image.asset(
+                  'assets/images/intro4.png',
+                  height: 120,
                 ),
               ),
               titleWidget: Column(
@@ -237,9 +237,9 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
             PageViewModel(
               image: Center(
-                child: Image.network(
-                  kWatchImageUrl,
-                  height: 150,
+                child: Image.asset(
+                  'assets/images/intro5.png',
+                  height: 120,
                 ),
               ),
               titleWidget: Column(
