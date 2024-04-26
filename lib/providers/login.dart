@@ -96,11 +96,11 @@ class LoginProvider with ChangeNotifier {
       );
       if (tmpUser != null) {
         _user = tmpUser;
-        List<CompanyGroupModel> tmpGroup = await _groupService.selectList(
+        List<CompanyGroupModel> tmpGroups = await _groupService.selectList(
           userId: tmpUser.id,
         );
-        if (tmpGroup.isNotEmpty) {
-          _groups = tmpGroup;
+        if (tmpGroups.isNotEmpty) {
+          _groups = tmpGroups;
         }
         String uid = result?.user?.uid ?? '';
         String token = await _fmService.getToken() ?? '';
