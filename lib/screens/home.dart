@@ -4,7 +4,7 @@ import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/screens/apply.dart';
+
 import 'package:kintaikei_app/screens/plan_add.dart';
 import 'package:kintaikei_app/screens/shift.dart';
 import 'package:kintaikei_app/screens/stamp.dart';
@@ -120,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (value) {
                 switch (value) {
                   case 0:
-                    showBottomUpScreen(context, const ApplyScreen());
                     break;
                   case 1:
                     showBottomUpScreen(

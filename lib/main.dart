@@ -51,19 +51,21 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: PlanProvider()),
         ChangeNotifierProvider.value(value: PlanShiftProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          SfGlobalLocalizations.delegate,
-        ],
-        supportedLocales: const [Locale('ja')],
-        locale: const Locale('ja'),
-        title: '勤怠計',
-        theme: customTheme(),
-        home: const SplashController(),
+      child: MediaQuery.withNoTextScaling(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            SfGlobalLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('ja')],
+          locale: const Locale('ja'),
+          title: '勤怠計',
+          theme: customTheme(),
+          home: const SplashController(),
+        ),
       ),
     );
   }
