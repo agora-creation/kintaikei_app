@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 
 class PlanShiftModel {
@@ -14,8 +15,8 @@ class PlanShiftModel {
   bool _allDay = false;
   bool _repeat = false;
   String _repeatInterval = '';
-  int _repeatEvery = 0;
   List<String> repeatWeeks = [];
+  DateTime? _repeatUntil;
   int _alertMinute = 0;
   DateTime _alertedAt = DateTime.now();
   DateTime _createdAt = DateTime.now();
@@ -32,7 +33,7 @@ class PlanShiftModel {
   bool get allDay => _allDay;
   bool get repeat => _repeat;
   String get repeatInterval => _repeatInterval;
-  int get repeatEvery => _repeatEvery;
+  DateTime? get repeatUntil => _repeatUntil;
   int get alertMinute => _alertMinute;
   DateTime get alertedAt => _alertedAt;
   DateTime get createdAt => _createdAt;
@@ -52,8 +53,10 @@ class PlanShiftModel {
     _allDay = data['allDay'] ?? false;
     _repeat = data['repeat'] ?? false;
     _repeatInterval = data['repeatInterval'] ?? '';
-    _repeatEvery = data['repeatEvery'] ?? 0;
     repeatWeeks = _convertRepeatWeeks(data['repeatWeeks'] ?? []);
+    if (data['repeatUntil'] != null) {
+      _repeatUntil = data['repeatUntil'].toDate();
+    }
     _alertMinute = data['alertMinute'] ?? 0;
     _alertedAt = data['alertedAt'].toDate() ?? DateTime.now();
     _createdAt = data['createdAt'].toDate() ?? DateTime.now();
@@ -70,16 +73,13 @@ class PlanShiftModel {
   String? getRepeatRule() {
     String? ret;
     if (_repeat) {
+      ret = '';
       if (_repeatInterval == kRepeatIntervals[0]) {
         ret = 'FREQ=DAILY;';
-        if (_repeatEvery > 0) {
-          ret += 'INTERVAL=$_repeatEvery;';
-        }
+        ret += 'INTERVAL=1;';
       } else if (_repeatInterval == kRepeatIntervals[1]) {
         ret = 'FREQ=WEEKLY;';
-        if (_repeatEvery > 0) {
-          ret += 'INTERVAL=$_repeatEvery;';
-        }
+        ret += 'INTERVAL=1;';
         if (repeatWeeks.isNotEmpty) {
           String byday = '';
           for (String week in repeatWeeks) {
@@ -90,14 +90,13 @@ class PlanShiftModel {
         }
       } else if (_repeatInterval == kRepeatIntervals[2]) {
         ret = 'FREQ=MONTHLY;';
-        if (_repeatEvery > 0) {
-          ret += 'INTERVAL=$_repeatEvery;';
-        }
+        ret += 'INTERVAL=1;';
       } else if (_repeatInterval == kRepeatIntervals[3]) {
         ret = 'FREQ=YEARLY;';
-        if (_repeatEvery > 0) {
-          ret += 'INTERVAL=$_repeatEvery;';
-        }
+        ret += 'INTERVAL=1;';
+      }
+      if (_repeatUntil != null) {
+        ret += 'UNTIL=${convertDateText('yyyyMMddTHHmmss', _repeatUntil)}Z;';
       }
     }
     return ret;
@@ -129,14 +128,8 @@ class PlanShiftModel {
     if (_repeat) {
       if (_repeatInterval == kRepeatIntervals[0]) {
         ret = '毎日';
-        if (_repeatEvery > 0) {
-          ret += '$_repeatEvery日ごと';
-        }
       } else if (_repeatInterval == kRepeatIntervals[1]) {
         ret = '毎週';
-        if (_repeatEvery > 0) {
-          ret += '$_repeatEvery週間ごと';
-        }
         if (repeatWeeks.isNotEmpty) {
           String weeksText = '';
           for (String week in repeatWeeks) {
@@ -147,9 +140,6 @@ class PlanShiftModel {
         }
       } else if (_repeatInterval == kRepeatIntervals[2]) {
         ret = '毎月';
-        if (_repeatEvery > 0) {
-          ret += '$_repeatEveryヶ月ごと';
-        }
       } else if (_repeatInterval == kRepeatIntervals[3]) {
         ret = '毎年';
       }

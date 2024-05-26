@@ -12,7 +12,7 @@ import 'package:kintaikei_app/providers/plan.dart';
 import 'package:kintaikei_app/providers/plan_shift.dart';
 import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/home.dart';
-import 'package:kintaikei_app/screens/intro.dart';
+import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/screens/splash.dart';
 import 'package:kintaikei_app/services/fm.dart';
 import 'package:provider/provider.dart';
@@ -82,11 +82,11 @@ class SplashController extends StatelessWidget {
         return const SplashScreen();
       case AuthStatus.unauthenticated:
       case AuthStatus.authenticating:
-        return const IntroScreen();
+        return const LoginScreen();
       case AuthStatus.authenticated:
         return const HomeScreen();
       default:
-        return const IntroScreen();
+        return const LoginScreen();
     }
   }
 }

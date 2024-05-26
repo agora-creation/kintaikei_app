@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:alert_banner/exports.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kintaikei_app/services/date_machine_util.dart';
 import 'package:kintaikei_app/widgets/custom_alert_banner.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -144,4 +146,25 @@ String subTime(String left, String right) {
   double h = diffM / 60;
   int m = diffM % 60;
   return '${twoDigits(h.toInt())}:${twoDigits(m)}';
+}
+
+Timestamp convertTimestamp(DateTime date, bool end) {
+  String dateTime = '${convertDateText('yyyy-MM-dd', date)} 00:00:00.000';
+  if (end) {
+    dateTime = '${convertDateText('yyyy-MM-dd', date)} 23:59:59.999';
+  }
+  return Timestamp.fromMillisecondsSinceEpoch(
+    DateTime.parse(dateTime).millisecondsSinceEpoch,
+  );
+}
+
+List<DateTime> generateDays(DateTime month) {
+  List<DateTime> ret = [];
+  Map<String, String> map = DateMachineUtilService.getMonthDate(month, 0);
+  DateTime start = DateTime.parse('${map['start']}');
+  DateTime end = DateTime.parse('${map['end']}');
+  for (int i = 0; i <= end.difference(start).inDays; i++) {
+    ret.add(start.add(Duration(days: i)));
+  }
+  return ret;
 }

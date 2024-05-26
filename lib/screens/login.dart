@@ -3,10 +3,8 @@ import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/home.dart';
-import 'package:kintaikei_app/screens/intro.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
-import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -39,12 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'SourceHanSansJP-Bold',
-                      letterSpacing: 10,
+                      letterSpacing: 12,
                     ),
                   ),
                   Text(
-                    '勤怠打刻サービス',
-                    style: TextStyle(fontSize: 18),
+                    'スタッフ用アプリ',
+                    style: TextStyle(fontSize: 16),
                   ),
                 ],
               ),
@@ -78,42 +76,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    emailController.text != '' && passwordController.text != ''
-                        ? CustomButton(
-                            label: 'ログイン',
-                            labelColor: kWhiteColor,
-                            backgroundColor: kBlueColor,
-                            onPressed: () async {
-                              String? error = await loginProvider.login(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
-                              if (error != null) {
-                                if (!mounted) return;
-                                showMessage(context, error, false);
-                                return;
-                              }
-                              await loginProvider.reloadData();
-                              if (!mounted) return;
-                              pushReplacementScreen(
-                                context,
-                                const HomeScreen(),
-                              );
-                            },
-                          )
-                        : const CustomButton(
-                            label: 'ログイン',
-                            labelColor: kWhiteColor,
-                            backgroundColor: kGreyColor,
-                          ),
-                    const SizedBox(height: 32),
-                    LinkText(
-                      label: 'はじめて利用する方はコチラ！',
-                      color: kBlueColor,
-                      onTap: () => pushReplacementScreen(
-                        context,
-                        const IntroScreen(),
-                      ),
+                    CustomButton(
+                      label: 'ログイン',
+                      labelColor: kWhiteColor,
+                      backgroundColor: kBlueColor,
+                      onPressed: () async {
+                        String? error = await loginProvider.login(
+                          email: emailController.text,
+                          password: passwordController.text,
+                        );
+                        if (error != null) {
+                          if (!mounted) return;
+                          showMessage(context, error, false);
+                          return;
+                        }
+                        await loginProvider.reloadData();
+                        if (!mounted) return;
+                        pushReplacementScreen(
+                          context,
+                          const HomeScreen(),
+                        );
+                      },
                     ),
                   ],
                 ),

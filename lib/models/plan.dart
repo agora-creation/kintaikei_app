@@ -14,7 +14,7 @@ class PlanModel {
   DateTime _startedAt = DateTime.now();
   DateTime _endedAt = DateTime.now();
   bool _allDay = false;
-  Color _color = kBlueColor;
+  Color _color = kColors.first;
   int _alertMinute = 0;
   DateTime _alertedAt = DateTime.now();
   DateTime _createdAt = DateTime.now();

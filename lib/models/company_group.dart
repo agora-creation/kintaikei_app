@@ -4,6 +4,7 @@ class CompanyGroupModel {
   String _id = '';
   String _companyId = '';
   String _companyName = '';
+  int _index = 0;
   String _name = '';
   String _loginId = '';
   String _password = '';
@@ -13,6 +14,7 @@ class CompanyGroupModel {
   String get id => _id;
   String get companyId => _companyId;
   String get companyName => _companyName;
+  int get index => _index;
   String get name => _name;
   String get loginId => _loginId;
   String get password => _password;
@@ -25,6 +27,7 @@ class CompanyGroupModel {
     _id = data['id'] ?? '';
     _companyId = data['companyId'] ?? '';
     _companyName = data['companyName'] ?? '';
+    _index = data['index'] ?? 0;
     _name = data['name'] ?? '';
     _loginId = data['loginId'] ?? '';
     _password = data['password'] ?? '';
