@@ -35,9 +35,9 @@ ThemeData customTheme() {
       iconTheme: IconThemeData(color: kBlackColor),
     ),
     textTheme: const TextTheme(
-      bodyLarge: TextStyle(color: kBlackColor),
-      bodyMedium: TextStyle(color: kBlackColor),
-      bodySmall: TextStyle(color: kBlackColor),
+      bodyLarge: TextStyle(color: kBlackColor, fontSize: 18),
+      bodyMedium: TextStyle(color: kBlackColor, fontSize: 18),
+      bodySmall: TextStyle(color: kBlackColor, fontSize: 18),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       foregroundColor: kWhiteColor,

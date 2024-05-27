@@ -33,7 +33,6 @@ dependencies:
   url_launcher: ^6.2.6
   flutter_app_badger: ^1.5.0
   in_app_review: ^2.0.9
-  intro_slider: ^4.2.1
 
   firebase_core: ^2.31.1
   firebase_auth: ^4.19.6

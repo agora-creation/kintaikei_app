@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/intro_slider.dart';
+import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/widgets/date_time_widget.dart';
+import 'package:kintaikei_app/widgets/group_dropdown.dart';
+import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:kintaikei_app/widgets/stamp_button.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -17,143 +21,142 @@ class _HomeScreenState extends State<HomeScreen> {
     final loginProvider = Provider.of<LoginProvider>(context);
     return Scaffold(
       body: SafeArea(
-        child: IntroSlider(
-          listContentConfig: [
-            const ContentConfig(
-              title: "ERASER",
-              description:
-                  "Allow miles wound place the leave had. To sitting subject no improve studied limited",
-              pathImage: "images/photo_eraser.png",
-              backgroundColor: Color(0xfff5a623),
-            ),
-            const ContentConfig(
-              title: "PENCIL",
-              description:
-                  "Ye indulgence unreserved connection alteration appearance",
-              pathImage: "images/photo_pencil.png",
-              backgroundColor: Color(0xff203152),
-            ),
-            const ContentConfig(
-              title: "RULER",
-              description:
-                  "Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of",
-              pathImage: "images/photo_ruler.png",
-              backgroundColor: Color(0xff9932CC),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(),
+                  const CircleAvatar(
+                    backgroundColor: kGrey300Color,
+                    child: Text(
+                      '屋',
+                      style: TextStyle(color: kBlackColor),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Column(
+                        children: [
+                          const DateTimeWidget(),
+                          SizedBox(height: 16),
+                          InfoLabel(
+                            label: '出勤先を選んでください',
+                            child: GroupDropdown(
+                              value: null,
+                              groups: [],
+                              onChanged: (value) {},
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: StampButton(
+                                  label: '退勤する',
+                                  labelColor: kWhiteColor,
+                                  backgroundColor: kBlueColor,
+                                  onPressed: () async {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text('今日の予定'),
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: kMainColor,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 12,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '00:00〜00:00',
+                                        style: const TextStyle(
+                                          color: kWhiteColor,
+                                          fontSize: 18,
+                                        ),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                      Text(
+                                        'aa',
+                                        style: const TextStyle(
+                                          color: kWhiteColor,
+                                          fontSize: 18,
+                                        ),
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    'agas',
+                                    style: const TextStyle(
+                                      color: kWhiteColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CircleAvatar(
+                    backgroundColor: kGrey300Color,
+                    child: Text(
+                      '屋',
+                      style: TextStyle(color: kBlackColor),
+                    ),
+                  ),
+                  const CircleAvatar(
+                    backgroundColor: kGrey300Color,
+                    child: Text(
+                      '屋',
+                      style: TextStyle(color: kBlackColor),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        // child: Padding(
-        //   padding: const EdgeInsets.all(8),
-        //   child: Column(
-        //     children: [
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           Container(),
-        //           const CircleAvatar(
-        //             backgroundColor: kGrey300Color,
-        //             child: Text(
-        //               '屋',
-        //               style: TextStyle(color: kBlackColor),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //       Expanded(
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: Column(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Column(
-        //                 children: [
-        //                   const DateTimeWidget(),
-        //                   SizedBox(height: 8),
-        //                   InfoLabel(
-        //                     label: '勤務先を選ぶ',
-        //                     child: GroupDropdown(
-        //                       value: null,
-        //                       groups: [],
-        //                       onChanged: (value) {},
-        //                     ),
-        //                   ),
-        //                   SizedBox(height: 8),
-        //                   StampButton(
-        //                     label: '出勤する',
-        //                     labelColor: kWhiteColor,
-        //                     backgroundColor: kBlueColor,
-        //                     onPressed: () async {},
-        //                   ),
-        //                 ],
-        //               ),
-        //               Column(
-        //                 children: [
-        //                   Text('今日の予定'),
-        //                   Padding(
-        //                     padding: const EdgeInsets.only(bottom: 4),
-        //                     child: Container(
-        //                       width: double.infinity,
-        //                       decoration: BoxDecoration(
-        //                         color: kMainColor,
-        //                         borderRadius: BorderRadius.circular(4),
-        //                       ),
-        //                       padding: const EdgeInsets.symmetric(
-        //                         vertical: 8,
-        //                         horizontal: 12,
-        //                       ),
-        //                       child: Column(
-        //                         crossAxisAlignment: CrossAxisAlignment.start,
-        //                         children: [
-        //                           Row(
-        //                             mainAxisAlignment:
-        //                                 MainAxisAlignment.spaceBetween,
-        //                             children: [
-        //                               Text(
-        //                                 '00:00〜00:00',
-        //                                 style: const TextStyle(
-        //                                   color: kWhiteColor,
-        //                                   fontSize: 18,
-        //                                 ),
-        //                                 softWrap: false,
-        //                                 overflow: TextOverflow.ellipsis,
-        //                                 maxLines: 1,
-        //                               ),
-        //                               Text(
-        //                                 'aa',
-        //                                 style: const TextStyle(
-        //                                   color: kWhiteColor,
-        //                                   fontSize: 18,
-        //                                 ),
-        //                                 softWrap: false,
-        //                                 overflow: TextOverflow.ellipsis,
-        //                                 maxLines: 1,
-        //                               ),
-        //                             ],
-        //                           ),
-        //                           Text(
-        //                             'agas',
-        //                             style: const TextStyle(
-        //                               color: kWhiteColor,
-        //                               fontSize: 20,
-        //                               fontWeight: FontWeight.bold,
-        //                             ),
-        //                             softWrap: false,
-        //                             overflow: TextOverflow.ellipsis,
-        //                             maxLines: 1,
-        //                           ),
-        //                         ],
-        //                       ),
-        //                     ),
-        //                   ),
-        //                 ],
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
       ),
     );
     // return FutureBuilder(
