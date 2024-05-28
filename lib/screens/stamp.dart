@@ -10,10 +10,7 @@ import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
-import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/history_header.dart';
-import 'package:kintaikei_app/widgets/info_label.dart';
-import 'package:kintaikei_app/widgets/info_value.dart';
 import 'package:kintaikei_app/widgets/stamp_button.dart';
 import 'package:kintaikei_app/widgets/work_list.dart';
 import 'package:provider/provider.dart';
@@ -88,27 +85,27 @@ class _StampScreenState extends State<StampScreen> {
               children: [
                 const DateTimeWidget(),
                 const SizedBox(height: 8),
-                currentWork == null
-                    ? InfoLabel(
-                        label: '勤務先を選ぶ',
-                        child: GroupDropdown(
-                          value: selectedGroup,
-                          groups: widget.loginProvider.groups,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedGroup = value;
-                            });
-                          },
-                        ),
-                      )
-                    : InfoLabel(
-                        label: '勤務先',
-                        child: selectedGroup == null
-                            ? const InfoValue(kDefaultGroupText)
-                            : InfoValue(
-                                '${selectedGroup?.companyName} ${selectedGroup?.name}',
-                              ),
-                      ),
+                // currentWork == null
+                //     ? InfoLabel(
+                //         label: '勤務先を選ぶ',
+                //         child: GroupDropdown(
+                //           value: selectedGroup,
+                //           groups: widget.loginProvider.groups,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               selectedGroup = value;
+                //             });
+                //           },
+                //         ),
+                //       )
+                //     : InfoLabel(
+                //         label: '勤務先',
+                //         child: selectedGroup == null
+                //             ? const InfoValue(kDefaultGroupText)
+                //             : InfoValue(
+                //                 '${selectedGroup?.companyName} ${selectedGroup?.name}',
+                //               ),
+                //       ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

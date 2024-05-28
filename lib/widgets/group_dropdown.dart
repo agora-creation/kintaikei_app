@@ -3,9 +3,9 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 
 class GroupDropdown extends StatelessWidget {
-  final CompanyGroupModel? value;
+  final String? value;
   final List<CompanyGroupModel> groups;
-  final Function(CompanyGroupModel?)? onChanged;
+  final Function(String?)? onChanged;
 
   const GroupDropdown({
     required this.value,
@@ -16,14 +16,14 @@ class GroupDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DropdownMenuItem<CompanyGroupModel?>> items = [
-      const DropdownMenuItem<CompanyGroupModel?>(
+    List<DropdownMenuItem<String?>> items = [
+      const DropdownMenuItem<String?>(
         value: null,
         child: Text(
           kDefaultGroupText,
           style: TextStyle(
             color: kGrey600Color,
-            fontSize: 18,
+            fontSize: 20,
           ),
           softWrap: false,
           overflow: TextOverflow.ellipsis,
@@ -33,11 +33,14 @@ class GroupDropdown extends StatelessWidget {
     ];
     if (groups.isNotEmpty) {
       for (CompanyGroupModel group in groups) {
-        items.add(DropdownMenuItem<CompanyGroupModel?>(
-          value: group,
+        items.add(DropdownMenuItem<String?>(
+          value: group.id,
           child: Text(
             '${group.companyName} ${group.name}',
-            style: const TextStyle(fontSize: 18),
+            style: const TextStyle(
+              color: kBlackColor,
+              fontSize: 20,
+            ),
             softWrap: false,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -51,7 +54,7 @@ class GroupDropdown extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: DropdownButton<CompanyGroupModel?>(
+      child: DropdownButton<String?>(
         underline: Container(),
         isExpanded: true,
         value: value,

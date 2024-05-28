@@ -30,7 +30,6 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kWhiteColor,
       appBar: AppBar(
         backgroundColor: kWhiteColor,
         automaticallyImplyLeading: false,
@@ -123,7 +122,7 @@ class _UserScreenState extends State<UserScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 80),
         ],
       ),
     );
@@ -150,7 +149,7 @@ class _LogoutDialogState extends State<LogoutDialog> {
     return CustomAlertDialog(
       children: [
         const Text('本当にログアウトしますか？'),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

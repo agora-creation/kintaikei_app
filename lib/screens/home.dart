@@ -17,6 +17,7 @@ import 'package:kintaikei_app/widgets/date_time_widget.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/info_value.dart';
+import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/stamp_button.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -113,14 +114,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? InfoLabel(
                                 label: '出勤先を選んでください',
                                 child: GroupDropdown(
-                                  value: currentGroup,
+                                  value: currentGroup?.id,
                                   groups: widget.loginProvider.groups,
                                   onChanged: (value) async {
-                                    await widget.homeProvider.changeGroup(
-                                      value,
-                                    );
+                                    await widget.homeProvider
+                                        .changeGroup(value);
                                     setState(() {
-                                      currentGroup = value;
+                                      currentGroup =
+                                          widget.homeProvider.currentGroup;
                                     });
                                   },
                                 ),
@@ -133,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         '${currentGroup?.companyName} ${currentGroup?.name}',
                                       ),
                               ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                         widget.loginProvider.user?.getWorkStatus() == 0
                             ? StampButton(
                                 label: '出勤する',
@@ -225,6 +226,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                               )
                             : Container(),
+                        const SizedBox(height: 8),
+                        LinkText(
+                          label: '打刻履歴',
+                          color: kBlueColor,
+                          onTap: () {},
+                        ),
                       ],
                     ),
                   ],
@@ -233,31 +240,27 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             BottomNaviBar(
               leftLabel: 'シフト',
-              leftOnTap: () {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.leftToRight,
-                    child: ShiftScreen(
-                      loginProvider: widget.loginProvider,
-                      homeProvider: widget.homeProvider,
-                    ),
+              leftOnTap: () => Navigator.push(
+                context,
+                PageTransition(
+                  type: PageTransitionType.leftToRight,
+                  child: ShiftScreen(
+                    loginProvider: widget.loginProvider,
+                    homeProvider: widget.homeProvider,
                   ),
-                );
-              },
+                ),
+              ),
               rightLabel: 'カレンダー',
-              rightOnTap: () {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.rightToLeft,
-                    child: CalendarScreen(
-                      loginProvider: widget.loginProvider,
-                      homeProvider: widget.homeProvider,
-                    ),
+              rightOnTap: () => Navigator.push(
+                context,
+                PageTransition(
+                  type: PageTransitionType.rightToLeft,
+                  child: CalendarScreen(
+                    loginProvider: widget.loginProvider,
+                    homeProvider: widget.homeProvider,
                   ),
-                );
-              },
+                ),
+              ),
             ),
           ],
         ),

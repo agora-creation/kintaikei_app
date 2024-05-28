@@ -19,7 +19,10 @@ class InfoValue extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 10,
+        ),
         decoration: BoxDecoration(
           color: kGrey300Color,
           borderRadius: BorderRadius.circular(4),
@@ -29,13 +32,13 @@ class InfoValue extends StatelessWidget {
           children: [
             Text(
               value,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 20),
             ),
             icon != null
                 ? Icon(
                     icon,
                     color: kGrey600Color,
-                    size: 18,
+                    size: 20,
                   )
                 : Container(),
           ],

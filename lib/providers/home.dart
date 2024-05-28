@@ -17,11 +17,10 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future changeGroup(CompanyGroupModel? value) async {
-    currentGroup = value;
+  Future changeGroup(String? value) async {
+    currentGroup = await _groupService.selectToId(id: value);
     if (value != null) {
-      String currentGroupId = value.id;
-      await _localDBService.setString('currentGroupId', currentGroupId);
+      await _localDBService.setString('currentGroupId', value);
     } else {
       await _localDBService.remove('currentGroupId');
     }

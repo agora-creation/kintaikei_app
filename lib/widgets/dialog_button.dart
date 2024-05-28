@@ -24,8 +24,8 @@ class DialogButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(4),
         ),
         padding: const EdgeInsets.symmetric(
-          vertical: 4,
-          horizontal: 10,
+          vertical: 8,
+          horizontal: 12,
         ),
       ),
       child: Text(
@@ -33,6 +33,8 @@ class DialogButton extends StatelessWidget {
         style: TextStyle(
           color: labelColor,
           fontSize: 16,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'SourceHanSansJP-Bold',
         ),
       ),
     );

@@ -19,7 +19,7 @@ class SettingHeader extends StatelessWidget {
       child: Text(
         label,
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: FontWeight.bold,
           fontFamily: 'SourceHanSansJP-Bold',
         ),

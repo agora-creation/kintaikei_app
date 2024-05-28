@@ -21,7 +21,12 @@ class CustomCircleAvatar extends StatelessWidget {
         backgroundColor: kGrey300Color,
         child: Text(
           userName.substring(0, 1),
-          style: const TextStyle(color: kBlackColor),
+          style: const TextStyle(
+            color: kBlackColor,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'SourceHanSansJP-Bold',
+          ),
         ),
       ),
     );

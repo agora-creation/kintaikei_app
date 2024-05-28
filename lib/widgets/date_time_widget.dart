@@ -40,7 +40,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
           date,
           style: const TextStyle(
             color: kGrey600Color,
-            fontSize: 20,
+            fontSize: 24,
             height: 1.5,
           ),
         ),
@@ -48,7 +48,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
           time,
           style: const TextStyle(
             color: kGrey600Color,
-            fontSize: 40,
+            fontSize: 50,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSansJP-Bold',
             letterSpacing: 4,
