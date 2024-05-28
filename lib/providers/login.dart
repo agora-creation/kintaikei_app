@@ -4,7 +4,6 @@ import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/fm.dart';
-import 'package:kintaikei_app/services/local_db.dart';
 import 'package:kintaikei_app/services/user.dart';
 
 enum AuthStatus {
@@ -22,7 +21,6 @@ class LoginProvider with ChangeNotifier {
   User? get authUser => _authUser;
 
   final FmService _fmService = FmService();
-  final LocalDBService _localDBService = LocalDBService();
   final UserService _userService = UserService();
   UserModel? _user;
   UserModel? get user => _user;
@@ -196,7 +194,6 @@ class LoginProvider with ChangeNotifier {
   Future logout() async {
     await _clearUserData();
     await _auth?.signOut();
-    await _localDBService.clear();
     _user = null;
     _groups.clear();
     _status = AuthStatus.unauthenticated;

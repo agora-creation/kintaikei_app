@@ -27,7 +27,10 @@ class InfoValue extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(value),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 18),
+            ),
             icon != null
                 ? Icon(
                     icon,

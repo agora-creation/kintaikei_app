@@ -3,16 +3,13 @@ import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/screens/group.dart';
-import 'package:kintaikei_app/screens/intro.dart';
-import 'package:kintaikei_app/screens/user_email_mod.dart';
-import 'package:kintaikei_app/screens/user_name_mod.dart';
-import 'package:kintaikei_app/screens/user_password_mod.dart';
+import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
 import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/setting_header.dart';
 import 'package:kintaikei_app/widgets/setting_list.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserScreen extends StatefulWidget {
@@ -55,39 +52,39 @@ class _UserScreenState extends State<UserScreen> {
           SettingList(
             label: '名前',
             value: widget.loginProvider.user?.name ?? '',
-            onTap: () => pushScreen(
-              context,
-              UserNameModScreen(loginProvider: widget.loginProvider),
-            ),
+            // onTap: () => pushScreen(
+            //   context,
+            //   UserNameModScreen(loginProvider: widget.loginProvider),
+            // ),
           ),
           SettingList(
             label: 'メールアドレス',
             value: widget.loginProvider.user?.email ?? '',
             borderTop: false,
-            onTap: () => pushScreen(
-              context,
-              UserEmailModScreen(loginProvider: widget.loginProvider),
-            ),
+            // onTap: () => pushScreen(
+            //   context,
+            //   UserEmailModScreen(loginProvider: widget.loginProvider),
+            // ),
           ),
           SettingList(
             label: 'パスワード',
             value: '********',
             borderTop: false,
-            onTap: () => pushScreen(
-              context,
-              UserPasswordModScreen(loginProvider: widget.loginProvider),
-            ),
+            // onTap: () => pushScreen(
+            //   context,
+            //   UserPasswordModScreen(loginProvider: widget.loginProvider),
+            // ),
           ),
           const SettingHeader('勤務先設定'),
           SettingList(
             label: '現在の勤務先',
-            onTap: () => pushScreen(
-              context,
-              GroupScreen(
-                loginProvider: widget.loginProvider,
-                homeProvider: widget.homeProvider,
-              ),
-            ),
+            // onTap: () => pushScreen(
+            //   context,
+            //   GroupScreen(
+            //     loginProvider: widget.loginProvider,
+            //     homeProvider: widget.homeProvider,
+            //   ),
+            // ),
           ),
           const SettingHeader('アプリについて'),
           SettingList(
@@ -121,6 +118,7 @@ class _UserScreenState extends State<UserScreen> {
                 context: context,
                 builder: (context) => LogoutDialog(
                   loginProvider: widget.loginProvider,
+                  homeProvider: widget.homeProvider,
                 ),
               ),
             ),
@@ -134,9 +132,11 @@ class _UserScreenState extends State<UserScreen> {
 
 class LogoutDialog extends StatefulWidget {
   final LoginProvider loginProvider;
+  final HomeProvider homeProvider;
 
   const LogoutDialog({
     required this.loginProvider,
+    required this.homeProvider,
     super.key,
   });
 
@@ -167,7 +167,17 @@ class _LogoutDialogState extends State<LogoutDialog> {
               onPressed: () async {
                 await widget.loginProvider.logout();
                 if (!mounted) return;
-                pushReplacementScreen(context, const IntroScreen());
+                Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.bottomToTop,
+                    child: LoginScreen(
+                      loginProvider: widget.loginProvider,
+                      homeProvider: widget.homeProvider,
+                    ),
+                  ),
+                );
+                // pushReplacementScreen(context, const IntroScreen());
               },
             ),
           ],

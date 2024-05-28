@@ -7,7 +7,6 @@ import 'package:kintaikei_app/models/work.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/work.dart';
-import 'package:kintaikei_app/screens/stamp_mod.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
@@ -227,14 +226,14 @@ class _StampScreenState extends State<StampScreen> {
                     WorkModel work = works[index];
                     return WorkList(
                       work: work,
-                      onTap: () => pushScreen(
-                        context,
-                        StampModScreen(
-                          loginProvider: widget.loginProvider,
-                          workProvider: workProvider,
-                          work: work,
-                        ),
-                      ),
+                      // onTap: () => pushScreen(
+                      //   context,
+                      //   StampModScreen(
+                      //     loginProvider: widget.loginProvider,
+                      //     workProvider: workProvider,
+                      //     work: work,
+                      //   ),
+                      // ),
                     );
                   },
                 );

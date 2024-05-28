@@ -1,23 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
-import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/user.dart';
+import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/services/user.dart';
+import 'package:kintaikei_app/widgets/bottom_navi_bar.dart';
+import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/shift_calendar.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class ShiftScreen extends StatefulWidget {
   final LoginProvider loginProvider;
-  final CompanyGroupModel? group;
+  final HomeProvider homeProvider;
 
   const ShiftScreen({
     required this.loginProvider,
-    required this.group,
+    required this.homeProvider,
     super.key,
   });
 
@@ -34,7 +36,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
 
   void _init() async {
     List<UserModel> users = await userService.selectListToUserIds(
-      userIds: widget.group?.userIds ?? [],
+      userIds: widget.homeProvider.currentGroup?.userIds ?? [''],
     );
     if (users.isNotEmpty) {
       for (UserModel user in users) {
@@ -58,47 +60,55 @@ class _ShiftScreenState extends State<ShiftScreen> {
   @override
   Widget build(BuildContext context) {
     var planStream = planService.streamList(
-      group: widget.group,
+      group: widget.homeProvider.currentGroup,
       userId: widget.loginProvider.user?.id,
     );
     var planShiftStream = planShiftService.streamList(
-      group: widget.group,
+      group: widget.homeProvider.currentGroup,
     );
     return Scaffold(
-      backgroundColor: kWhiteColor,
-      appBar: AppBar(
-        backgroundColor: kWhiteColor,
-        automaticallyImplyLeading: false,
-        title: const Text('シフト表'),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.close,
-              color: kBlackColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 10,
+              ),
+              child: GroupDropdown(
+                value: null,
+                groups: widget.loginProvider.groups,
+                onChanged: (value) {},
+              ),
             ),
-            onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
-          ),
-        ],
-        shape: const Border(bottom: BorderSide(color: kGrey300Color)),
-      ),
-      body: StreamBuilder2<QuerySnapshot<Map<String, dynamic>>,
-          QuerySnapshot<Map<String, dynamic>>>(
-        streams: StreamTuple2(planStream!, planShiftStream!),
-        builder: (context, snapshot) {
-          List<Appointment> source = [];
-          source = planService.convertList(
-            snapshot.snapshot1,
-            shiftView: true,
-          );
-          source.addAll(PlanShiftService().convertList(snapshot.snapshot2));
-          return SafeArea(
-            child: ShiftCalendar(
-              dataSource: _ShiftDataSource(source, resourceColl),
-              controller: calendarController,
-              onLongPress: (CalendarLongPressDetails details) {},
+            Expanded(
+              child: StreamBuilder2<QuerySnapshot<Map<String, dynamic>>,
+                  QuerySnapshot<Map<String, dynamic>>>(
+                streams: StreamTuple2(planStream!, planShiftStream!),
+                builder: (context, snapshot) {
+                  List<Appointment> source = [];
+                  source = planService.convertList(
+                    snapshot.snapshot1,
+                    shiftView: true,
+                  );
+                  source.addAll(
+                      PlanShiftService().convertList(snapshot.snapshot2));
+                  return SafeArea(
+                    child: ShiftCalendar(
+                      dataSource: _ShiftDataSource(source, resourceColl),
+                      controller: calendarController,
+                      onLongPress: (CalendarLongPressDetails details) {},
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
+            BottomNaviBar(
+              rightLabel: '打刻',
+              rightOnTap: () => Navigator.pop(context),
+            ),
+          ],
+        ),
       ),
     );
   }

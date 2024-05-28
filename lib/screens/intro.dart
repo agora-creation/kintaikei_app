@@ -3,8 +3,6 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/screens/home.dart';
-import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/services/local_db.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/custom_intro_screen.dart';
@@ -68,10 +66,10 @@ class _IntroScreenState extends State<IntroScreen> {
                   LinkText(
                     label: '以前、使ったことがある方はコチラ！',
                     color: kBlueColor,
-                    onTap: () => pushReplacementScreen(
-                      context,
-                      const LoginScreen(),
-                    ),
+                    // onTap: () => pushReplacementScreen(
+                    //   context,
+                    //   const LoginScreen(),
+                    // ),
                   ),
                 ],
               ),
@@ -355,7 +353,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       }
                       await loginProvider.reloadData();
                       if (!mounted) return;
-                      pushReplacementScreen(context, const HomeScreen());
+                      // pushReplacementScreen(context, const HomeScreen());
                     },
                   ),
                   const SizedBox(height: 16),

@@ -23,7 +23,7 @@ class InfoLabel extends StatelessWidget {
             fontSize: 14,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         child,
       ],
     );

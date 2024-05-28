@@ -77,16 +77,26 @@ class SplashController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
+    final homeProvider = Provider.of<HomeProvider>(context);
     switch (loginProvider.status) {
       case AuthStatus.uninitialized:
         return const SplashScreen();
       case AuthStatus.unauthenticated:
       case AuthStatus.authenticating:
-        return const LoginScreen();
+        return LoginScreen(
+          loginProvider: loginProvider,
+          homeProvider: homeProvider,
+        );
       case AuthStatus.authenticated:
-        return const HomeScreen();
+        return HomeScreen(
+          loginProvider: loginProvider,
+          homeProvider: homeProvider,
+        );
       default:
-        return const LoginScreen();
+        return LoginScreen(
+          loginProvider: loginProvider,
+          homeProvider: homeProvider,
+        );
     }
   }
 }

@@ -17,28 +17,25 @@ class HomeCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: SfCalendar(
-          dataSource: dataSource,
-          view: CalendarView.month,
-          controller: controller,
-          showDatePickerButton: true,
-          showNavigationArrow: true,
-          showTodayButton: true,
-          headerDateFormat: 'yyyy年MM月',
-          onLongPress: onLongPress,
-          monthViewSettings: const MonthViewSettings(
-            showAgenda: true,
-          ),
-          cellBorderColor: kGreyColor,
-          todayHighlightColor: kMainColor,
-          selectionDecoration: BoxDecoration(
-            color: kMainColor.withOpacity(0.2),
-            border: Border.all(
-              color: kMainColor,
-              width: 2,
-            ),
+      child: SfCalendar(
+        dataSource: dataSource,
+        view: CalendarView.month,
+        controller: controller,
+        showDatePickerButton: true,
+        showNavigationArrow: true,
+        showTodayButton: true,
+        headerDateFormat: 'yyyy年MM月',
+        onLongPress: onLongPress,
+        monthViewSettings: const MonthViewSettings(
+          showAgenda: true,
+        ),
+        cellBorderColor: kGreyColor,
+        todayHighlightColor: kMainColor,
+        selectionDecoration: BoxDecoration(
+          color: kMainColor.withOpacity(0.2),
+          border: Border.all(
+            color: kMainColor,
+            width: 2,
           ),
         ),
       ),
