@@ -7,7 +7,6 @@ import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/services/user.dart';
-import 'package:kintaikei_app/widgets/bottom_navi_bar.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/shift_calendar.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
@@ -71,14 +70,23 @@ class _ShiftScreenState extends State<ShiftScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 10,
-              ),
-              child: GroupDropdown(
-                value: null,
-                groups: widget.loginProvider.groups,
-                onChanged: (value) {},
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: GroupDropdown(
+                      value: null,
+                      groups: widget.loginProvider.groups,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -102,10 +110,6 @@ class _ShiftScreenState extends State<ShiftScreen> {
                   );
                 },
               ),
-            ),
-            BottomNaviBar(
-              rightLabel: '打刻',
-              rightOnTap: () => Navigator.pop(context),
             ),
           ],
         ),

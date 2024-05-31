@@ -7,12 +7,12 @@ class PlanList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           color: kMainColor,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.symmetric(
           vertical: 8,

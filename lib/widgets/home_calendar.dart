@@ -18,6 +18,9 @@ class HomeCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: SfCalendar(
+        headerStyle: const CalendarHeaderStyle(
+          backgroundColor: kWhiteColor,
+        ),
         dataSource: dataSource,
         view: CalendarView.month,
         controller: controller,

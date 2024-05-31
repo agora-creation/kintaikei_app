@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/widgets/bottom_navi_bar.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -28,14 +27,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 10,
-              ),
-              child: GroupDropdown(
-                value: null,
-                groups: widget.loginProvider.groups,
-                onChanged: (value) {},
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: GroupDropdown(
+                      value: null,
+                      groups: widget.loginProvider.groups,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -44,10 +52,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 controller: CalendarController(),
                 onLongPress: (value) {},
               ),
-            ),
-            BottomNaviBar(
-              leftLabel: '打刻',
-              leftOnTap: () => Navigator.pop(context),
             ),
           ],
         ),

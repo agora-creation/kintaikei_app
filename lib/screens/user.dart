@@ -31,19 +31,14 @@ class _UserScreenState extends State<UserScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: kWhiteColor,
         automaticallyImplyLeading: false,
-        title: const Text('マイページ'),
+        title: Text(widget.loginProvider.user?.name ?? ''),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.close,
-              color: kBlackColor,
-            ),
+            icon: const Icon(Icons.close),
             onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
           ),
         ],
-        shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
       body: ListView(
         children: [

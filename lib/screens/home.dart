@@ -8,19 +8,19 @@ import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/calendar.dart';
 import 'package:kintaikei_app/screens/shift.dart';
+import 'package:kintaikei_app/screens/sign.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
-import 'package:kintaikei_app/widgets/bottom_navi_bar.dart';
-import 'package:kintaikei_app/widgets/custom_circle_avatar.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
+import 'package:kintaikei_app/widgets/home_header.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/info_value.dart';
-import 'package:kintaikei_app/widgets/link_text.dart';
-import 'package:kintaikei_app/widgets/stamp_button.dart';
-import 'package:page_transition/page_transition.dart';
+import 'package:kintaikei_app/widgets/now_plan_widget.dart';
+import 'package:kintaikei_app/widgets/stamp_slide_button.dart';
 import 'package:provider/provider.dart';
+import 'package:slide_to_act/slide_to_act.dart';
 
 class HomeScreen extends StatefulWidget {
   final LoginProvider loginProvider;
@@ -41,6 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
   WorkService workService = WorkService();
   CompanyGroupModel? currentGroup;
   WorkModel? currentWork;
+  GlobalKey<SlideActionState> workStartKey = GlobalKey();
+  GlobalKey<SlideActionState> workStopKey = GlobalKey();
+  GlobalKey<SlideActionState> workBreakStartKey = GlobalKey();
+  GlobalKey<SlideActionState> workBreakStopKey = GlobalKey();
 
   void _getStatus() async {
     await widget.homeProvider.reloadGroup();
@@ -79,35 +83,53 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 10,
+            HomeHeader(
+              user: widget.loginProvider.user,
+              userOnTap: () => showBottomUpScreen(
+                context,
+                UserScreen(
+                  loginProvider: widget.loginProvider,
+                  homeProvider: widget.homeProvider,
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(),
-                  CustomCircleAvatar(
-                    user: widget.loginProvider.user,
-                    onTap: () => showBottomUpScreen(
-                      context,
-                      UserScreen(
-                        loginProvider: widget.loginProvider,
-                        homeProvider: widget.homeProvider,
-                      ),
+              actions: [
+                IconButton(
+                  onPressed: () => showBottomUpScreen(
+                    context,
+                    const SignScreen(),
+                  ),
+                  icon: const Icon(Icons.gesture),
+                ),
+                IconButton(
+                  onPressed: () => showBottomUpScreen(
+                    context,
+                    ShiftScreen(
+                      loginProvider: widget.loginProvider,
+                      homeProvider: widget.homeProvider,
                     ),
                   ),
-                ],
-              ),
+                  icon: const Icon(Icons.view_timeline),
+                ),
+                IconButton(
+                  onPressed: () => showBottomUpScreen(
+                    context,
+                    CalendarScreen(
+                      loginProvider: widget.loginProvider,
+                      homeProvider: widget.homeProvider,
+                    ),
+                  ),
+                  icon: const Icon(Icons.calendar_month),
+                ),
+              ],
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                  children: <Widget>[
                     const DateTimeWidget(),
+                    const NowPlanWidget(),
                     Column(
                       children: [
                         currentWork == null
@@ -134,13 +156,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         '${currentGroup?.companyName} ${currentGroup?.name}',
                                       ),
                               ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 8),
                         widget.loginProvider.user?.getWorkStatus() == 0
-                            ? StampButton(
+                            ? StampSlideButton(
+                                slideKey: workStartKey,
                                 label: '出勤する',
-                                labelColor: kWhiteColor,
                                 backgroundColor: kBlueColor,
-                                onPressed: () async {
+                                onSubmit: () async {
                                   String? error = await workProvider.start(
                                     group: currentGroup,
                                     user: widget.loginProvider.user,
@@ -154,15 +176,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (!mounted) return;
                                   showMessage(context, '出勤しました', true);
                                   _getStatus();
+                                  Future.delayed(
+                                    const Duration(seconds: 1),
+                                    () => workStartKey.currentState?.reset(),
+                                  );
                                 },
                               )
                             : Container(),
                         widget.loginProvider.user?.getWorkStatus() == 1
-                            ? StampButton(
+                            ? StampSlideButton(
+                                slideKey: workStopKey,
                                 label: '退勤する',
-                                labelColor: kWhiteColor,
                                 backgroundColor: kRedColor,
-                                onPressed: () async {
+                                reversed: true,
+                                onSubmit: () async {
                                   String? error = await workProvider.stop(
                                     work: currentWork,
                                   );
@@ -175,17 +202,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (!mounted) return;
                                   showMessage(context, '退勤しました', true);
                                   _getStatus();
+                                  Future.delayed(
+                                    const Duration(seconds: 1),
+                                    () => workStartKey.currentState?.reset(),
+                                  );
                                 },
                               )
                             : Container(),
                         widget.loginProvider.user?.getWorkStatus() == 1
                             ? Padding(
                                 padding: const EdgeInsets.only(top: 8),
-                                child: StampButton(
+                                child: StampSlideButton(
+                                  slideKey: workBreakStartKey,
                                   label: '休憩する',
-                                  labelColor: kBlackColor,
-                                  backgroundColor: kYellowColor,
-                                  onPressed: () async {
+                                  backgroundColor: kAmberColor,
+                                  onSubmit: () async {
                                     String? error =
                                         await workProvider.breakStart(
                                       work: currentWork,
@@ -199,16 +230,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     if (!mounted) return;
                                     showMessage(context, '休憩を開始しました', true);
                                     _getStatus();
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () => workStartKey.currentState?.reset(),
+                                    );
                                   },
                                 ),
                               )
                             : Container(),
                         widget.loginProvider.user?.getWorkStatus() == 2
-                            ? StampButton(
+                            ? StampSlideButton(
+                                slideKey: workBreakStopKey,
                                 label: '休憩終了',
-                                labelColor: kBlackColor,
-                                backgroundColor: kYellowColor,
-                                onPressed: () async {
+                                backgroundColor: kAmberColor,
+                                reversed: true,
+                                onSubmit: () async {
                                   String? error = await workProvider.breakStop(
                                     work: currentWork,
                                     workBreakId: widget
@@ -223,42 +259,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   if (!mounted) return;
                                   showMessage(context, '休憩を終了しました', true);
                                   _getStatus();
+                                  Future.delayed(
+                                    const Duration(seconds: 1),
+                                    () => workStartKey.currentState?.reset(),
+                                  );
                                 },
                               )
                             : Container(),
-                        const SizedBox(height: 8),
-                        LinkText(
-                          label: '打刻履歴',
-                          color: kBlueColor,
-                          onTap: () {},
-                        ),
                       ],
                     ),
                   ],
-                ),
-              ),
-            ),
-            BottomNaviBar(
-              leftLabel: 'シフト',
-              leftOnTap: () => Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.leftToRight,
-                  child: ShiftScreen(
-                    loginProvider: widget.loginProvider,
-                    homeProvider: widget.homeProvider,
-                  ),
-                ),
-              ),
-              rightLabel: 'カレンダー',
-              rightOnTap: () => Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.rightToLeft,
-                  child: CalendarScreen(
-                    loginProvider: widget.loginProvider,
-                    homeProvider: widget.homeProvider,
-                  ),
                 ),
               ),
             ),
