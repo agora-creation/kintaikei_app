@@ -17,6 +17,9 @@ class ShiftCalendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
+      headerStyle: const CalendarHeaderStyle(
+        backgroundColor: kWhiteColor,
+      ),
       dataSource: dataSource,
       view: CalendarView.timelineMonth,
       controller: controller,

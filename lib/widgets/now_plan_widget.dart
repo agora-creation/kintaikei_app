@@ -8,17 +8,18 @@ class NowPlanWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
           '今日の予定',
           style: TextStyle(
             color: kGrey600Color,
-            fontSize: 16,
+            fontSize: 14,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         SizedBox(
-          height: 200,
+          height: 150,
           child: ShaderMask(
             shaderCallback: (Rect rect) {
               return const LinearGradient(

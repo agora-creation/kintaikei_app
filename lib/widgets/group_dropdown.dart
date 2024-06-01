@@ -23,7 +23,7 @@ class GroupDropdown extends StatelessWidget {
           kDefaultGroupText,
           style: TextStyle(
             color: kGrey600Color,
-            fontSize: 20,
+            fontSize: 18,
           ),
           softWrap: false,
           overflow: TextOverflow.ellipsis,
@@ -39,7 +39,7 @@ class GroupDropdown extends StatelessWidget {
             '${group.companyName} ${group.name}',
             style: const TextStyle(
               color: kBlackColor,
-              fontSize: 20,
+              fontSize: 18,
             ),
             softWrap: false,
             overflow: TextOverflow.ellipsis,

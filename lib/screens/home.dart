@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               )
                             : InfoLabel(
-                                label: '勤務先',
+                                label: '現在の勤務先',
                                 child: currentGroup == null
                                     ? const InfoValue(kDefaultGroupText)
                                     : InfoValue(

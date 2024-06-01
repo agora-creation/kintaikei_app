@@ -25,20 +25,20 @@ class InfoValue extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: kGrey300Color,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               value,
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 18),
             ),
             icon != null
                 ? Icon(
                     icon,
                     color: kGrey600Color,
-                    size: 20,
+                    size: 18,
                   )
                 : Container(),
           ],
