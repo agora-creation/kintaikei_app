@@ -4,11 +4,11 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CustomCalendarShift extends StatelessWidget {
   final CalendarDataSource<Object?>? dataSource;
-  final Function(CalendarTapDetails)? onTap;
+  final CalendarController controller;
 
   const CustomCalendarShift({
     required this.dataSource,
-    required this.onTap,
+    required this.controller,
     super.key,
   });
 
@@ -24,7 +24,7 @@ class CustomCalendarShift extends StatelessWidget {
       showNavigationArrow: true,
       showTodayButton: true,
       headerDateFormat: 'yyyy年MM月',
-      onTap: onTap,
+      controller: controller,
       resourceViewSettings: const ResourceViewSettings(
         visibleResourceCount: 5,
         showAvatar: false,

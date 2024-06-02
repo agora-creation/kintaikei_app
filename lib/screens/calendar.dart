@@ -24,7 +24,15 @@ class CalendarScreen extends StatefulWidget {
 
 class _CalendarScreenState extends State<CalendarScreen> {
   PlanService planService = PlanService();
+  CalendarController calendarController = CalendarController();
   CompanyGroupModel? currentGroup;
+
+  @override
+  void initState() {
+    calendarController.selectedDate = DateTime.now();
+    currentGroup = widget.homeProvider.currentGroup;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +46,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: GroupDropdown(
-                      value: currentGroup?.id,
-                      groups: widget.loginProvider.groups,
-                      onChanged: (value) async {
-                        await widget.homeProvider.changeGroup(value);
-                        setState(() {
-                          currentGroup = widget.homeProvider.currentGroup;
-                        });
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: GroupDropdown(
+                        value: currentGroup?.id,
+                        groups: widget.loginProvider.groups,
+                        onChanged: (value) async {
+                          await widget.homeProvider.changeGroup(value);
+                          setState(() {
+                            currentGroup = widget.homeProvider.currentGroup;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   IconButton(
@@ -70,7 +81,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   );
                   return CustomCalendar(
                     dataSource: _DataSource(appointments),
-                    onTap: (value) {},
+                    controller: calendarController,
                   );
                 },
               ),

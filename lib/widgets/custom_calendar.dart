@@ -4,11 +4,11 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CustomCalendar extends StatelessWidget {
   final CalendarDataSource<Object?>? dataSource;
-  final Function(CalendarTapDetails)? onTap;
+  final CalendarController controller;
 
   const CustomCalendar({
     required this.dataSource,
-    required this.onTap,
+    required this.controller,
     super.key,
   });
 
@@ -23,9 +23,8 @@ class CustomCalendar extends StatelessWidget {
         view: CalendarView.month,
         showDatePickerButton: true,
         showNavigationArrow: true,
-        showTodayButton: true,
         headerDateFormat: 'yyyy年MM月',
-        onTap: onTap,
+        controller: controller,
         monthViewSettings: const MonthViewSettings(
           showAgenda: true,
         ),

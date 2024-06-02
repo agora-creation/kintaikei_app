@@ -19,7 +19,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
     DateTime now = DateTime.now();
     if (mounted) {
       setState(() {
-        date = convertDateText('yyyy/MM/dd (E)', now);
+        date = convertDateText('MM月dd日 E曜日', now);
         time = convertDateText('HH:mm:ss', now);
       });
     }
@@ -40,8 +40,8 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
           date,
           style: const TextStyle(
             color: kGrey600Color,
-            fontSize: 18,
-            height: 1.5,
+            fontSize: 16,
+            height: 2,
           ),
         ),
         Text(
@@ -51,7 +51,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
             fontSize: 40,
             fontWeight: FontWeight.bold,
             fontFamily: 'SourceHanSansJP-Bold',
-            letterSpacing: 4,
+            letterSpacing: 2,
             height: 1,
           ),
         ),

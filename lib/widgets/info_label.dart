@@ -19,8 +19,8 @@ class InfoLabel extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            color: kBlackColor,
-            fontSize: 16,
+            color: kGrey600Color,
+            fontSize: 14,
           ),
         ),
         const SizedBox(height: 2),

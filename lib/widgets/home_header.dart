@@ -33,7 +33,7 @@ class HomeHeader extends StatelessWidget {
                     fontFamily: 'SourceHanSansJP-Bold',
                   ),
                 ),
-                const SizedBox(width: 4),
+                const SizedBox(width: 2),
                 const Icon(Icons.keyboard_arrow_down),
               ],
             ),

@@ -43,7 +43,6 @@ class _NowPlanWidgetState extends State<NowPlanWidget> {
                 fontSize: 14,
               ),
             ),
-            const SizedBox(height: 2),
             SizedBox(
               height: 150,
               child: ShaderMask(
@@ -62,7 +61,7 @@ class _NowPlanWidgetState extends State<NowPlanWidget> {
                 },
                 blendMode: BlendMode.dstOut,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   child: ListView.builder(
                     itemCount: plans.length,
                     itemBuilder: (context, index) {

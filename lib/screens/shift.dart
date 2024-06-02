@@ -32,10 +32,10 @@ class _ShiftScreenState extends State<ShiftScreen> {
   PlanShiftService planShiftService = PlanShiftService();
   UserService userService = UserService();
   CalendarController calendarController = CalendarController();
-  List<CalendarResource> resourceColl = [];
   CompanyGroupModel? currentGroup;
+  List<CalendarResource> resourceColl = [];
 
-  void _init() async {
+  void _getUsers() async {
     List<UserModel> users = await userService.selectListToUserIds(
       userIds: widget.homeProvider.currentGroup?.userIds ?? [''],
     );
@@ -53,8 +53,9 @@ class _ShiftScreenState extends State<ShiftScreen> {
 
   @override
   void initState() {
+    currentGroup = widget.homeProvider.currentGroup;
     calendarController.selectedDate = DateTime.now();
-    _init();
+    _getUsers();
     super.initState();
   }
 
@@ -77,15 +78,18 @@ class _ShiftScreenState extends State<ShiftScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: GroupDropdown(
-                      value: null,
-                      groups: widget.loginProvider.groups,
-                      onChanged: (value) async {
-                        await widget.homeProvider.changeGroup(value);
-                        setState(() {
-                          currentGroup = widget.homeProvider.currentGroup;
-                        });
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: GroupDropdown(
+                        value: currentGroup?.id,
+                        groups: widget.loginProvider.groups,
+                        onChanged: (value) async {
+                          await widget.homeProvider.changeGroup(value);
+                          setState(() {
+                            currentGroup = widget.homeProvider.currentGroup;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   IconButton(
@@ -106,12 +110,13 @@ class _ShiftScreenState extends State<ShiftScreen> {
                     snapshot.snapshot1,
                     shiftView: true,
                   );
-                  source.addAll(
-                      PlanShiftService().convertList(snapshot.snapshot2));
+                  source.addAll(PlanShiftService().convertList(
+                    snapshot.snapshot2,
+                  ));
                   return SafeArea(
                     child: CustomCalendarShift(
                       dataSource: _ShiftDataSource(source, resourceColl),
-                      onTap: (value) {},
+                      controller: calendarController,
                     ),
                   );
                 },
