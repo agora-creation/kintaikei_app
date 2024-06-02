@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/services/user.dart';
+import 'package:kintaikei_app/widgets/custom_calendar_shift.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
-import 'package:kintaikei_app/widgets/shift_calendar.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -32,6 +33,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
   UserService userService = UserService();
   CalendarController calendarController = CalendarController();
   List<CalendarResource> resourceColl = [];
+  CompanyGroupModel? currentGroup;
 
   void _init() async {
     List<UserModel> users = await userService.selectListToUserIds(
@@ -78,7 +80,12 @@ class _ShiftScreenState extends State<ShiftScreen> {
                     child: GroupDropdown(
                       value: null,
                       groups: widget.loginProvider.groups,
-                      onChanged: (value) {},
+                      onChanged: (value) async {
+                        await widget.homeProvider.changeGroup(value);
+                        setState(() {
+                          currentGroup = widget.homeProvider.currentGroup;
+                        });
+                      },
                     ),
                   ),
                   IconButton(
@@ -102,10 +109,9 @@ class _ShiftScreenState extends State<ShiftScreen> {
                   source.addAll(
                       PlanShiftService().convertList(snapshot.snapshot2));
                   return SafeArea(
-                    child: ShiftCalendar(
+                    child: CustomCalendarShift(
                       dataSource: _ShiftDataSource(source, resourceColl),
-                      controller: calendarController,
-                      onLongPress: (CalendarLongPressDetails details) {},
+                      onTap: (value) {},
                     ),
                   );
                 },

@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class ShiftCalendar extends StatelessWidget {
+class CustomCalendarShift extends StatelessWidget {
   final CalendarDataSource<Object?>? dataSource;
-  final CalendarController? controller;
-  final Function(CalendarLongPressDetails)? onLongPress;
+  final Function(CalendarTapDetails)? onTap;
 
-  const ShiftCalendar({
+  const CustomCalendarShift({
     required this.dataSource,
-    required this.controller,
-    required this.onLongPress,
+    required this.onTap,
     super.key,
   });
 
@@ -22,12 +20,11 @@ class ShiftCalendar extends StatelessWidget {
       ),
       dataSource: dataSource,
       view: CalendarView.timelineMonth,
-      controller: controller,
       showDatePickerButton: true,
       showNavigationArrow: true,
       showTodayButton: true,
       headerDateFormat: 'yyyy年MM月',
-      onLongPress: onLongPress,
+      onTap: onTap,
       resourceViewSettings: const ResourceViewSettings(
         visibleResourceCount: 5,
         showAvatar: false,

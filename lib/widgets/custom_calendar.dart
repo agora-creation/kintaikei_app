@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class HomeCalendar extends StatelessWidget {
+class CustomCalendar extends StatelessWidget {
   final CalendarDataSource<Object?>? dataSource;
-  final CalendarController? controller;
-  final Function(CalendarLongPressDetails)? onLongPress;
+  final Function(CalendarTapDetails)? onTap;
 
-  const HomeCalendar({
+  const CustomCalendar({
     required this.dataSource,
-    required this.controller,
-    required this.onLongPress,
+    required this.onTap,
     super.key,
   });
 
@@ -23,12 +21,11 @@ class HomeCalendar extends StatelessWidget {
         ),
         dataSource: dataSource,
         view: CalendarView.month,
-        controller: controller,
         showDatePickerButton: true,
         showNavigationArrow: true,
         showTodayButton: true,
         headerDateFormat: 'yyyy年MM月',
-        onLongPress: onLongPress,
+        onTap: onTap,
         monthViewSettings: const MonthViewSettings(
           showAgenda: true,
         ),

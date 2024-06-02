@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/services/plan.dart';
+import 'package:kintaikei_app/widgets/custom_calendar.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
-import 'package:kintaikei_app/widgets/home_calendar.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -20,6 +23,9 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  PlanService planService = PlanService();
+  CompanyGroupModel? currentGroup;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +39,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 children: [
                   Expanded(
                     child: GroupDropdown(
-                      value: null,
+                      value: currentGroup?.id,
                       groups: widget.loginProvider.groups,
-                      onChanged: (value) {},
+                      onChanged: (value) async {
+                        await widget.homeProvider.changeGroup(value);
+                        setState(() {
+                          currentGroup = widget.homeProvider.currentGroup;
+                        });
+                      },
                     ),
                   ),
                   IconButton(
@@ -47,10 +58,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
             Expanded(
-              child: HomeCalendar(
-                dataSource: _DataSource([]),
-                controller: CalendarController(),
-                onLongPress: (value) {},
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: planService.streamList(
+                  group: widget.homeProvider.currentGroup,
+                  user: widget.loginProvider.user,
+                ),
+                builder: (context, snapshot) {
+                  List<Appointment> appointments =
+                      planService.convertListCalendar(
+                    snapshot,
+                  );
+                  return CustomCalendar(
+                    dataSource: _DataSource(appointments),
+                    onTap: (value) {},
+                  );
+                },
               ),
             ),
           ],
