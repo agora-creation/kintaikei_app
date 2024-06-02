@@ -124,12 +124,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     const DateTimeWidget(),
-                    const NowPlanWidget(),
+                    NowPlanWidget(
+                      loginProvider: widget.loginProvider,
+                      homeProvider: widget.homeProvider,
+                    ),
                     Column(
                       children: [
                         currentWork == null

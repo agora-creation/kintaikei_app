@@ -42,45 +42,36 @@ class _UserScreenState extends State<UserScreen> {
       ),
       body: ListView(
         children: [
-          const SettingHeader('ユーザー設定'),
+          const SizedBox(height: 16),
+          const SettingHeader('あなたの情報を変更する'),
+          const SizedBox(height: 8),
           SettingList(
             label: '名前',
             value: widget.loginProvider.user?.name ?? '',
-            // onTap: () => pushScreen(
-            //   context,
-            //   UserNameModScreen(loginProvider: widget.loginProvider),
-            // ),
+            onTap: () {},
           ),
           SettingList(
             label: 'メールアドレス',
             value: widget.loginProvider.user?.email ?? '',
             borderTop: false,
-            // onTap: () => pushScreen(
-            //   context,
-            //   UserEmailModScreen(loginProvider: widget.loginProvider),
-            // ),
+            onTap: () {},
           ),
           SettingList(
             label: 'パスワード',
             value: '********',
             borderTop: false,
-            // onTap: () => pushScreen(
-            //   context,
-            //   UserPasswordModScreen(loginProvider: widget.loginProvider),
-            // ),
+            onTap: () {},
           ),
-          const SettingHeader('勤務先設定'),
+          const SizedBox(height: 16),
+          const SettingHeader('勤務先を設定する'),
+          const SizedBox(height: 8),
           SettingList(
             label: '現在の勤務先',
-            // onTap: () => pushScreen(
-            //   context,
-            //   GroupScreen(
-            //     loginProvider: widget.loginProvider,
-            //     homeProvider: widget.homeProvider,
-            //   ),
-            // ),
+            onTap: () {},
           ),
+          const SizedBox(height: 16),
           const SettingHeader('アプリについて'),
+          const SizedBox(height: 8),
           SettingList(
             label: 'プライバシーポリシー',
             onTap: () async {
@@ -171,7 +162,6 @@ class _LogoutDialogState extends State<LogoutDialog> {
                     ),
                   ),
                 );
-                // pushReplacementScreen(context, const IntroScreen());
               },
             ),
           ],

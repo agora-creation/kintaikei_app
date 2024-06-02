@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/style.dart';
 
 class SettingHeader extends StatelessWidget {
   final String label;
@@ -11,15 +12,12 @@ class SettingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 8,
-        top: 24,
-        bottom: 8,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Text(
         label,
         style: const TextStyle(
-          fontSize: 16,
+          color: kBlackColor,
+          fontSize: 18,
           fontWeight: FontWeight.bold,
           fontFamily: 'SourceHanSansJP-Bold',
         ),

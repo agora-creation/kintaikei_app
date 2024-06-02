@@ -60,7 +60,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
   Widget build(BuildContext context) {
     var planStream = planService.streamList(
       group: widget.homeProvider.currentGroup,
-      userId: widget.loginProvider.user?.id,
+      user: widget.loginProvider.user,
     );
     var planShiftStream = planShiftService.streamList(
       group: widget.homeProvider.currentGroup,
@@ -95,7 +95,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
                 streams: StreamTuple2(planStream!, planShiftStream!),
                 builder: (context, snapshot) {
                   List<Appointment> source = [];
-                  source = planService.convertList(
+                  source = planService.convertListCalendar(
                     snapshot.snapshot1,
                     shiftView: true,
                   );

@@ -22,9 +22,9 @@ class StampSlideButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlideAction(
       key: slideKey,
-      sliderButtonIconSize: 32,
+      sliderButtonIconSize: 24,
       sliderButtonIconPadding: 16,
-      height: 80,
+      height: 70,
       text: label,
       textColor: kWhiteColor,
       textStyle: const TextStyle(

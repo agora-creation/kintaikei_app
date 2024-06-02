@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/plan.dart';
+import 'package:kintaikei_app/models/user.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class PlanService {
@@ -26,7 +28,7 @@ class PlanService {
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
     required CompanyGroupModel? group,
-    required String? userId,
+    required UserModel? user,
   }) {
     if (group != null) {
       return FirebaseFirestore.instance
@@ -38,13 +40,39 @@ class PlanService {
     } else {
       return FirebaseFirestore.instance
           .collection(collection)
-          .where('userId', isEqualTo: userId ?? 'error')
+          .where('userId', isEqualTo: user?.id ?? 'error')
           .orderBy('startedAt', descending: true)
           .snapshots();
     }
   }
 
-  List<Appointment> convertList(
+  Stream<QuerySnapshot<Map<String, dynamic>>>? streamListNow({
+    required CompanyGroupModel? group,
+  }) {
+    DateTime now = DateTime.now();
+    Timestamp startAt = convertTimestamp(now, false);
+    Timestamp endAt = convertTimestamp(now, true);
+    return FirebaseFirestore.instance
+        .collection(collection)
+        .where('companyId', isEqualTo: group?.companyId)
+        .where('groupId', isEqualTo: group?.id)
+        .orderBy('startedAt', descending: false)
+        .startAt([startAt]).endAt([endAt]).snapshots();
+  }
+
+  List<PlanModel> convertList(
+    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot,
+  ) {
+    List<PlanModel> ret = [];
+    if (snapshot.hasData) {
+      for (DocumentSnapshot<Map<String, dynamic>> doc in snapshot.data!.docs) {
+        ret.add(PlanModel.fromSnapshot(doc));
+      }
+    }
+    return ret;
+  }
+
+  List<Appointment> convertListCalendar(
     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot, {
     bool shiftView = false,
   }) {
