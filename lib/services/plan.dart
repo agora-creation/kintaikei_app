@@ -46,16 +46,12 @@ class PlanService {
     }
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>>? streamListNow({
-    required CompanyGroupModel? group,
-  }) {
+  Stream<QuerySnapshot<Map<String, dynamic>>>? streamListNow() {
     DateTime now = DateTime.now();
     Timestamp startAt = convertTimestamp(now, false);
     Timestamp endAt = convertTimestamp(now, true);
     return FirebaseFirestore.instance
         .collection(collection)
-        .where('companyId', isEqualTo: group?.companyId)
-        .where('groupId', isEqualTo: group?.id)
         .orderBy('startedAt', descending: false)
         .startAt([startAt]).endAt([endAt]).snapshots();
   }
@@ -72,8 +68,36 @@ class PlanService {
     return ret;
   }
 
+  List<PlanModel> convertListNow(
+    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot, {
+    required List<CompanyGroupModel> groups,
+    required UserModel? user,
+  }) {
+    List<PlanModel> ret = [];
+    if (snapshot.hasData) {
+      for (DocumentSnapshot<Map<String, dynamic>> doc in snapshot.data!.docs) {
+        PlanModel plan = PlanModel.fromSnapshot(doc);
+        if (groups.isNotEmpty) {
+          for (CompanyGroupModel group in groups) {
+            if (plan.groupId == group.id && plan.userId == '') {
+              ret.add(plan);
+            }
+          }
+        }
+        if (user != null) {
+          if (plan.userId == user.id && plan.groupId == '') {
+            ret.add(plan);
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
   List<Appointment> convertListCalendar(
     AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot, {
+    required CompanyGroupModel? group,
+    required UserModel? user,
     bool shiftView = false,
   }) {
     List<Appointment> ret = [];
@@ -82,7 +106,7 @@ class PlanService {
         PlanModel plan = PlanModel.fromSnapshot(doc);
         ret.add(Appointment(
           id: plan.id,
-          resourceIds: [plan.userId],
+          resourceIds: group != null ? group.userIds : [user?.id ?? ''],
           subject: plan.subject,
           startTime: plan.startedAt,
           endTime: plan.endedAt,

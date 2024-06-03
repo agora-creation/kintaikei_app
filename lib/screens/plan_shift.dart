@@ -13,21 +13,21 @@ import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class ShiftScreen extends StatefulWidget {
+class PlanShiftScreen extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
 
-  const ShiftScreen({
+  const PlanShiftScreen({
     required this.loginProvider,
     required this.homeProvider,
     super.key,
   });
 
   @override
-  State<ShiftScreen> createState() => _ShiftScreenState();
+  State<PlanShiftScreen> createState() => _PlanShiftScreenState();
 }
 
-class _ShiftScreenState extends State<ShiftScreen> {
+class _PlanShiftScreenState extends State<PlanShiftScreen> {
   PlanService planService = PlanService();
   PlanShiftService planShiftService = PlanShiftService();
   UserService userService = UserService();
@@ -35,10 +35,16 @@ class _ShiftScreenState extends State<ShiftScreen> {
   CompanyGroupModel? currentGroup;
   List<CalendarResource> resourceColl = [];
 
-  void _getUsers() async {
-    List<UserModel> users = await userService.selectListToUserIds(
-      userIds: widget.homeProvider.currentGroup?.userIds ?? [''],
-    );
+  void _getUsers(CompanyGroupModel? group) async {
+    resourceColl.clear();
+    List<UserModel> users = [];
+    if (group != null) {
+      users = await userService.selectListToUserIds(
+        userIds: group.userIds,
+      );
+    } else if (widget.loginProvider.user != null) {
+      users.add(widget.loginProvider.user!);
+    }
     if (users.isNotEmpty) {
       for (UserModel user in users) {
         resourceColl.add(CalendarResource(
@@ -55,18 +61,19 @@ class _ShiftScreenState extends State<ShiftScreen> {
   void initState() {
     currentGroup = widget.homeProvider.currentGroup;
     calendarController.selectedDate = DateTime.now();
-    _getUsers();
+    _getUsers(currentGroup);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var planStream = planService.streamList(
-      group: widget.homeProvider.currentGroup,
+      group: currentGroup,
       user: widget.loginProvider.user,
     );
     var planShiftStream = planShiftService.streamList(
-      group: widget.homeProvider.currentGroup,
+      group: currentGroup,
+      user: widget.loginProvider.user,
     );
     return Scaffold(
       body: SafeArea(
@@ -85,9 +92,8 @@ class _ShiftScreenState extends State<ShiftScreen> {
                         groups: widget.loginProvider.groups,
                         onChanged: (value) async {
                           await widget.homeProvider.changeGroup(value);
-                          setState(() {
-                            currentGroup = widget.homeProvider.currentGroup;
-                          });
+                          currentGroup = widget.homeProvider.currentGroup;
+                          _getUsers(currentGroup);
                         },
                       ),
                     ),
@@ -108,6 +114,8 @@ class _ShiftScreenState extends State<ShiftScreen> {
                   List<Appointment> source = [];
                   source = planService.convertListCalendar(
                     snapshot.snapshot1,
+                    group: currentGroup,
+                    user: widget.loginProvider.user,
                     shiftView: true,
                   );
                   source.addAll(PlanShiftService().convertList(

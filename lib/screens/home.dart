@@ -6,8 +6,8 @@ import 'package:kintaikei_app/models/work.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/work.dart';
-import 'package:kintaikei_app/screens/calendar.dart';
-import 'package:kintaikei_app/screens/shift.dart';
+import 'package:kintaikei_app/screens/plan.dart';
+import 'package:kintaikei_app/screens/plan_shift.dart';
 import 'package:kintaikei_app/screens/sign.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                   onPressed: () => showBottomUpScreen(
                     context,
-                    ShiftScreen(
+                    PlanShiftScreen(
                       loginProvider: widget.loginProvider,
                       homeProvider: widget.homeProvider,
                     ),
@@ -113,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                   onPressed: () => showBottomUpScreen(
                     context,
-                    CalendarScreen(
+                    PlanScreen(
                       loginProvider: widget.loginProvider,
                       homeProvider: widget.homeProvider,
                     ),

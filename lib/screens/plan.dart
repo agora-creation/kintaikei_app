@@ -8,21 +8,21 @@ import 'package:kintaikei_app/widgets/custom_calendar.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarScreen extends StatefulWidget {
+class PlanScreen extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
 
-  const CalendarScreen({
+  const PlanScreen({
     required this.loginProvider,
     required this.homeProvider,
     super.key,
   });
 
   @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
+  State<PlanScreen> createState() => _PlanScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _PlanScreenState extends State<PlanScreen> {
   PlanService planService = PlanService();
   CalendarController calendarController = CalendarController();
   CompanyGroupModel? currentGroup;
@@ -71,13 +71,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
             Expanded(
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: planService.streamList(
-                  group: widget.homeProvider.currentGroup,
+                  group: currentGroup,
                   user: widget.loginProvider.user,
                 ),
                 builder: (context, snapshot) {
                   List<Appointment> appointments =
                       planService.convertListCalendar(
                     snapshot,
+                    group: currentGroup,
+                    user: widget.loginProvider.user,
                   );
                   return CustomCalendar(
                     dataSource: _DataSource(appointments),

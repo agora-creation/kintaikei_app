@@ -27,11 +27,13 @@ class _NowPlanWidgetState extends State<NowPlanWidget> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream: planService.streamListNow(
-        group: widget.homeProvider.currentGroup,
-      ),
+      stream: planService.streamListNow(),
       builder: (context, snapshot) {
-        List<PlanModel> plans = planService.convertList(snapshot);
+        List<PlanModel> plans = planService.convertListNow(
+          snapshot,
+          groups: widget.loginProvider.groups,
+          user: widget.loginProvider.user,
+        );
         if (plans.isEmpty) return Container();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

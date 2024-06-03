@@ -12,7 +12,7 @@ class DateTimeWidget extends StatefulWidget {
 }
 
 class _DateTimeWidgetState extends State<DateTimeWidget> {
-  String date = '----/--/-- (-)';
+  String date = '--月--日 -曜日';
   String time = '--:--:--';
 
   void _onTimer(Timer timer) {
@@ -40,7 +40,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
           date,
           style: const TextStyle(
             color: kGrey600Color,
-            fontSize: 16,
+            fontSize: 18,
             height: 2,
           ),
         ),

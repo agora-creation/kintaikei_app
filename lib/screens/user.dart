@@ -48,7 +48,14 @@ class _UserScreenState extends State<UserScreen> {
           SettingList(
             label: '名前',
             value: widget.loginProvider.user?.name ?? '',
-            onTap: () {},
+            onTap: () => showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) => ModNameDialog(
+                loginProvider: widget.loginProvider,
+                homeProvider: widget.homeProvider,
+              ),
+            ),
           ),
           SettingList(
             label: 'メールアドレス',
@@ -111,6 +118,62 @@ class _UserScreenState extends State<UserScreen> {
           const SizedBox(height: 80),
         ],
       ),
+    );
+  }
+}
+
+class ModNameDialog extends StatefulWidget {
+  final LoginProvider loginProvider;
+  final HomeProvider homeProvider;
+
+  const ModNameDialog({
+    required this.loginProvider,
+    required this.homeProvider,
+    super.key,
+  });
+
+  @override
+  State<ModNameDialog> createState() => _ModNameDialogState();
+}
+
+class _ModNameDialogState extends State<ModNameDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return CustomAlertDialog(
+      children: [
+        const Text('本当にログアウトしますか？'),
+        const SizedBox(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            DialogButton(
+              label: 'キャンセル',
+              labelColor: kWhiteColor,
+              backgroundColor: kGreyColor,
+              onPressed: () => Navigator.pop(context),
+            ),
+            DialogButton(
+              label: 'ログアウト',
+              labelColor: kWhiteColor,
+              backgroundColor: kRedColor,
+              onPressed: () async {
+                await widget.loginProvider.logout();
+                if (!mounted) return;
+                Navigator.pushReplacement(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.bottomToTop,
+                    child: LoginScreen(
+                      loginProvider: widget.loginProvider,
+                      homeProvider: widget.homeProvider,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/plan_shift.dart';
+import 'package:kintaikei_app/models/user.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class PlanShiftService {
@@ -28,13 +29,22 @@ class PlanShiftService {
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
     required CompanyGroupModel? group,
+    required UserModel? user,
   }) {
-    return FirebaseFirestore.instance
-        .collection(collection)
-        .where('companyId', isEqualTo: group?.companyId ?? 'error')
-        .where('groupId', isEqualTo: group?.id ?? 'error')
-        .orderBy('startedAt', descending: true)
-        .snapshots();
+    if (group != null) {
+      return FirebaseFirestore.instance
+          .collection(collection)
+          .where('companyId', isEqualTo: group.companyId)
+          .where('groupId', isEqualTo: group.id)
+          .orderBy('startedAt', descending: true)
+          .snapshots();
+    } else {
+      return FirebaseFirestore.instance
+          .collection(collection)
+          .where('userId', isEqualTo: user?.id ?? 'error')
+          .orderBy('startedAt', descending: true)
+          .snapshots();
+    }
   }
 
   List<Appointment> convertList(
