@@ -5,6 +5,7 @@ import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
 import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/setting_header.dart';
@@ -141,7 +142,13 @@ class _ModNameDialogState extends State<ModNameDialog> {
   Widget build(BuildContext context) {
     return CustomAlertDialog(
       children: [
-        const Text('本当にログアウトしますか？'),
+        CustomTextFormField(
+          controller: TextEditingController(),
+          textInputType: TextInputType.name,
+          maxLines: 1,
+          label: '名前',
+          color: kBlackColor,
+        ),
         const SizedBox(height: 24),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -153,23 +160,10 @@ class _ModNameDialogState extends State<ModNameDialog> {
               onPressed: () => Navigator.pop(context),
             ),
             DialogButton(
-              label: 'ログアウト',
+              label: '保存する',
               labelColor: kWhiteColor,
-              backgroundColor: kRedColor,
-              onPressed: () async {
-                await widget.loginProvider.logout();
-                if (!mounted) return;
-                Navigator.pushReplacement(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.bottomToTop,
-                    child: LoginScreen(
-                      loginProvider: widget.loginProvider,
-                      homeProvider: widget.homeProvider,
-                    ),
-                  ),
-                );
-              },
+              backgroundColor: kBlueColor,
+              onPressed: () async {},
             ),
           ],
         ),
