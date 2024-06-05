@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:kintaikei_app/common/style.dart';
-import 'package:kintaikei_app/providers/company.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan.dart';
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: LoginProvider.initialize()),
         ChangeNotifierProvider.value(value: HomeProvider()),
-        ChangeNotifierProvider.value(value: CompanyProvider()),
         ChangeNotifierProvider.value(value: WorkProvider()),
         ChangeNotifierProvider.value(value: PlanProvider()),
         ChangeNotifierProvider.value(value: PlanShiftProvider()),

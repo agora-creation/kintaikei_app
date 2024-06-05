@@ -9,6 +9,8 @@ class HomeProvider with ChangeNotifier {
   CompanyGroupModel? currentGroup;
 
   Future initGroup(List<CompanyGroupModel> groups) async {
+    await _localDBService.remove('currentGroupId');
+    currentGroup = null;
     if (groups.isNotEmpty) {
       currentGroup = groups.first;
       String currentGroupId = groups.first.id;
@@ -31,6 +33,8 @@ class HomeProvider with ChangeNotifier {
     String? groupId = await _localDBService.getString('currentGroupId');
     if (groupId != null) {
       currentGroup = await _groupService.selectToId(id: groupId);
+    } else {
+      currentGroup = null;
     }
     notifyListeners();
   }

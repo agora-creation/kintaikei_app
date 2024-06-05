@@ -84,20 +84,22 @@ class _PlanShiftScreenState extends State<PlanShiftScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: GroupDropdown(
-                        value: currentGroup?.id,
-                        groups: widget.loginProvider.groups,
-                        onChanged: (value) async {
-                          await widget.homeProvider.changeGroup(value);
-                          currentGroup = widget.homeProvider.currentGroup;
-                          _getUsers(currentGroup);
-                        },
-                      ),
-                    ),
-                  ),
+                  widget.loginProvider.groups.isNotEmpty
+                      ? Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: GroupDropdown(
+                              value: currentGroup?.id,
+                              groups: widget.loginProvider.groups,
+                              onChanged: (value) async {
+                                await widget.homeProvider.changeGroup(value);
+                                currentGroup = widget.homeProvider.currentGroup;
+                                _getUsers(currentGroup);
+                              },
+                            ),
+                          ),
+                        )
+                      : Container(),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () =>

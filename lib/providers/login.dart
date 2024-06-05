@@ -160,25 +160,35 @@ class LoginProvider with ChangeNotifier {
 
   Future<String?> updatePassword({
     required String password,
-    required String newPassword,
   }) async {
     String? error;
-    if (newPassword == '') return '新しいパスワードを入力してください';
+    if (password == '') return '新しいパスワードを入力してください';
     try {
-      UserModel? tmpUser = await _userService.selectToEmailPassword(
-        email: _user?.email,
-        password: password,
-      );
-      if (tmpUser != null) {
-        _userService.update({
-          'id': _user?.id,
-          'password': password,
-        });
-      } else {
-        error = '現在のパスワードが間違っています';
-      }
+      _userService.update({
+        'id': _user?.id,
+        'password': password,
+      });
     } catch (e) {
       error = e.toString();
+    }
+    return error;
+  }
+
+  Future<String?> updateExit({
+    required CompanyGroupModel group,
+  }) async {
+    String? error;
+    try {
+      List<String> userIds = group.userIds;
+      if (userIds.contains(user?.id)) {
+        userIds.remove(user?.id);
+      }
+      _groupService.update({
+        'id': group.id,
+        'userIds': userIds,
+      });
+    } catch (e) {
+      error = '退職に失敗しました';
     }
     return error;
   }

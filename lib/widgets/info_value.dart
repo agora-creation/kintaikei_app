@@ -25,7 +25,7 @@ class InfoValue extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: kGrey300Color,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -7,6 +7,7 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
+  final bool obscureText;
   final String? label;
   final String? hintText;
   final Widget? prefix;
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.textInputType = TextInputType.text,
     this.inputFormatters,
     this.maxLines,
+    this.obscureText = false,
     this.label,
     this.hintText,
     this.prefix,
@@ -33,6 +35,7 @@ class CustomTextField extends StatelessWidget {
       keyboardType: textInputType,
       inputFormatters: inputFormatters,
       maxLines: maxLines,
+      obscureText: obscureText,
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,

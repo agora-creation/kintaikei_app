@@ -45,21 +45,24 @@ class _PlanScreenState extends State<PlanScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: GroupDropdown(
-                        value: currentGroup?.id,
-                        groups: widget.loginProvider.groups,
-                        onChanged: (value) async {
-                          await widget.homeProvider.changeGroup(value);
-                          setState(() {
-                            currentGroup = widget.homeProvider.currentGroup;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
+                  widget.loginProvider.groups.isNotEmpty
+                      ? Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: GroupDropdown(
+                              value: currentGroup?.id,
+                              groups: widget.loginProvider.groups,
+                              onChanged: (value) async {
+                                await widget.homeProvider.changeGroup(value);
+                                setState(() {
+                                  currentGroup =
+                                      widget.homeProvider.currentGroup;
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      : Container(),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () =>

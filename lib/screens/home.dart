@@ -12,10 +12,8 @@ import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
-import 'package:kintaikei_app/widgets/group_dropdown.dart';
+import 'package:kintaikei_app/widgets/group_select_widget.dart';
 import 'package:kintaikei_app/widgets/home_header.dart';
-import 'package:kintaikei_app/widgets/info_label.dart';
-import 'package:kintaikei_app/widgets/info_value.dart';
 import 'package:kintaikei_app/widgets/now_plan_widget.dart';
 import 'package:kintaikei_app/widgets/stamp_slide_button.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final workProvider = Provider.of<WorkProvider>(context);
+    print(widget.loginProvider.groups.length);
+    print(widget.homeProvider.currentGroup?.name);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -92,6 +92,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               actions: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.list_rounded),
+                ),
                 IconButton(
                   onPressed: () => showBottomUpScreen(
                     context,
@@ -127,31 +135,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Column(
                       children: [
-                        currentWork == null
-                            ? InfoLabel(
-                                label: '出勤先を選んでください',
-                                child: GroupDropdown(
-                                  value: currentGroup?.id,
-                                  groups: widget.loginProvider.groups,
-                                  onChanged: (value) async {
-                                    await widget.homeProvider
-                                        .changeGroup(value);
-                                    setState(() {
-                                      currentGroup =
-                                          widget.homeProvider.currentGroup;
-                                    });
-                                  },
-                                ),
-                              )
-                            : InfoLabel(
-                                label: '現在の勤務先',
-                                child: currentGroup == null
-                                    ? const InfoValue(kDefaultGroupText)
-                                    : InfoValue(
-                                        '${currentGroup?.companyName} ${currentGroup?.name}',
-                                      ),
-                              ),
-                        const SizedBox(height: 8),
+                        GroupSelectWidget(
+                          groups: widget.loginProvider.groups,
+                          currentGroup: currentGroup,
+                          currentWork: currentWork,
+                          onChanged: (value) async {
+                            await widget.homeProvider.changeGroup(value);
+                            setState(() {
+                              currentGroup = widget.homeProvider.currentGroup;
+                            });
+                          },
+                        ),
                         widget.loginProvider.user?.getWorkStatus() == 0
                             ? StampSlideButton(
                                 slideKey: workStartKey,
