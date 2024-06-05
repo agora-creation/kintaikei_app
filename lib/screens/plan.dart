@@ -5,6 +5,7 @@ import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/widgets/custom_calendar.dart';
+import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -93,6 +94,10 @@ class _PlanScreenState extends State<PlanScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomFooter(
+        loginProvider: widget.loginProvider,
+        homeProvider: widget.homeProvider,
       ),
     );
   }

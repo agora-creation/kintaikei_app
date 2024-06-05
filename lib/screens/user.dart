@@ -6,6 +6,7 @@ import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/custom_text_field.dart';
 import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
@@ -153,6 +154,10 @@ class _UserScreenState extends State<UserScreen> {
           ),
           const SizedBox(height: 80),
         ],
+      ),
+      bottomNavigationBar: CustomFooter(
+        loginProvider: widget.loginProvider,
+        homeProvider: widget.homeProvider,
       ),
     );
   }

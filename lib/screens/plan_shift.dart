@@ -9,6 +9,7 @@ import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/services/user.dart';
 import 'package:kintaikei_app/widgets/custom_calendar_shift.dart';
+import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -134,6 +135,10 @@ class _PlanShiftScreenState extends State<PlanShiftScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomFooter(
+        loginProvider: widget.loginProvider,
+        homeProvider: widget.homeProvider,
       ),
     );
   }

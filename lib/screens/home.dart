@@ -11,6 +11,7 @@ import 'package:kintaikei_app/screens/plan_shift.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
+import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/date_time_widget.dart';
 import 'package:kintaikei_app/widgets/group_select_widget.dart';
 import 'package:kintaikei_app/widgets/home_header.dart';
@@ -263,6 +264,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomFooter(
+        loginProvider: widget.loginProvider,
+        homeProvider: widget.homeProvider,
       ),
     );
   }
