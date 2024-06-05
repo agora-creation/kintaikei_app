@@ -5,7 +5,7 @@ import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
-import 'package:kintaikei_app/widgets/custom_text_form_field.dart';
+import 'package:kintaikei_app/widgets/custom_text_field.dart';
 import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/setting_header.dart';
@@ -142,12 +142,11 @@ class _ModNameDialogState extends State<ModNameDialog> {
   Widget build(BuildContext context) {
     return CustomAlertDialog(
       children: [
-        CustomTextFormField(
+        CustomTextField(
           controller: TextEditingController(),
           textInputType: TextInputType.name,
           maxLines: 1,
           label: '名前',
-          color: kBlackColor,
         ),
         const SizedBox(height: 24),
         Row(

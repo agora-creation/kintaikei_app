@@ -8,7 +8,6 @@ import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/plan.dart';
 import 'package:kintaikei_app/screens/plan_shift.dart';
-import 'package:kintaikei_app/screens/sign.dart';
 import 'package:kintaikei_app/screens/user.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
@@ -93,13 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               actions: [
-                IconButton(
-                  onPressed: () => showBottomUpScreen(
-                    context,
-                    const SignScreen(),
-                  ),
-                  icon: const Icon(Icons.gesture),
-                ),
                 IconButton(
                   onPressed: () => showBottomUpScreen(
                     context,
