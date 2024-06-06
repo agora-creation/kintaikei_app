@@ -220,9 +220,7 @@ class LoginProvider with ChangeNotifier {
       List<CompanyGroupModel> tmpGroup = await _groupService.selectList(
         userId: tmpUser.id,
       );
-      if (tmpGroup.isNotEmpty) {
-        _groups = tmpGroup;
-      }
+      _groups = tmpGroup;
     }
     notifyListeners();
   }

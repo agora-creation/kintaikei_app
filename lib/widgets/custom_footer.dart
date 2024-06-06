@@ -42,7 +42,7 @@ class _CustomFooterState extends State<CustomFooter>
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {});
     FlutterAppBadger.removeBadge();
-    _versionCheck();
+    // _versionCheck();
   }
 
   @override

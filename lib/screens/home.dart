@@ -93,14 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.notifications),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.list_rounded),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.notifications),
+                // ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.list_rounded),
+                // ),
                 IconButton(
                   onPressed: () => showBottomUpScreen(
                     context,

@@ -32,6 +32,20 @@ class UserScreen extends StatefulWidget {
 }
 
 class _UserScreenState extends State<UserScreen> {
+  List<CompanyGroupModel> groups = [];
+
+  void _setGroups() {
+    setState(() {
+      groups = widget.loginProvider.groups;
+    });
+  }
+
+  @override
+  void initState() {
+    _setGroups();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +100,7 @@ class _UserScreenState extends State<UserScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          widget.loginProvider.groups.isNotEmpty
+          groups.isNotEmpty
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,7 +108,7 @@ class _UserScreenState extends State<UserScreen> {
                     const SizedBox(height: 8),
                     const Divider(height: 1, color: kGrey600Color),
                     Column(
-                      children: widget.loginProvider.groups.map((group) {
+                      children: groups.map((group) {
                         return SettingList(
                           label: '${group.companyName} ${group.name}',
                           borderTop: false,
@@ -105,6 +119,7 @@ class _UserScreenState extends State<UserScreen> {
                               loginProvider: widget.loginProvider,
                               homeProvider: widget.homeProvider,
                               group: group,
+                              setGroups: _setGroups,
                             ),
                           ),
                         );
@@ -369,11 +384,13 @@ class GroupDialog extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
   final CompanyGroupModel group;
+  final Function() setGroups;
 
   const GroupDialog({
     required this.loginProvider,
     required this.homeProvider,
     required this.group,
+    required this.setGroups,
     super.key,
   });
 
@@ -414,7 +431,6 @@ class _GroupDialogState extends State<GroupDialog> {
                   return;
                 }
                 await widget.loginProvider.reloadData();
-                await Future.delayed(const Duration(seconds: 2));
                 await widget.homeProvider.initGroup(
                   widget.loginProvider.groups,
                 );
