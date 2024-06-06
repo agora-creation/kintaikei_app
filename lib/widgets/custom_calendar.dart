@@ -5,10 +5,12 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CustomCalendar extends StatelessWidget {
   final CalendarDataSource<Object?>? dataSource;
   final CalendarController controller;
+  final Function(CalendarLongPressDetails)? onLongPress;
 
   const CustomCalendar({
     required this.dataSource,
     required this.controller,
+    this.onLongPress,
     super.key,
   });
 
@@ -25,6 +27,7 @@ class CustomCalendar extends StatelessWidget {
         showNavigationArrow: true,
         headerDateFormat: 'yyyy年MM月',
         controller: controller,
+        onLongPress: onLongPress,
         monthViewSettings: const MonthViewSettings(
           showAgenda: true,
         ),

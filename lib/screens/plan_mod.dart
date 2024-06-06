@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/models/plan.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan.dart';
 import 'package:kintaikei_app/services/date_time_picker.dart';
+import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/widgets/alert_dropdown.dart';
 import 'package:kintaikei_app/widgets/color_dropdown.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
@@ -12,25 +14,27 @@ import 'package:kintaikei_app/widgets/custom_expansion_tile.dart';
 import 'package:kintaikei_app/widgets/custom_text_field.dart';
 import 'package:kintaikei_app/widgets/date_time_range_field.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:provider/provider.dart';
 
-class PlanAddScreen extends StatefulWidget {
+class PlanModScreen extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
-  final DateTime selectedDate;
+  final String id;
 
-  const PlanAddScreen({
+  const PlanModScreen({
     required this.loginProvider,
     required this.homeProvider,
-    required this.selectedDate,
+    required this.id,
     super.key,
   });
 
   @override
-  State<PlanAddScreen> createState() => _PlanAddScreenState();
+  State<PlanModScreen> createState() => _PlanModScreenState();
 }
 
-class _PlanAddScreenState extends State<PlanAddScreen> {
+class _PlanModScreenState extends State<PlanModScreen> {
+  PlanService planService = PlanService();
   DateTimePickerService pickerService = DateTimePickerService();
   TextEditingController subjectController = TextEditingController();
   DateTime startedAt = DateTime.now();
@@ -40,15 +44,19 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
   int alertMinute = kAlertMinutes[1];
 
   void _init() async {
-    startedAt = DateTime(
-      widget.selectedDate.year,
-      widget.selectedDate.month,
-      widget.selectedDate.day,
-      8,
-      0,
-      0,
-    );
-    endedAt = startedAt.add(const Duration(hours: 1));
+    PlanModel? plan = await planService.selectToId(id: widget.id);
+    if (plan == null) {
+      if (!mounted) return;
+      showMessage(context, '予定データの取得に失敗しました', false);
+      Navigator.pop(context);
+      return;
+    }
+    subjectController.text = plan.subject;
+    startedAt = plan.startedAt;
+    endedAt = plan.endedAt;
+    allDay = plan.allDay;
+    color = plan.color;
+    alertMinute = plan.alertMinute;
     setState(() {});
   }
 
@@ -91,7 +99,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text('予定の追加'),
+        title: const Text('予定の編集'),
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
       body: GestureDetector(
@@ -172,13 +180,12 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
             ),
             const SizedBox(height: 16),
             CustomButton(
-              label: '追加する',
+              label: '保存する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
               onPressed: () async {
-                String? error = await planProvider.create(
-                  group: widget.homeProvider.currentGroup,
-                  user: widget.loginProvider.user,
+                String? error = await planProvider.update(
+                  id: widget.id,
                   subject: subjectController.text,
                   startedAt: startedAt,
                   endedAt: endedAt,
@@ -192,9 +199,30 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
                   return;
                 }
                 if (!mounted) return;
-                showMessage(context, '予定を追加しました', true);
+                showMessage(context, '予定を編集しました', true);
                 Navigator.pop(context);
               },
+            ),
+            const SizedBox(height: 24),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: LinkText(
+                label: 'この予定を削除する',
+                color: kRedColor,
+                onTap: () async {
+                  String? error = await planProvider.delete(
+                    id: widget.id,
+                  );
+                  if (error != null) {
+                    if (!mounted) return;
+                    showMessage(context, error, false);
+                    return;
+                  }
+                  if (!mounted) return;
+                  showMessage(context, '予定を削除しました', true);
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ],
         ),

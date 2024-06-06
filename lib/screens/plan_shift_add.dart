@@ -3,40 +3,42 @@ import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
-import 'package:kintaikei_app/providers/plan.dart';
+import 'package:kintaikei_app/providers/plan_shift.dart';
 import 'package:kintaikei_app/services/date_time_picker.dart';
 import 'package:kintaikei_app/widgets/alert_dropdown.dart';
-import 'package:kintaikei_app/widgets/color_dropdown.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/custom_expansion_tile.dart';
-import 'package:kintaikei_app/widgets/custom_text_field.dart';
 import 'package:kintaikei_app/widgets/date_time_range_field.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:kintaikei_app/widgets/repeat_select_form.dart';
 import 'package:provider/provider.dart';
 
-class PlanAddScreen extends StatefulWidget {
+class PlanShiftAddScreen extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
+  final String userId;
   final DateTime selectedDate;
 
-  const PlanAddScreen({
+  const PlanShiftAddScreen({
     required this.loginProvider,
     required this.homeProvider,
+    required this.userId,
     required this.selectedDate,
     super.key,
   });
 
   @override
-  State<PlanAddScreen> createState() => _PlanAddScreenState();
+  State<PlanShiftAddScreen> createState() => _PlanShiftAddScreenState();
 }
 
-class _PlanAddScreenState extends State<PlanAddScreen> {
+class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
   DateTimePickerService pickerService = DateTimePickerService();
-  TextEditingController subjectController = TextEditingController();
   DateTime startedAt = DateTime.now();
-  DateTime endedAt = DateTime.now().add(const Duration(hours: 1));
+  DateTime endedAt = DateTime.now().add(const Duration(hours: 8));
   bool allDay = false;
-  Color color = kColors.first;
+  bool repeat = false;
+  String repeatInterval = kRepeatIntervals.first;
+  List<String> repeatWeeks = [];
   int alertMinute = kAlertMinutes[1];
 
   void _init() async {
@@ -48,7 +50,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
       0,
       0,
     );
-    endedAt = startedAt.add(const Duration(hours: 1));
+    endedAt = startedAt.add(const Duration(hours: 8));
     setState(() {});
   }
 
@@ -83,7 +85,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final planProvider = Provider.of<PlanProvider>(context);
+    final planShiftProvider = Provider.of<PlanShiftProvider>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -91,7 +93,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text('予定の追加'),
+        title: const Text('勤務予定の追加'),
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
       body: GestureDetector(
@@ -100,22 +102,13 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
           padding: const EdgeInsets.all(16),
           children: [
             InfoLabel(
-              label: '件名',
-              child: CustomTextField(
-                controller: subjectController,
-                textInputType: TextInputType.name,
-                maxLines: 1,
-              ),
-            ),
-            const SizedBox(height: 8),
-            InfoLabel(
-              label: '予定時間帯',
+              label: '勤務予定時間帯',
               child: DateTimeRangeField(
                 startedAt: startedAt,
                 startedOnTap: () async => await pickerService.picker(
                   context: context,
                   init: startedAt,
-                  title: '予定開始時間を選択',
+                  title: '勤務予定開始時間を選択',
                   onChanged: (value) {
                     if (value.millisecondsSinceEpoch <
                         endedAt.millisecondsSinceEpoch) {
@@ -128,7 +121,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
                 endedOnTap: () async => await pickerService.picker(
                   context: context,
                   init: endedAt,
-                  title: '予定終了時間を選択',
+                  title: '勤務予定終了時間を選択',
                   onChanged: (value) {
                     if (startedAt.millisecondsSinceEpoch <
                         value.millisecondsSinceEpoch) {
@@ -146,13 +139,28 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
               label: '詳細設定',
               children: [
                 InfoLabel(
-                  label: '色',
-                  child: ColorDropdown(
-                    value: color,
-                    onChanged: (value) {
+                  label: '繰り返し設定',
+                  child: RepeatSelectForm(
+                    repeat: repeat,
+                    repeatOnChanged: (value) {
                       setState(() {
-                        color = value!;
+                        repeat = value!;
                       });
+                    },
+                    interval: repeatInterval,
+                    intervalOnChanged: (value) {
+                      setState(() {
+                        repeatInterval = value;
+                      });
+                    },
+                    weeks: repeatWeeks,
+                    weeksOnChanged: (value) {
+                      if (repeatWeeks.contains(value)) {
+                        repeatWeeks.remove(value);
+                      } else {
+                        repeatWeeks.add(value);
+                      }
+                      setState(() {});
                     },
                   ),
                 ),
@@ -176,14 +184,14 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
               onPressed: () async {
-                String? error = await planProvider.create(
-                  group: widget.homeProvider.currentGroup,
+                String? error = await planShiftProvider.create(
                   user: widget.loginProvider.user,
-                  subject: subjectController.text,
                   startedAt: startedAt,
                   endedAt: endedAt,
                   allDay: allDay,
-                  color: color,
+                  repeat: repeat,
+                  repeatInterval: repeatInterval,
+                  repeatWeeks: repeatWeeks,
                   alertMinute: alertMinute,
                 );
                 if (error != null) {
@@ -192,7 +200,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
                   return;
                 }
                 if (!mounted) return;
-                showMessage(context, '予定を追加しました', true);
+                showMessage(context, '勤務予定を追加しました', true);
                 Navigator.pop(context);
               },
             ),

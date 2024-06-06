@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/screens/plan_add.dart';
+import 'package:kintaikei_app/screens/plan_mod.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/widgets/custom_calendar.dart';
 import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class PlanScreen extends StatefulWidget {
@@ -88,6 +91,42 @@ class _PlanScreenState extends State<PlanScreen> {
                   return CustomCalendar(
                     dataSource: _DataSource(appointments),
                     controller: calendarController,
+                    onLongPress: (CalendarLongPressDetails details) {
+                      CalendarElement element = details.targetElement;
+                      switch (element) {
+                        case CalendarElement.appointment:
+                        case CalendarElement.agenda:
+                          Appointment appointmentDetails =
+                              details.appointments![0];
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: PlanModScreen(
+                                loginProvider: widget.loginProvider,
+                                homeProvider: widget.homeProvider,
+                                id: '${appointmentDetails.id}',
+                              ),
+                            ),
+                          );
+                          break;
+                        case CalendarElement.calendarCell:
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: PlanAddScreen(
+                                loginProvider: widget.loginProvider,
+                                homeProvider: widget.homeProvider,
+                                selectedDate: details.date ?? DateTime.now(),
+                              ),
+                            ),
+                          );
+                          break;
+                        default:
+                          break;
+                      }
+                    },
                   );
                 },
               ),

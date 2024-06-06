@@ -9,6 +9,7 @@ import 'package:kintaikei_app/providers/work.dart';
 import 'package:kintaikei_app/screens/plan.dart';
 import 'package:kintaikei_app/screens/plan_shift.dart';
 import 'package:kintaikei_app/screens/user.dart';
+import 'package:kintaikei_app/screens/work.dart';
 import 'package:kintaikei_app/services/company_group.dart';
 import 'package:kintaikei_app/services/work.dart';
 import 'package:kintaikei_app/widgets/custom_footer.dart';
@@ -77,8 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final workProvider = Provider.of<WorkProvider>(context);
-    print(widget.loginProvider.groups.length);
-    print(widget.homeProvider.currentGroup?.name);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -97,10 +96,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 //   onPressed: () {},
                 //   icon: const Icon(Icons.notifications),
                 // ),
-                // IconButton(
-                //   onPressed: () {},
-                //   icon: const Icon(Icons.list_rounded),
-                // ),
+                IconButton(
+                  onPressed: () => showBottomUpScreen(
+                    context,
+                    WorkScreen(
+                      loginProvider: widget.loginProvider,
+                      homeProvider: widget.homeProvider,
+                    ),
+                  ),
+                  icon: const Icon(Icons.list_rounded),
+                ),
                 IconButton(
                   onPressed: () => showBottomUpScreen(
                     context,

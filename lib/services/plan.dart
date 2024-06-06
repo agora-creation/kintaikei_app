@@ -26,6 +26,22 @@ class PlanService {
     firestore.collection(collection).doc(values['id']).delete();
   }
 
+  Future<PlanModel?> selectToId({
+    required String? id,
+  }) async {
+    PlanModel? ret;
+    await firestore
+        .collection(collection)
+        .where('id', isEqualTo: id ?? 'error')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        ret = PlanModel.fromSnapshot(value.docs.first);
+      }
+    });
+    return ret;
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
     required CompanyGroupModel? group,
     required UserModel? user,

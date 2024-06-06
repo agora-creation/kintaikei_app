@@ -5,10 +5,12 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CustomCalendarShift extends StatelessWidget {
   final CalendarDataSource<Object?>? dataSource;
   final CalendarController controller;
+  final Function(CalendarLongPressDetails)? onLongPress;
 
   const CustomCalendarShift({
     required this.dataSource,
     required this.controller,
+    this.onLongPress,
     super.key,
   });
 
@@ -25,6 +27,7 @@ class CustomCalendarShift extends StatelessWidget {
       showTodayButton: true,
       headerDateFormat: 'yyyy年MM月',
       controller: controller,
+      onLongPress: onLongPress,
       resourceViewSettings: const ResourceViewSettings(
         visibleResourceCount: 5,
         showAvatar: false,

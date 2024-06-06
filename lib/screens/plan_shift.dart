@@ -5,6 +5,7 @@ import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
+import 'package:kintaikei_app/screens/plan_shift_add.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/services/user.dart';
@@ -12,6 +13,7 @@ import 'package:kintaikei_app/widgets/custom_calendar_shift.dart';
 import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class PlanShiftScreen extends StatefulWidget {
@@ -128,6 +130,45 @@ class _PlanShiftScreenState extends State<PlanShiftScreen> {
                     child: CustomCalendarShift(
                       dataSource: _ShiftDataSource(source, resourceColl),
                       controller: calendarController,
+                      onLongPress: (CalendarLongPressDetails details) {
+                        CalendarElement element = details.targetElement;
+                        switch (element) {
+                          case CalendarElement.appointment:
+                          case CalendarElement.agenda:
+                            Appointment appointmentDetails =
+                                details.appointments![0];
+                            // Navigator.push(
+                            //   context,
+                            //   PageTransition(
+                            //     type: PageTransitionType.rightToLeft,
+                            //     child: PlanModScreen(
+                            //       loginProvider: widget.loginProvider,
+                            //       homeProvider: widget.homeProvider,
+                            //       id: '${appointmentDetails.id}',
+                            //     ),
+                            //   ),
+                            // );
+                            break;
+                          case CalendarElement.calendarCell:
+                            final userId = details.resource?.id;
+                            if (userId == null) return;
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: PlanShiftAddScreen(
+                                  loginProvider: widget.loginProvider,
+                                  homeProvider: widget.homeProvider,
+                                  userId: '$userId',
+                                  selectedDate: details.date ?? DateTime.now(),
+                                ),
+                              ),
+                            );
+                            break;
+                          default:
+                            break;
+                        }
+                      },
                     ),
                   );
                 },
