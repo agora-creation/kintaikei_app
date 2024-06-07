@@ -36,11 +36,12 @@ class _PlanShiftScreenState extends State<PlanShiftScreen> {
   UserService userService = UserService();
   CalendarController calendarController = CalendarController();
   CompanyGroupModel? currentGroup;
+  List<UserModel> users = [];
   List<CalendarResource> resourceColl = [];
 
   void _getUsers(CompanyGroupModel? group) async {
+    users.clear();
     resourceColl.clear();
-    List<UserModel> users = [];
     if (group != null) {
       users = await userService.selectListToUserIds(
         userIds: group.userIds,
@@ -159,6 +160,7 @@ class _PlanShiftScreenState extends State<PlanShiftScreen> {
                                 child: PlanShiftAddScreen(
                                   loginProvider: widget.loginProvider,
                                   homeProvider: widget.homeProvider,
+                                  users: users,
                                   userId: '$userId',
                                   selectedDate: details.date ?? DateTime.now(),
                                 ),

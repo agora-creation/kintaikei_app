@@ -434,6 +434,7 @@ class _GroupDialogState extends State<GroupDialog> {
                 await widget.homeProvider.initGroup(
                   widget.loginProvider.groups,
                 );
+                widget.setGroups();
                 if (!mounted) return;
                 showMessage(context, '退職しました', true);
                 Navigator.pop(context);

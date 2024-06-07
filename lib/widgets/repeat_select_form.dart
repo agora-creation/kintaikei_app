@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class RepeatSelectForm extends StatelessWidget {
   final bool repeat;
@@ -75,34 +76,26 @@ class RepeatSelectForm extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ToggleButtons(
-                      isSelected: [],
-                      onPressed: (int index) {
+                    ToggleSwitch(
+                      initialLabelIndex: kRepeatIntervals.indexOf(interval),
+                      totalSwitches: kRepeatIntervals.length,
+                      labels: kRepeatIntervals,
+                      onToggle: (index) {
+                        if (index == null) return;
                         intervalOnChanged(kRepeatIntervals[index]);
                       },
-                      children: kRepeatIntervals.map((e) {
-                        return Text(e);
-                      }).toList(),
                     ),
-                    const SizedBox(height: 4),
                     interval == kRepeatIntervals[1]
-                        ? Row(
+                        ? Column(
                             children: kWeeks.map((e) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 16,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Checkbox(
-                                      value: weeks.contains(e),
-                                      onChanged: (value) {
-                                        weeksOnChanged(e);
-                                      },
-                                    ),
-                                    Text(e),
-                                  ],
-                                ),
+                              return CheckboxListTile(
+                                title: Text(e),
+                                value: weeks.contains(e),
+                                onChanged: (value) {
+                                  weeksOnChanged(e);
+                                },
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
                               );
                             }).toList(),
                           )

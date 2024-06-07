@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
+import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan_shift.dart';
@@ -16,12 +17,14 @@ import 'package:provider/provider.dart';
 class PlanShiftAddScreen extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
+  final List<UserModel> users;
   final String userId;
   final DateTime selectedDate;
 
   const PlanShiftAddScreen({
     required this.loginProvider,
     required this.homeProvider,
+    required this.users,
     required this.userId,
     required this.selectedDate,
     super.key,
@@ -33,6 +36,7 @@ class PlanShiftAddScreen extends StatefulWidget {
 
 class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
   DateTimePickerService pickerService = DateTimePickerService();
+  List<UserModel> selectedUsers = [];
   DateTime startedAt = DateTime.now();
   DateTime endedAt = DateTime.now().add(const Duration(hours: 8));
   bool allDay = false;
@@ -42,6 +46,7 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
   int alertMinute = kAlertMinutes[1];
 
   void _init() async {
+    selectedUsers = [widget.users.singleWhere((e) => e.id == widget.userId)];
     startedAt = DateTime(
       widget.selectedDate.year,
       widget.selectedDate.month,
@@ -101,6 +106,36 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            InfoLabel(
+              label: '勤務予定のスタッフを選択',
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  border: Border.all(color: kGrey300Color),
+                ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.users.length,
+                  itemBuilder: (context, index) {
+                    UserModel user = widget.users[index];
+                    return CheckboxListTile(
+                      title: Text(user.name),
+                      value: selectedUsers.contains(user),
+                      onChanged: (value) {
+                        if (selectedUsers.contains(user)) {
+                          selectedUsers.remove(user);
+                        } else {
+                          selectedUsers.add(user);
+                        }
+                        setState(() {});
+                      },
+                      controlAffinity: ListTileControlAffinity.leading,
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
             InfoLabel(
               label: '勤務予定時間帯',
               child: DateTimeRangeField(
@@ -185,7 +220,8 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
               backgroundColor: kBlueColor,
               onPressed: () async {
                 String? error = await planShiftProvider.create(
-                  user: widget.loginProvider.user,
+                  group: widget.homeProvider.currentGroup,
+                  users: selectedUsers,
                   startedAt: startedAt,
                   endedAt: endedAt,
                   allDay: allDay,

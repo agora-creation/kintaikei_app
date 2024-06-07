@@ -36,6 +36,7 @@ dependencies:
   in_app_review: ^2.0.9
   page_transition: ^2.1.0
   slide_to_act: ^2.0.2
+  toggle_switch: ^2.3.0
   font_awesome_flutter: ^10.7.0
 
   firebase_core: ^2.31.1
