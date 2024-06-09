@@ -24,7 +24,6 @@ class CustomCalendarShift extends StatelessWidget {
       view: CalendarView.timelineMonth,
       showDatePickerButton: true,
       showNavigationArrow: true,
-      showTodayButton: true,
       headerDateFormat: 'yyyy年MM月',
       controller: controller,
       onLongPress: onLongPress,

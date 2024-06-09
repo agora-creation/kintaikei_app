@@ -86,7 +86,6 @@ class PlanProvider with ChangeNotifier {
         'color': color.value.toRadixString(16),
         'alertMinute': alertMinute,
         'alertedAt': startedAt.subtract(Duration(minutes: alertMinute)),
-        'createdAt': DateTime.now(),
       });
     } catch (e) {
       error = '予定の編集に失敗しました';

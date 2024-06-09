@@ -27,6 +27,22 @@ class PlanShiftService {
     firestore.collection(collection).doc(values['id']).delete();
   }
 
+  Future<PlanShiftModel?> selectToId({
+    required String? id,
+  }) async {
+    PlanShiftModel? ret;
+    await firestore
+        .collection(collection)
+        .where('id', isEqualTo: id ?? 'error')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        ret = PlanShiftModel.fromSnapshot(value.docs.first);
+      }
+    });
+    return ret;
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
     required CompanyGroupModel? group,
     required UserModel? user,

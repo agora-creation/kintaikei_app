@@ -50,4 +50,53 @@ class PlanShiftProvider with ChangeNotifier {
     }
     return error;
   }
+
+  Future<String?> update({
+    required String id,
+    required DateTime startedAt,
+    required DateTime endedAt,
+    required bool allDay,
+    required bool repeat,
+    required String repeatInterval,
+    required List<String> repeatWeeks,
+    required int alertMinute,
+  }) async {
+    String? error;
+    if (id == '') return '勤務予定の編集に失敗しました';
+    if (startedAt.millisecondsSinceEpoch > endedAt.millisecondsSinceEpoch) {
+      return '日時を正しく選択してください';
+    }
+    try {
+      _planShiftService.update({
+        'id': id,
+        'startedAt': startedAt,
+        'endedAt': endedAt,
+        'allDay': allDay,
+        'repeat': repeat,
+        'repeatInterval': repeatInterval,
+        'repeatWeeks': repeatWeeks,
+        'repeatUntil': null,
+        'alertMinute': alertMinute,
+        'alertedAt': startedAt.subtract(Duration(minutes: alertMinute)),
+      });
+    } catch (e) {
+      error = '勤務予定の編集に失敗しました';
+    }
+    return error;
+  }
+
+  Future<String?> delete({
+    required String id,
+  }) async {
+    String? error;
+    if (id == '') return '勤務予定の削除に失敗しました';
+    try {
+      _planShiftService.delete({
+        'id': id,
+      });
+    } catch (e) {
+      error = '勤務予定の削除に失敗しました';
+    }
+    return error;
+  }
 }

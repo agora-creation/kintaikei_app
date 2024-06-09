@@ -6,6 +6,7 @@ import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/plan_shift_add.dart';
+import 'package:kintaikei_app/screens/plan_shift_mod.dart';
 import 'package:kintaikei_app/services/plan.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/services/user.dart';
@@ -138,17 +139,17 @@ class _PlanShiftScreenState extends State<PlanShiftScreen> {
                           case CalendarElement.agenda:
                             Appointment appointmentDetails =
                                 details.appointments![0];
-                            // Navigator.push(
-                            //   context,
-                            //   PageTransition(
-                            //     type: PageTransitionType.rightToLeft,
-                            //     child: PlanModScreen(
-                            //       loginProvider: widget.loginProvider,
-                            //       homeProvider: widget.homeProvider,
-                            //       id: '${appointmentDetails.id}',
-                            //     ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: PlanShiftModScreen(
+                                  loginProvider: widget.loginProvider,
+                                  homeProvider: widget.homeProvider,
+                                  id: '${appointmentDetails.id}',
+                                ),
+                              ),
+                            );
                             break;
                           case CalendarElement.calendarCell:
                             final userId = details.resource?.id;

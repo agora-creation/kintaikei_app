@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
-import 'package:kintaikei_app/models/user.dart';
+import 'package:kintaikei_app/models/plan_shift.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan_shift.dart';
 import 'package:kintaikei_app/services/date_time_picker.dart';
+import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/widgets/alert_dropdown.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/custom_expansion_tile.dart';
 import 'package:kintaikei_app/widgets/date_time_range_field.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:kintaikei_app/widgets/info_value.dart';
+import 'package:kintaikei_app/widgets/link_text.dart';
 import 'package:kintaikei_app/widgets/repeat_select_form.dart';
 import 'package:provider/provider.dart';
 
-class PlanShiftAddScreen extends StatefulWidget {
+class PlanShiftModScreen extends StatefulWidget {
   final LoginProvider loginProvider;
   final HomeProvider homeProvider;
-  final List<UserModel> users;
-  final String userId;
-  final DateTime selectedDate;
+  final String id;
 
-  const PlanShiftAddScreen({
+  const PlanShiftModScreen({
     required this.loginProvider,
     required this.homeProvider,
-    required this.users,
-    required this.userId,
-    required this.selectedDate,
+    required this.id,
     super.key,
   });
 
   @override
-  State<PlanShiftAddScreen> createState() => _PlanShiftAddScreenState();
+  State<PlanShiftModScreen> createState() => _PlanShiftModScreenState();
 }
 
-class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
+class _PlanShiftModScreenState extends State<PlanShiftModScreen> {
+  PlanShiftService planShiftService = PlanShiftService();
   DateTimePickerService pickerService = DateTimePickerService();
-  List<UserModel> selectedUsers = [];
+  PlanShiftModel? planShift;
   DateTime startedAt = DateTime.now();
   DateTime endedAt = DateTime.now().add(const Duration(hours: 8));
   bool allDay = false;
@@ -46,16 +46,22 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
   int alertMinute = kAlertMinutes[1];
 
   void _init() async {
-    selectedUsers = [widget.users.singleWhere((e) => e.id == widget.userId)];
-    startedAt = DateTime(
-      widget.selectedDate.year,
-      widget.selectedDate.month,
-      widget.selectedDate.day,
-      8,
-      0,
-      0,
-    );
-    endedAt = startedAt.add(const Duration(hours: 8));
+    PlanShiftModel? tmpPlanShift =
+        await planShiftService.selectToId(id: widget.id);
+    if (tmpPlanShift == null) {
+      if (!mounted) return;
+      showMessage(context, '勤務予定データの取得に失敗しました', false);
+      Navigator.pop(context);
+      return;
+    }
+    planShift = tmpPlanShift;
+    startedAt = tmpPlanShift.startedAt;
+    endedAt = tmpPlanShift.endedAt;
+    allDay = tmpPlanShift.allDay;
+    repeat = tmpPlanShift.repeat;
+    repeatInterval = tmpPlanShift.repeatInterval;
+    repeatWeeks = tmpPlanShift.repeatWeeks;
+    alertMinute = tmpPlanShift.alertMinute;
     setState(() {});
   }
 
@@ -98,7 +104,7 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         centerTitle: true,
-        title: const Text('勤務予定の追加'),
+        title: const Text('勤務予定の編集'),
         shape: const Border(bottom: BorderSide(color: kGrey300Color)),
       ),
       body: GestureDetector(
@@ -107,42 +113,8 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
           padding: const EdgeInsets.all(16),
           children: [
             InfoLabel(
-              label: '勤務予定のスタッフを選択',
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: kGrey300Color),
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 200),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.users.length,
-                    itemBuilder: (context, index) {
-                      UserModel user = widget.users[index];
-                      return Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: kGrey300Color),
-                          ),
-                        ),
-                        child: CheckboxListTile(
-                          title: Text(user.name),
-                          value: selectedUsers.contains(user),
-                          onChanged: (value) {
-                            if (selectedUsers.contains(user)) {
-                              selectedUsers.remove(user);
-                            } else {
-                              selectedUsers.add(user);
-                            }
-                            setState(() {});
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+              label: '勤務予定のスタッフ',
+              child: InfoValue(planShift?.userName ?? ''),
             ),
             const SizedBox(height: 8),
             InfoLabel(
@@ -224,13 +196,12 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
             ),
             const SizedBox(height: 16),
             CustomButton(
-              label: '追加する',
+              label: '保存する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
               onPressed: () async {
-                String? error = await planShiftProvider.create(
-                  group: widget.homeProvider.currentGroup,
-                  users: selectedUsers,
+                String? error = await planShiftProvider.update(
+                  id: widget.id,
                   startedAt: startedAt,
                   endedAt: endedAt,
                   allDay: allDay,
@@ -245,9 +216,30 @@ class _PlanShiftAddScreenState extends State<PlanShiftAddScreen> {
                   return;
                 }
                 if (!mounted) return;
-                showMessage(context, '勤務予定を追加しました', true);
+                showMessage(context, '勤務予定を編集しました', true);
                 Navigator.pop(context);
               },
+            ),
+            const SizedBox(height: 24),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: LinkText(
+                label: 'この勤務予定を削除する',
+                color: kRedColor,
+                onTap: () async {
+                  String? error = await planShiftProvider.delete(
+                    id: widget.id,
+                  );
+                  if (error != null) {
+                    if (!mounted) return;
+                    showMessage(context, error, false);
+                    return;
+                  }
+                  if (!mounted) return;
+                  showMessage(context, '勤務予定を削除しました', true);
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ],
         ),

@@ -86,18 +86,28 @@ class RepeatSelectForm extends StatelessWidget {
                       },
                     ),
                     interval == kRepeatIntervals[1]
-                        ? Column(
-                            children: kWeeks.map((e) {
-                              return CheckboxListTile(
-                                title: Text(e),
-                                value: weeks.contains(e),
-                                onChanged: (value) {
-                                  weeksOnChanged(e);
-                                },
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                              );
-                            }).toList(),
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Column(
+                              children: kWeeks.map((e) {
+                                return Container(
+                                  decoration: const BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(color: kGrey300Color),
+                                    ),
+                                  ),
+                                  child: CheckboxListTile(
+                                    title: Text(e),
+                                    value: weeks.contains(e),
+                                    onChanged: (value) {
+                                      weeksOnChanged(e);
+                                    },
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           )
                         : Container(),
                   ],
