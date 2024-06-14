@@ -51,7 +51,7 @@ class _UserScreenState extends State<UserScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(widget.loginProvider.user?.name ?? ''),
+        title: const Text('設定'),
         actions: [
           IconButton(
             icon: const Icon(Icons.close),

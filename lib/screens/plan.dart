@@ -49,24 +49,13 @@ class _PlanScreenState extends State<PlanScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  widget.loginProvider.groups.isNotEmpty
-                      ? Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: GroupDropdown(
-                              value: currentGroup?.id,
-                              groups: widget.loginProvider.groups,
-                              onChanged: (value) async {
-                                await widget.homeProvider.changeGroup(value);
-                                setState(() {
-                                  currentGroup =
-                                      widget.homeProvider.currentGroup;
-                                });
-                              },
-                            ),
-                          ),
-                        )
-                      : Container(),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Text(
+                      'スケジュール',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.close),
                     onPressed: () =>
@@ -75,6 +64,21 @@ class _PlanScreenState extends State<PlanScreen> {
                 ],
               ),
             ),
+            widget.loginProvider.groups.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: GroupDropdown(
+                      value: currentGroup?.id,
+                      groups: widget.loginProvider.groups,
+                      onChanged: (value) async {
+                        await widget.homeProvider.changeGroup(value);
+                        setState(() {
+                          currentGroup = widget.homeProvider.currentGroup;
+                        });
+                      },
+                    ),
+                  )
+                : Container(),
             Expanded(
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 stream: planService.streamList(
