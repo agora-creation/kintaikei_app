@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
 import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/models/company_group.dart';
 import 'package:kintaikei_app/providers/home.dart';
@@ -26,9 +27,21 @@ class _WorkScreenState extends State<WorkScreen> {
   DateTime searchMonth = DateTime.now();
   List<DateTime> days = [];
 
+  void _changeMonth(DateTime value) {
+    searchMonth = value;
+    days = generateDays(value);
+    setState(() {});
+  }
+
+  void _init() {
+    currentGroup = widget.homeProvider.currentGroup;
+    days = generateDays(searchMonth);
+    setState(() {});
+  }
+
   @override
   void initState() {
-    currentGroup = widget.homeProvider.currentGroup;
+    _init();
     super.initState();
   }
 
@@ -76,7 +89,10 @@ class _WorkScreenState extends State<WorkScreen> {
             Expanded(
               child: Column(
                 children: [
-                  const MonthPickerButton(),
+                  MonthPickerButton(
+                    value: searchMonth,
+                    onTap: () async {},
+                  ),
                   Container(
                     decoration: const BoxDecoration(
                       border: Border(
@@ -111,9 +127,41 @@ class _WorkScreenState extends State<WorkScreen> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 0,
+                      itemCount: days.length,
                       itemBuilder: (context, index) {
-                        return Container();
+                        DateTime day = days[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: const Border(
+                              bottom: BorderSide(color: kGrey300Color),
+                            ),
+                            color: kGrey300Color.withOpacity(0.6),
+                          ),
+                          padding: const EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor:
+                                    convertDateText('E', day) == '土'
+                                        ? kLightBlueColor.withOpacity(0.3)
+                                        : convertDateText('E', day) == '日'
+                                            ? kDeepOrangeColor.withOpacity(0.3)
+                                            : Colors.transparent,
+                                radius: 24,
+                                child: Text(
+                                  convertDateText('dd(E)', day),
+                                  style: const TextStyle(
+                                    color: kBlackColor,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(),
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ),
