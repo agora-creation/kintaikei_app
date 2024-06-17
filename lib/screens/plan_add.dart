@@ -4,7 +4,7 @@ import 'package:kintaikei_app/common/style.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan.dart';
-import 'package:kintaikei_app/services/date_time_picker.dart';
+import 'package:kintaikei_app/services/picker.dart';
 import 'package:kintaikei_app/widgets/alert_dropdown.dart';
 import 'package:kintaikei_app/widgets/color_dropdown.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
@@ -31,7 +31,7 @@ class PlanAddScreen extends StatefulWidget {
 }
 
 class _PlanAddScreenState extends State<PlanAddScreen> {
-  DateTimePickerService pickerService = DateTimePickerService();
+  PickerService pickerService = PickerService();
   TextEditingController subjectController = TextEditingController();
   DateTime startedAt = DateTime.now();
   DateTime endedAt = DateTime.now().add(const Duration(hours: 1));
@@ -112,7 +112,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
               label: '予定時間帯',
               child: DateTimeRangeField(
                 startedAt: startedAt,
-                startedOnTap: () async => await pickerService.picker(
+                startedOnTap: () async => await pickerService.dateTimePicker(
                   context: context,
                   init: startedAt,
                   title: '予定開始時間を選択',
@@ -125,7 +125,7 @@ class _PlanAddScreenState extends State<PlanAddScreen> {
                   },
                 ),
                 endedAt: endedAt,
-                endedOnTap: () async => await pickerService.picker(
+                endedOnTap: () async => await pickerService.dateTimePicker(
                   context: context,
                   init: endedAt,
                   title: '予定終了時間を選択',

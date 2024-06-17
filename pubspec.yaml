@@ -34,6 +34,7 @@ dependencies:
   syncfusion_localizations: ^25.2.5
   syncfusion_flutter_calendar: ^25.2.5
   board_datetime_picker: ^1.6.5
+  month_picker_dialog: ^4.0.0
   multiple_stream_builder: ^3.0.2
   slide_to_act: ^2.0.2
   toggle_switch: ^2.3.0

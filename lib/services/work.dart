@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kintaikei_app/common/functions.dart';
+import 'package:kintaikei_app/models/company_group.dart';
+import 'package:kintaikei_app/models/user.dart';
 import 'package:kintaikei_app/models/work.dart';
 
 class WorkService {
@@ -39,13 +42,30 @@ class WorkService {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
-    required String? userId,
+    required CompanyGroupModel? group,
+    required UserModel? user,
+    required DateTime searchMonth,
   }) {
-    return FirebaseFirestore.instance
-        .collection(collection)
-        .where('userId', isEqualTo: userId ?? 'error')
-        .orderBy('startedAt', descending: true)
-        .snapshots();
+    DateTime monthS = DateTime(searchMonth.year, searchMonth.month, 1);
+    DateTime monthE = DateTime(searchMonth.year, searchMonth.month + 1, 1).add(
+      const Duration(days: -1),
+    );
+    Timestamp startAt = convertTimestamp(monthS, false);
+    Timestamp endAt = convertTimestamp(monthE, true);
+    if (group != null) {
+      return FirebaseFirestore.instance
+          .collection(collection)
+          .where('companyId', isEqualTo: group.companyId)
+          .where('groupId', isEqualTo: group.id)
+          .orderBy('startedAt', descending: false)
+          .startAt([startAt]).endAt([endAt]).snapshots();
+    } else {
+      return FirebaseFirestore.instance
+          .collection(collection)
+          .where('userId', isEqualTo: user?.id ?? 'error')
+          .orderBy('startedAt', descending: false)
+          .startAt([startAt]).endAt([endAt]).snapshots();
+    }
   }
 
   List<WorkModel> convertList(

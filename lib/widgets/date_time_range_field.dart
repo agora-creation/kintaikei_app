@@ -7,7 +7,7 @@ class DateTimeRangeField extends StatelessWidget {
   final Function()? startedOnTap;
   final DateTime endedAt;
   final Function()? endedOnTap;
-  final bool allDay;
+  final bool? allDay;
   final Function(bool?)? allDayOnChanged;
 
   const DateTimeRangeField({
@@ -15,7 +15,7 @@ class DateTimeRangeField extends StatelessWidget {
     this.startedOnTap,
     required this.endedAt,
     this.endedOnTap,
-    required this.allDay,
+    this.allDay,
     this.allDayOnChanged,
     super.key,
   });
@@ -81,16 +81,18 @@ class DateTimeRangeField extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(top: BorderSide(color: kGrey300Color)),
-            ),
-            child: CheckboxListTile(
-              value: allDay,
-              onChanged: allDayOnChanged,
-              title: const Text('終日'),
-            ),
-          ),
+          allDay != null
+              ? Container(
+                  decoration: const BoxDecoration(
+                    border: Border(top: BorderSide(color: kGrey300Color)),
+                  ),
+                  child: CheckboxListTile(
+                    value: allDay,
+                    onChanged: allDayOnChanged,
+                    title: const Text('終日'),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

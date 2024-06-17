@@ -653,6 +653,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  month_picker_dialog:
+    dependency: "direct main"
+    description:
+      name: month_picker_dialog
+      sha256: a286b6134c278093916f59a0d2a111d0015132436e8aaccdde39fc1bdfc990b8
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   multiple_stream_builder:
     dependency: "direct main"
     description:

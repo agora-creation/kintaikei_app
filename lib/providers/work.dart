@@ -132,20 +132,25 @@ class WorkProvider with ChangeNotifier {
   }
 
   Future<String?> update({
-    required WorkModel? work,
+    required WorkModel work,
+    required DateTime startedAt,
+    required DateTime endedAt,
+    required List<WorkBreakModel> workBreaks,
   }) async {
     String? error;
-    if (work == null) return '打刻情報の編集に失敗しました';
+    if (startedAt.millisecondsSinceEpoch > endedAt.millisecondsSinceEpoch) {
+      return '日時を正しく選択してください';
+    }
     try {
-      List<Map> workBreaks = [];
-      for (WorkBreakModel workBreak in work.workBreaks) {
-        workBreaks.add(workBreak.toMap());
+      List<Map> workBreaksMap = [];
+      for (WorkBreakModel workBreak in workBreaks) {
+        workBreaksMap.add(workBreak.toMap());
       }
       _workService.update({
         'id': work.id,
-        'startedAt': work.startedAt,
-        'endedAt': work.endedAt,
-        'workBreaks': workBreaks,
+        'startedAt': startedAt,
+        'endedAt': endedAt,
+        'workBreaks': workBreaksMap,
       });
     } catch (e) {
       error = '打刻情報の編集に失敗しました';
@@ -154,10 +159,9 @@ class WorkProvider with ChangeNotifier {
   }
 
   Future<String?> delete({
-    required WorkModel? work,
+    required WorkModel work,
   }) async {
     String? error;
-    if (work == null) return '打刻情報の削除に失敗しました';
     try {
       _workService.delete({
         'id': work.id,

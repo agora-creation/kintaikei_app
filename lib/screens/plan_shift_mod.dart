@@ -5,7 +5,7 @@ import 'package:kintaikei_app/models/plan_shift.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/plan_shift.dart';
-import 'package:kintaikei_app/services/date_time_picker.dart';
+import 'package:kintaikei_app/services/picker.dart';
 import 'package:kintaikei_app/services/plan_shift.dart';
 import 'package:kintaikei_app/widgets/alert_dropdown.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
@@ -35,7 +35,7 @@ class PlanShiftModScreen extends StatefulWidget {
 
 class _PlanShiftModScreenState extends State<PlanShiftModScreen> {
   PlanShiftService planShiftService = PlanShiftService();
-  DateTimePickerService pickerService = DateTimePickerService();
+  PickerService pickerService = PickerService();
   PlanShiftModel? planShift;
   DateTime startedAt = DateTime.now();
   DateTime endedAt = DateTime.now().add(const Duration(hours: 8));
@@ -121,7 +121,7 @@ class _PlanShiftModScreenState extends State<PlanShiftModScreen> {
               label: '勤務予定時間帯',
               child: DateTimeRangeField(
                 startedAt: startedAt,
-                startedOnTap: () async => await pickerService.picker(
+                startedOnTap: () async => await pickerService.dateTimePicker(
                   context: context,
                   init: startedAt,
                   title: '勤務予定開始時間を選択',
@@ -134,7 +134,7 @@ class _PlanShiftModScreenState extends State<PlanShiftModScreen> {
                   },
                 ),
                 endedAt: endedAt,
-                endedOnTap: () async => await pickerService.picker(
+                endedOnTap: () async => await pickerService.dateTimePicker(
                   context: context,
                   init: endedAt,
                   title: '勤務予定終了時間を選択',
