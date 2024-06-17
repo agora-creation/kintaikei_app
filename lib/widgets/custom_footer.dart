@@ -7,7 +7,7 @@ import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/services/config.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
-import 'package:kintaikei_app/widgets/dialog_button.dart';
+import 'package:kintaikei_app/widgets/custom_button_mini.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomFooter extends StatefulWidget {
@@ -82,13 +82,13 @@ class VersionUpDialog extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DialogButton(
+            CustomButtonMini(
               label: '閉じる',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            DialogButton(
+            CustomButtonMini(
               label: '更新する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,

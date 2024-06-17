@@ -6,9 +6,9 @@ import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/screens/login.dart';
 import 'package:kintaikei_app/widgets/custom_alert_dialog.dart';
+import 'package:kintaikei_app/widgets/custom_button_mini.dart';
 import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/custom_text_field.dart';
-import 'package:kintaikei_app/widgets/dialog_button.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
 import 'package:kintaikei_app/widgets/info_value.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
@@ -215,13 +215,13 @@ class _ModNameDialogState extends State<ModNameDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DialogButton(
+            CustomButtonMini(
               label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            DialogButton(
+            CustomButtonMini(
               label: '保存する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
@@ -284,13 +284,13 @@ class _ModEmailDialogState extends State<ModEmailDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DialogButton(
+            CustomButtonMini(
               label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            DialogButton(
+            CustomButtonMini(
               label: '保存する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
@@ -348,13 +348,13 @@ class _ModPasswordDialogState extends State<ModPasswordDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DialogButton(
+            CustomButtonMini(
               label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            DialogButton(
+            CustomButtonMini(
               label: '保存する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
@@ -411,13 +411,13 @@ class _GroupDialogState extends State<GroupDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DialogButton(
+            CustomButtonMini(
               label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            DialogButton(
+            CustomButtonMini(
               label: '退職する',
               labelColor: kWhiteColor,
               backgroundColor: kRedColor,
@@ -471,13 +471,13 @@ class _LogoutDialogState extends State<LogoutDialog> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            DialogButton(
+            CustomButtonMini(
               label: 'キャンセル',
               labelColor: kWhiteColor,
               backgroundColor: kGreyColor,
               onPressed: () => Navigator.pop(context),
             ),
-            DialogButton(
+            CustomButtonMini(
               label: 'ログアウト',
               labelColor: kWhiteColor,
               backgroundColor: kRedColor,

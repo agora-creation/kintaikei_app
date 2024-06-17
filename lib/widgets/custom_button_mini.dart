@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class DialogButton extends StatelessWidget {
+class CustomButtonMini extends StatelessWidget {
   final String label;
   final Color labelColor;
   final Color backgroundColor;
   final Function()? onPressed;
 
-  const DialogButton({
+  const CustomButtonMini({
     required this.label,
     required this.labelColor,
     required this.backgroundColor,

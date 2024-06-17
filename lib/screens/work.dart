@@ -12,7 +12,6 @@ import 'package:kintaikei_app/services/work.dart';
 import 'package:kintaikei_app/widgets/custom_footer.dart';
 import 'package:kintaikei_app/widgets/group_dropdown.dart';
 import 'package:kintaikei_app/widgets/month_picker_button.dart';
-import 'package:kintaikei_app/widgets/work_header.dart';
 import 'package:page_transition/page_transition.dart';
 
 class WorkScreen extends StatefulWidget {
@@ -109,7 +108,7 @@ class _WorkScreenState extends State<WorkScreen> {
                       _changeMonth(selected);
                     },
                   ),
-                  const WorkHeader(),
+                  generateHeader(),
                   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: workService.streamList(
                       group: widget.homeProvider.currentGroup,
@@ -135,69 +134,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                 }
                               }
                             }
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: const Border(
-                                  bottom: BorderSide(color: kGrey300Color),
-                                ),
-                                color: dayWorks.isNotEmpty
-                                    ? kWhiteColor
-                                    : kGrey300Color.withOpacity(0.6),
-                              ),
-                              padding: const EdgeInsets.all(8),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: convertDateText(
-                                                'E', day) ==
-                                            '土'
-                                        ? kLightBlueColor.withOpacity(0.3)
-                                        : convertDateText('E', day) == '日'
-                                            ? kDeepOrangeColor.withOpacity(0.3)
-                                            : Colors.transparent,
-                                    radius: 24,
-                                    child: Text(
-                                      convertDateText('dd(E)', day),
-                                      style: const TextStyle(
-                                        color: kBlackColor,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      children: dayWorks.map((dayWork) {
-                                        return ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(dayWork.startedTime()),
-                                              Text(dayWork.endedTime()),
-                                              Text(dayWork.totalTime()),
-                                            ],
-                                          ),
-                                          onTap: () => Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              child: WorkModScreen(
-                                                loginProvider:
-                                                    widget.loginProvider,
-                                                homeProvider:
-                                                    widget.homeProvider,
-                                                work: dayWork,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
+                            return generateList(day: day, works: works);
                           },
                         ),
                       );
@@ -212,6 +149,115 @@ class _WorkScreenState extends State<WorkScreen> {
       bottomNavigationBar: CustomFooter(
         loginProvider: widget.loginProvider,
         homeProvider: widget.homeProvider,
+      ),
+    );
+  }
+
+  Widget generateHeader() {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: kGrey300Color),
+        ),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: const Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: kWhiteColor,
+            radius: 24,
+            child: Text(
+              '日付',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          Expanded(
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text('出勤時間'),
+                  Text('退勤時間'),
+                  Text('勤務時間'),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget generateList({
+    required DateTime day,
+    required List<WorkModel> works,
+  }) {
+    List<WorkModel> dayWorks = [];
+    if (works.isNotEmpty) {
+      for (WorkModel work in works) {
+        String dayKey = convertDateText(
+          'yyyy-MM-dd',
+          work.startedAt,
+        );
+        if (day == DateTime.parse(dayKey)) {
+          dayWorks.add(work);
+        }
+      }
+    }
+    return Container(
+      decoration: BoxDecoration(
+        border: const Border(
+          bottom: BorderSide(color: kGrey300Color),
+        ),
+        color:
+            dayWorks.isNotEmpty ? kWhiteColor : kGrey300Color.withOpacity(0.6),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: convertDateText('E', day) == '土'
+                ? kLightBlueColor.withOpacity(0.3)
+                : convertDateText('E', day) == '日'
+                    ? kDeepOrangeColor.withOpacity(0.3)
+                    : Colors.transparent,
+            radius: 24,
+            child: Text(
+              convertDateText('dd(E)', day),
+              style: const TextStyle(
+                color: kBlackColor,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Column(
+              children: dayWorks.map((dayWork) {
+                return ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(dayWork.startedTime()),
+                      Text(dayWork.endedTime()),
+                      Text(dayWork.totalTime()),
+                    ],
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    PageTransition(
+                      type: PageTransitionType.rightToLeft,
+                      child: WorkModScreen(
+                        loginProvider: widget.loginProvider,
+                        homeProvider: widget.homeProvider,
+                        work: dayWork,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -6,11 +6,14 @@ import 'package:kintaikei_app/models/work_break.dart';
 import 'package:kintaikei_app/providers/home.dart';
 import 'package:kintaikei_app/providers/login.dart';
 import 'package:kintaikei_app/providers/work.dart';
+import 'package:kintaikei_app/screens/work_breaks_mod.dart';
 import 'package:kintaikei_app/services/picker.dart';
 import 'package:kintaikei_app/widgets/custom_button.dart';
 import 'package:kintaikei_app/widgets/date_time_range_field.dart';
 import 'package:kintaikei_app/widgets/info_label.dart';
+import 'package:kintaikei_app/widgets/info_value.dart';
 import 'package:kintaikei_app/widgets/link_text.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class WorkModScreen extends StatefulWidget {
@@ -51,6 +54,12 @@ class _WorkModScreenState extends State<WorkModScreen> {
   @override
   Widget build(BuildContext context) {
     final workProvider = Provider.of<WorkProvider>(context);
+    String workBreaksTime = '00:00';
+    if (workBreaks.isNotEmpty) {
+      for (WorkBreakModel workBreak in workBreaks) {
+        workBreaksTime = addTime(workBreaksTime, workBreak.totalTime());
+      }
+    }
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -66,6 +75,11 @@ class _WorkModScreenState extends State<WorkModScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            InfoLabel(
+              label: '勤務時間',
+              child: InfoValue(widget.work.totalTime()),
+            ),
+            const SizedBox(height: 8),
             InfoLabel(
               label: '出勤時間 ～ 退勤時間',
               child: DateTimeRangeField(
@@ -95,6 +109,28 @@ class _WorkModScreenState extends State<WorkModScreen> {
                     }
                   },
                 ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            InfoLabel(
+              label: '合計休憩時間',
+              child: InfoValue(
+                workBreaksTime,
+                icon: Icons.edit,
+                onTap: () => Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.rightToLeft,
+                    child: WorkBreaksModScreen(
+                      workBreaks: workBreaks,
+                    ),
+                  ),
+                ).then((value) {
+                  if (value == null) return;
+                  setState(() {
+                    workBreaks = value;
+                  });
+                }),
               ),
             ),
             const SizedBox(height: 16),
